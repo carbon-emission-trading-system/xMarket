@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import com.stock.xMarket.error.BusinessException;
+import com.stock.xMarket.error.EmBusinessError;
+import com.stock.xMarket.response.CommonReturnType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +30,7 @@ import com.stock.xMarket.result.ResultCode;
 import com.stock.xMarket.service.UserService;
 import com.stock.xMarket.util.*;
 
-
-
+import static com.stock.xMarket.response.CommonReturnType.*;
 
 
 @RestController
@@ -40,14 +42,14 @@ public class UserApiController extends BaseApiController {
 	public UserService userService;
 
 	@RequestMapping(value = "/login")
-	public Result<Object> login(@ModelAttribute(value = "user")User user,HttpSession session, String validateCode,HttpServletResponse response) {
+	public CommonReturnType login(@ModelAttribute(value = "user")User user, HttpSession session, String validateCode, HttpServletResponse response) throws BusinessException {
 	
 		//验证码
 		String sessionCode = (String) session.getAttribute("code");
 		log.info(validateCode);
 		log.info(sessionCode);
 		if(!StringUtils.equalsIgnoreCase(validateCode, sessionCode)){
-			return Result.failure();
+			throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"验证码错误");
 		}
 
 		UserVO dbUser = userService.getUser(user.getUsername());
@@ -63,12 +65,12 @@ public class UserApiController extends BaseApiController {
 				cookie.setPath("/");
 				response.addCookie(cookie);
 
-				return Result.success(); // Result.success(); 200, "success"
+				return success(); // Result.success(); 200, "success"
 			} else {
-				return Result.failure(ResultCode.USER_LOGIN_ERROR);
+				throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"密码错误");
 			}
 		} else {
-			return Result.failure(ResultCode.USER_LOGIN_ERROR);
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"用户不存在");
 		}
 
 	}
@@ -90,19 +92,15 @@ public class UserApiController extends BaseApiController {
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public Result<Object> register(@ModelAttribute(value = "user") @Valid User user, BindingResult bindingResult,
-			HttpSession session, String mailCode, HttpServletResponse response) {
+	public CommonReturnType register(@ModelAttribute(value = "user") @Valid User user,
+			HttpSession session, String mailCode, HttpServletResponse response) throws BusinessException {
 //		log.info("username=" + user.toString());
 //		log.info("username=" + user.getUsername() + ";password=" + user.getLoginPassword());
-		if (bindingResult.hasErrors()) {
-			log.info("bingdingresult haserrors");
-			return Result.failure(); // 500, "error"
-		}
 
 		String sessionCode = (String) session.getAttribute("mailcode");
 		log.info(mailCode);
 		if (!StringUtils.equalsIgnoreCase(mailCode, sessionCode)) {
-			return Result.failure();
+			throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"验证码错误");
 
 		}
 
@@ -110,12 +108,12 @@ public class UserApiController extends BaseApiController {
 		user.setLoginPassword(newPassword);
 		userService.regist(user);
 //		log.info(user.getTransactionPassword());
-		return Result.success();
+		return CommonReturnType.success();
 
 	}
 
 	@RequestMapping("/getMailCode")
-	public Result<Object> sendMail(@RequestParam(value = "mailAdress") String mailAdress, HttpServletRequest request) {
+	public CommonReturnType sendMail(@RequestParam(value = "mailAdress") String mailAdress, HttpServletRequest request) throws BusinessException {
 
 		String mailCode = String.valueOf(new Random().nextInt(899999) + 100000);
 		String message = "您的验证码为：" + mailCode;
@@ -125,11 +123,11 @@ public class UserApiController extends BaseApiController {
 			userService.sendMail(mailAdress, message);
 		} catch (Exception e) {
 
-			return Result.failure();
+			throw new BusinessException(EmBusinessError.VERIFICATION_CODE_FAIL_ERROR);
 		}
 		HttpSession session = request.getSession();
 		session.setAttribute("mailcode", mailCode);
-		return Result.success();
+		return CommonReturnType.success();
 	}
 
 }

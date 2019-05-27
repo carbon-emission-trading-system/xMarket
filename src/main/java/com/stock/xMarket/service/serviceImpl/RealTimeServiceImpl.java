@@ -57,9 +57,15 @@ public class RealTimeServiceImpl implements RealTimeService{
 
 	public void updateRealTime() {
 		List<RealTimeVO> realTimeList = new ArrayList<RealTimeVO>();
-		RealTimeVO realTime=new RealTimeVO(600000,10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+		RealTimeVO realTime=new RealTimeVO(600000,10,
+				10, 10, 10, 10, 10,
+				10, 10, 10, 10, 10, \
+				10, 10, 10, 10);
 
-		RealTimeVO realTime2=new RealTimeVO(600446,10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+		RealTimeVO realTime2=new RealTimeVO(600446,10,
+				10, 10, 10, 10,
+				10, 10, 10, 10, 10,
+				10, 10, 10, 10, 10);
 		realTimeList.add(realTime);
 		realTimeList.add(realTime2);
 		String coursesString = JSON.toJSONString(realTimeList);

@@ -3,18 +3,20 @@ package com.stock.xMarket.error;
 public enum EmBusinessError implements CommonError {
 
     // 通用错误类型
-    PARAMMETER_VALIDATION_ERROR(10001,"参数不合法"),
-    UNKNOW_ERROR(10002,"未知错误"),
+    UNKNOWN_ERROR(10000,"未知的错误"),
+    OBJECT_ALREADY_EXIST_ERROR(10001,"要创建的对象已存在"),
+    VALIDATION_ERROR(10002,"验证失败"),
+    OBJECT_NOT_EXIST_ERROR(10003,"要获取的对象不存在"),
 
 
-    //20000开头为用户信息相关错误定义
-    USER_NOT_EXIST(20001,"用户不存在"),
-    USER_LOGIN_FAIL(20002,"用户手机号或密码错误"),
-    USER_NOT_LOGIN(20003,"用户还未登录"),
-
-
-    //30000开头为交易信息错误定义
-    STOCK_NOT_ENOUGH(30001,"库存不足")
+    //50000开头为业务相关错误定义
+    VERIFICATION_CODE_FAIL_ERROR(50001,"获取验证码失败"),
+    RESET_PASSWORD_FAIL_ERROR(50002,"重置密码失败"),
+    USERID_NOT_EXIST_ERROR(50003,"用户不存在"),
+    EMAIL_NOT_EXIST_ERROR(50004,"邮箱不存在"),
+    FUND_ERROR(50005,"资金不足"),
+    ORDER_FINISH_ERROR(50006,"委托已完成"),
+    ILLEGAL_TIME_ERROR(50007,"非法的交易时间")
     ;
 
     EmBusinessError(int errCode,String errMsg){

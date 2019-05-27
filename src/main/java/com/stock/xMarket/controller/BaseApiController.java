@@ -26,8 +26,8 @@ public class BaseApiController {
             commonReturnType.setCode(businessException.getErrCode());
             commonReturnType.setMessage(businessException.getErrMsg());
         } else {
-            commonReturnType.setCode(EmBusinessError.UNKNOW_ERROR.getErrCode());
-            commonReturnType.setMessage(EmBusinessError.UNKNOW_ERROR.getErrMsg());
+            commonReturnType.setCode(EmBusinessError.UNKNOWN_ERROR.getErrCode());
+            commonReturnType.setMessage(EmBusinessError.UNKNOWN_ERROR.getErrMsg());
         }
 
         return commonReturnType;
