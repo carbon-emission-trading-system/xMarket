@@ -2,7 +2,9 @@ package com.stock.xMarket.redis;
 
 import org.springframework.stereotype.Repository;
 
-import com.xmarket.order.model.User;
+import com.stock.xMarket.model.User;
+
+
 @Repository
 public class RealTimeRedis extends BaseRedis<User>{
 

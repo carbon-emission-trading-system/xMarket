@@ -5,9 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public interface RealTimeService {
 
+	void sendRealTime();
 
-	
-	
-	void createConn();
-	
+
 }
