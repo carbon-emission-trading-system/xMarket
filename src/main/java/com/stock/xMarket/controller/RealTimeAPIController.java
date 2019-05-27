@@ -27,7 +27,6 @@ public class RealTimeAPIController extends BaseApiController{
 	public String realTimeDataDisplay(HttpSession session, String validateCode,HttpServletResponse response) {
 		
 		
-		realTimeService.createConn();
 		
 		return "首次拿到实时信息";
 		
