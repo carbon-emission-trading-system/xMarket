@@ -1,5 +1,7 @@
 package com.stock.xMarket.model;
 
+import org.springframework.data.annotation.Transient;
+
 import java.sql.Date;
 import java.sql.Time;
 
@@ -17,7 +19,7 @@ public class TradeOrder {
 	
 	
 	public TradeOrder(String tradeOrderId, String stockID, String buyOrderId, String sellOrderId, boolean sellPoint,
-			boolean buyPoint, Time time, Date date, float tradePrice, int exchangeAmount, boolean tradeType) {
+			boolean buyPoint, Time time, Date date, double tradePrice, int exchangeAmount, boolean tradeType) {
 		super();
 		this.tradeOrderId = tradeOrderId;
 		this.stockID = stockID;
@@ -56,13 +58,15 @@ public class TradeOrder {
 	@Column
 	private Date date;
 	@Column
-	private float tradePrice;
+	private double tradePrice;
 	@Column
 	private int exchangeAmount;
 	@Column
 	private boolean tradeType;
-	
-	
+
+	@Transient
+	private double totalExchangeMoney;
+
 	public String getTrade_order_id() {
 		return tradeOrderId;
 	}
@@ -111,10 +115,10 @@ public class TradeOrder {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public float getTradePrice() {
+	public double getTradePrice() {
 		return tradePrice;
 	}
-	public void setTradePrice(float tradePrice) {
+	public void setTradePrice(double tradePrice) {
 		this.tradePrice = tradePrice;
 	}
 	
@@ -145,7 +149,18 @@ public class TradeOrder {
 		this.tradeType = tradeType;
 	}
 
-	
-	
-	
+
+
+	public double getTotalExchangeMoney() {
+		return totalExchangeMoney;
+	}
+
+	public void setTotalExchangeMoney(double totalExchangeMoney) {
+		this.totalExchangeMoney = totalExchangeMoney;
+	}
+
+	public void setTotalExchangeMoney() {
+		this.totalExchangeMoney = this.exchangeAmount*this.tradePrice;
+	}
+
 }

@@ -37,11 +37,11 @@ public class TransactionOrder implements Serializable{
 		this.stockName = stockName;
 	}
 
-	@Column(name="sell_id")
-	private boolean sellId;//买卖标识,true是买
+	@Column(name="point")
+	private boolean point;//买卖标识,true是买
 	
-	@Column(name="sell_order_id")
-	private String sellOrderId;//委托单id
+	@Column(name="order_id")
+	private String orderId;//委托单id
 	
 	@Column(name="owner_id")
 	private String ownerId;//拥有者id
@@ -92,20 +92,20 @@ public class TransactionOrder implements Serializable{
 		this.stockId = stockId;
 	}
 
-	public boolean isSellId() {
-		return sellId;
+	public boolean isPoint() {
+		return point;
 	}
 
-	public void setSellId(boolean sellId) {
-		this.sellId = sellId;
+	public void setPoint (boolean point) {
+		this.point = point;
 	}
 
-	public String getSellOrderId() {
-		return sellOrderId;
+	public String getOrderId() {
+		return orderId;
 	}
 
-	public void setSellOrderId(String sellOrderId) {
-		this.sellOrderId = sellOrderId;
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
 	public String getOwnerId() {
