@@ -28,8 +28,6 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	@Autowired
 	private TransactionRedis transactionRedis;
 
-	@Autowired
-	private TransactionOrderRepository transactionOrderRepository;
 
 	@Override
 	public List<TransactionOrderProjection> findByOwnerId(int ownerId){
@@ -51,14 +49,14 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 		//如果卖方标识位为false，将卖方成交单放入redis；反之则放入数据库
 		//redis中查重
-		TransactionOrder redisOrder =  transactionRedis.get(sellOrder.getOrderId());
+		TransactionOrder redisOrder =  transactionRedis.get(sellOrder.getOrderId()+"");
 		if(redisOrder!=null){
 			sellOrder.setExchangeAmount(sellOrder.getExchangeAmount()+redisOrder.getExchangeAmount());
 			sellOrder.setTotalExchangeMoney(sellOrder.getTotalExchangeMoney()+redisOrder.getTotalExchangeMoney());
 		}
 		if(!tradeOrder.isSellPoint()){
 
-			transactionRedis.put(sellOrder.getOrderId(),sellOrder,-1);
+			transactionRedis.put(sellOrder.getOrderId()+"",sellOrder,-1);
 		}else {
 			//放入数据库前先计算服务费
 			sellOrder.setServiceTax(sellOrder.getTotalExchangeMoney()*0.0102687+serviceFaxCaculator(sellOrder.getTotalExchangeMoney()));
@@ -69,13 +67,13 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 		//如果买方标识位为false，则将买方成交单放入redis；反之则放入数据库
 		//redis中查重
-		TransactionOrder redisOrder =  transactionRedis.get(buyOrder.getOrderId());
+		redisOrder =  transactionRedis.get(buyOrder.getOrderId()+"");
 		if(redisOrder!=null){
 			buyOrder.setExchangeAmount(buyOrder.getExchangeAmount()+redisOrder.getExchangeAmount());
 			buyOrder.setTotalExchangeMoney(buyOrder.getTotalExchangeMoney()+redisOrder.getTotalExchangeMoney());
 		}
 		if(tradeOrder.isBuyPoint()){
-			transactionRedis.put(buyOrder.getOrderId(),buyOrder,-1);
+			transactionRedis.put(buyOrder.getOrderId()+"",buyOrder,-1);
 		}else {
 			//计算服务费
 			buyOrder.setServiceTax(buyOrder.getTotalExchangeMoney()*0.0002687+serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));

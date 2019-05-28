@@ -3,7 +3,6 @@ package com.stock.xMarket.model;
 import org.springframework.data.annotation.Transient;
 
 import java.io.Serializable;
-import java.math.double;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -23,10 +22,10 @@ public class TransactionOrder implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="transaction_order_id")
-	private String transactionOrderId;
+	private int transactionOrderId;
 	
 	@Column(name="stock_id")
-	private String stockId;
+	private int stockId;
 	
 	@Column(name="stock_name")
 	private String stockName;
@@ -43,10 +42,10 @@ public class TransactionOrder implements Serializable{
 	private boolean point;//买卖标识,true是买
 	
 	@Column(name="order_id")
-	private String orderId;//委托单id
+	private int orderId;//委托单id
 	
 	@Column(name="owner_id")
-	private String ownerId;//拥有者id
+	private int ownerId;//拥有者id
 	
 	@Column(name="time")
 	private Time time;
@@ -89,19 +88,19 @@ public class TransactionOrder implements Serializable{
 		this.totalExchangeMoney = totalExchangeMoney;
 	}
 
-	public String getTransactionOrderId() {
+	public int getTransactionOrderId() {
 		return transactionOrderId;
 	}
 
-	public void setTransactionOrderId(String transactionOrderId) {
+	public void setTransactionOrderId(int transactionOrderId) {
 		this.transactionOrderId = transactionOrderId;
 	}
 
-	public String getStockId() {
+	public int getStockId() {
 		return stockId;
 	}
 
-	public void setStockId(String stockId) {
+	public void setStockId(int stockId) {
 		this.stockId = stockId;
 	}
 
@@ -113,19 +112,19 @@ public class TransactionOrder implements Serializable{
 		this.point = point;
 	}
 
-	public String getOrderId() {
+	public int getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(String orderId) {
+	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
 
-	public String getOwnerId() {
+	public int getOwnerId() {
 		return ownerId;
 	}
 
-	public void setOwnerId(String ownerId) {
+	public void setOwnerId(int ownerId) {
 		this.ownerId = ownerId;
 	}
 

@@ -73,88 +73,97 @@ public class TradeOrder {
 	@Transient
 	private int buyId;
 
-	public int getTrade_order_id() {
-		return tradeOrderId;
-	}
-	public void setTrade_order_id(int trade_order_id) {
-		this.tradeOrderId = trade_order_id;
-	}
-	public int getStockID() {
-		return stockID;
-	}
-	public void setStockID(String stockID) {
-		this.stockID = stockID;
-	}
-	public int getBuyOrderId() {
-		return buyOrderId;
-	}
-	public void setBuyOrderId(int buyOrderId) {
-		this.buyOrderId = buyOrderId;
-	}
-	public int getSellOrderId() {
-		return sellOrderId;
-	}
-	public void setSellOrderId(int sellOrderId) {
-		this.sellOrderId = sellOrderId;
-	}
-	public boolean isSellPoint() {
-		return sellPoint;
-	}
-	public void setSellPoint(boolean sellPoint) {
-		this.sellPoint = sellPoint;
-	}
-	public boolean isBuyPoint() {
-		return buyPoint;
-	}
-	public void setBuyPoint(boolean buyPoint) {
-		this.buyPoint = buyPoint;
-	}
-	public Time getTime() {
-		return time;
-	}
-	public void setTime(Time time) {
-		this.time = time;
-	}
-	public Date getDate() {
-		return date;
-	}
-	public void setDate(Date date) {
-		this.date = date;
-	}
-	public double getTradePrice() {
-		return tradePrice;
-	}
-	public void setTradePrice(double tradePrice) {
-		this.tradePrice = tradePrice;
-	}
-	
 	public int getTradeOrderId() {
 		return tradeOrderId;
 	}
-
 
 	public void setTradeOrderId(int tradeOrderId) {
 		this.tradeOrderId = tradeOrderId;
 	}
 
+	public String getStockID() {
+		return stockID;
+	}
+
+	public void setStockID(String stockID) {
+		this.stockID = stockID;
+	}
+
+	public int getBuyOrderId() {
+		return buyOrderId;
+	}
+
+	public void setBuyOrderId(int buyOrderId) {
+		this.buyOrderId = buyOrderId;
+	}
+
+	public int getSellOrderId() {
+		return sellOrderId;
+	}
+
+	public void setSellOrderId(int sellOrderId) {
+		this.sellOrderId = sellOrderId;
+	}
+
+	public boolean isSellPoint() {
+		return sellPoint;
+	}
+
+	public void setSellPoint(boolean sellPoint) {
+		this.sellPoint = sellPoint;
+	}
+
+	public boolean isBuyPoint() {
+		return buyPoint;
+	}
+
+	public void setBuyPoint(boolean buyPoint) {
+		this.buyPoint = buyPoint;
+	}
+
+	public Time getTime() {
+		return time;
+	}
+
+	public void setTime(Time time) {
+		this.time = time;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public double getTradePrice() {
+		return tradePrice;
+	}
+
+	public void setTradePrice(double tradePrice) {
+		this.tradePrice = tradePrice;
+	}
 
 	public int getExchangeAmount() {
 		return exchangeAmount;
 	}
 
-
 	public void setExchangeAmount(int exchangeAmount) {
 		this.exchangeAmount = exchangeAmount;
 	}
 
-
 	public boolean isTradeType() {
 		return tradeType;
 	}
+
 	public void setTradeType(boolean tradeType) {
 		this.tradeType = tradeType;
 	}
 
+	public double getTotalExchangeMoney() {
+		return totalExchangeMoney;
+	}
 
 	public int getSellId() {
 		return sellId;
@@ -170,10 +179,6 @@ public class TradeOrder {
 
 	public void setBuyId(int buyId) {
 		this.buyId = buyId;
-	}
-
-	public double getTotalExchangeMoney() {
-		return totalExchangeMoney;
 	}
 
 	public void setTotalExchangeMoney(double totalExchangeMoney) {
