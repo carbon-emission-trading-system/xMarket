@@ -59,7 +59,7 @@ public class RealTimeServiceImpl implements RealTimeService{
 		List<RealTimeVO> realTimeList = new ArrayList<RealTimeVO>();
 		RealTimeVO realTime=new RealTimeVO(600000,10,
 				10, 10, 10, 10, 10,
-				10, 10, 10, 10, 10, \
+				10, 10, 10, 10, 10, 
 				10, 10, 10, 10);
 
 		RealTimeVO realTime2=new RealTimeVO(600446,10,
