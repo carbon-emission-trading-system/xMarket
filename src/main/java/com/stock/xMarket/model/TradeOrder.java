@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class TradeOrder {
 	
 	
-	public TradeOrder(String tradeOrderId, String stockID, String buyOrderId, String sellOrderId, boolean sellPoint,
+	public TradeOrder(int tradeOrderId, String stockID, int buyOrderId, int sellOrderId, boolean sellPoint,
 			boolean buyPoint, Time time, Date date, double tradePrice, int exchangeAmount, boolean tradeType) {
 		super();
 		this.tradeOrderId = tradeOrderId;
@@ -42,13 +42,13 @@ public class TradeOrder {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column
-	private String tradeOrderId;
+	private int tradeOrderId;
 	@Column
 	private String stockID;
 	@Column
-	private String buyOrderId;
+	private int buyOrderId;
 	@Column
-	private String sellOrderId;
+	private int sellOrderId;
 	@Column
 	private boolean sellPoint;
 	@Column
@@ -67,28 +67,34 @@ public class TradeOrder {
 	@Transient
 	private double totalExchangeMoney;
 
-	public String getTrade_order_id() {
+	@Transient
+	private int sellId;
+
+	@Transient
+	private int buyId;
+
+	public int getTrade_order_id() {
 		return tradeOrderId;
 	}
-	public void setTrade_order_id(String trade_order_id) {
+	public void setTrade_order_id(int trade_order_id) {
 		this.tradeOrderId = trade_order_id;
 	}
-	public String getStockID() {
+	public int getStockID() {
 		return stockID;
 	}
 	public void setStockID(String stockID) {
 		this.stockID = stockID;
 	}
-	public String getBuyOrderId() {
+	public int getBuyOrderId() {
 		return buyOrderId;
 	}
-	public void setBuyOrderId(String buyOrderId) {
+	public void setBuyOrderId(int buyOrderId) {
 		this.buyOrderId = buyOrderId;
 	}
-	public String getSellOrderId() {
+	public int getSellOrderId() {
 		return sellOrderId;
 	}
-	public void setSellOrderId(String sellOrderId) {
+	public void setSellOrderId(int sellOrderId) {
 		this.sellOrderId = sellOrderId;
 	}
 	public boolean isSellPoint() {
@@ -122,12 +128,12 @@ public class TradeOrder {
 		this.tradePrice = tradePrice;
 	}
 	
-	public String getTradeOrderId() {
+	public int getTradeOrderId() {
 		return tradeOrderId;
 	}
 
 
-	public void setTradeOrderId(String tradeOrderId) {
+	public void setTradeOrderId(int tradeOrderId) {
 		this.tradeOrderId = tradeOrderId;
 	}
 
@@ -150,6 +156,21 @@ public class TradeOrder {
 	}
 
 
+	public int getSellId() {
+		return sellId;
+	}
+
+	public void setSellId(int sellId) {
+		this.sellId = sellId;
+	}
+
+	public int getBuyId() {
+		return buyId;
+	}
+
+	public void setBuyId(int buyId) {
+		this.buyId = buyId;
+	}
 
 	public double getTotalExchangeMoney() {
 		return totalExchangeMoney;

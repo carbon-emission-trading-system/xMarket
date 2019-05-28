@@ -1,7 +1,9 @@
 package com.stock.xMarket.model;
 
+import org.springframework.data.annotation.Transient;
+
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.math.double;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -53,7 +55,7 @@ public class TransactionOrder implements Serializable{
 	private Date date;
 	
 	@Column(name="trade_price")
-	private BigDecimal tradePrice;//成交价
+	private double tradePrice;//成交价
 	
 	@Column(name="exchange_amount")
 	private int exchangeAmount;//成家数量
@@ -62,19 +64,30 @@ public class TransactionOrder implements Serializable{
 	private Boolean tradeType;//买/卖盘    ture是买盘
 	
 	@Column(name="service_tax")
-	private BigDecimal serviceTax;//手续费
+	private double serviceTax;//手续费
 	
 	@Column(name="stamp_tax")
-	private BigDecimal stampTax;//印花税
+	private double stampTax;//印花税
 	
 	@Column(name="other_fee")
-	private BigDecimal otherFee;//其他杂费
+	private double otherFee;//其他杂费
 	
 	@Column(name="actual_amount")
-	private BigDecimal actualAmount;//发生金额
+	private double actualAmount;//发生金额
 	
 	@Column(name="trade_market")
-	private BigDecimal tradeMarket;//交易市场
+	private double tradeMarket;//交易市场
+
+	@Transient
+	private double totalExchangeMoney;
+
+	public double getTotalExchangeMoney() {
+		return totalExchangeMoney;
+	}
+
+	public void setTotalExchangeMoney(double totalExchangeMoney) {
+		this.totalExchangeMoney = totalExchangeMoney;
+	}
 
 	public String getTransactionOrderId() {
 		return transactionOrderId;
@@ -132,11 +145,11 @@ public class TransactionOrder implements Serializable{
 		this.date = date;
 	}
 
-	public BigDecimal getTradePrice() {
+	public double getTradePrice() {
 		return tradePrice;
 	}
 
-	public void setTradePrice(BigDecimal tradePrice) {
+	public void setTradePrice(double tradePrice) {
 		this.tradePrice = tradePrice;
 	}
 
@@ -156,43 +169,43 @@ public class TransactionOrder implements Serializable{
 		this.tradeType = tradeType;
 	}
 
-	public BigDecimal getServiceTax() {
+	public double getServiceTax() {
 		return serviceTax;
 	}
 
-	public void setServiceTax(BigDecimal serviceTax) {
+	public void setServiceTax(double serviceTax) {
 		this.serviceTax = serviceTax;
 	}
 
-	public BigDecimal getStampTax() {
+	public double getStampTax() {
 		return stampTax;
 	}
 
-	public void setStampTax(BigDecimal stampTax) {
+	public void setStampTax(double stampTax) {
 		this.stampTax = stampTax;
 	}
 
-	public BigDecimal getOtherFee() {
+	public double getOtherFee() {
 		return otherFee;
 	}
 
-	public void setOtherFee(BigDecimal otherFee) {
+	public void setOtherFee(double otherFee) {
 		this.otherFee = otherFee;
 	}
 
-	public BigDecimal getActualAmount() {
+	public double getActualAmount() {
 		return actualAmount;
 	}
 
-	public void setActualAmount(BigDecimal actualAmount) {
+	public void setActualAmount(double actualAmount) {
 		this.actualAmount = actualAmount;
 	}
 
-	public BigDecimal getTradeMarket() {
+	public double getTradeMarket() {
 		return tradeMarket;
 	}
 
-	public void setTradeMarket(BigDecimal tradeMarket) {
+	public void setTradeMarket(double tradeMarket) {
 		this.tradeMarket = tradeMarket;
 	}
 

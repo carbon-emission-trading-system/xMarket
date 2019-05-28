@@ -8,4 +8,6 @@ import com.stock.xMarket.model.TransactionOrder;
 public interface TransactionOrderService {
 
 	List<TransactionOrderProjection> findByOwnerId(int ownerId);
+
+
 }
