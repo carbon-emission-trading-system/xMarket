@@ -68,8 +68,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			}
 
 			//放入数据库前先计算服务费
-			sellOrder.setServiceTax(sellOrder.getTotalExchangeMoney()*0.0102687+serviceFaxCaculator(sellOrder.getTotalExchangeMoney()));
-
+			sellOrder.setStampTax(sellOrder.getTotalExchangeMoney()*0.01);
+			sellOrder.setOtherFee(sellOrder.getExchangeAmount()*0.0002887);
+			sellOrder.setServiceTax(serviceFaxCaculator(sellOrder.getTotalExchangeMoney()));
 
 			//存入数据库
 			transactionOrderRepository.saveAndFlush(sellOrder);
@@ -92,7 +93,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			}
 
 			//计算服务费
-			buyOrder.setServiceTax(buyOrder.getTotalExchangeMoney()*0.0002687+serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));
+			buyOrder.setStampTax(0);
+			buyOrder.setOtherFee(buyOrder.getExchangeAmount()*0.0002887);
+			buyOrder.setServiceTax(serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));
 
 			//存入数据库
 			transactionOrderRepository.saveAndFlush(buyOrder);
