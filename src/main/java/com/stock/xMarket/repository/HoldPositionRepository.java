@@ -1,7 +1,7 @@
 package com.stock.xMarket.repository;
 
 
-import com.xmarket.order.model.HoldPosition;
+import com.stock.xMarket.model.HoldPosition;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

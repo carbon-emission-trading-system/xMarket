@@ -9,9 +9,9 @@ import com.stock.xMarket.repository.HoldPositionRepository;
 import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.service.HoldPositionService;
-import com.xmarket.order.VO.OrderVO;
-import com.xmarket.order.model.HoldPosition;
-import com.xmarket.order.model.TransactionOrder;
+import com.stock.xMarket.VO.OrderVO;
+import com.stock.xMarket.model.HoldPosition;
+import com.stock.xMarket.model.TransactionOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,7 +51,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				positionNumber = holdPositon.getPositionNumber() - transactionOrder.getExchangeAmount();
 				int availableNumber = holdPositon.getAvailableNumber() - transactionOrder.getExchangeAmount();
 				//计算成本价
-				costPrice = (holdPositon.getCostPrice()*holdPositon.getPositionNumber()-transactionOrder.getActualAmount())/positionNumber
+				costPrice = (holdPositon.getCostPrice()*holdPositon.getPositionNumber()-transactionOrder.getActualAmount());//positionNumber
 				if(positionNumber<0||availableNumber<0){
 					throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"成交单出现错误！");
 				}
@@ -59,7 +59,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			}else {
 				//计算新的持仓数量和成本价
 				positionNumber = holdPositon.getPositionNumber() + transactionOrder.getExchangeAmount();
-				costPrice = (holdPositon.getCostPrice()*holdPositon.getPositionNumber()+transactionOrder.getActualAmount())/positionNumber
+				costPrice = (holdPositon.getCostPrice()*holdPositon.getPositionNumber()+transactionOrder.getActualAmount());//positionNumber
 			}
 			holdPositon.setPositionNumber(positionNumber);
 			holdPositon.setCostPrice(costPrice);
@@ -111,6 +111,19 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 
 
 	}
+
+//	@Override
+//	public void updateHoldPosition(TransactionOrder transactionOrder)
+//			throws com.xmarket.order.error.BusinessException {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//
+//	@Override
+//	public void updateAvailable(OrderVO orderVO) throws BusinessException {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	
 	
