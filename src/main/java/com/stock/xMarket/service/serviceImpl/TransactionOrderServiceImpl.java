@@ -40,6 +40,8 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	@Override
 	public void transaction(TradeOrder tradeOrder) throws BusinessException {
 
+		//计算总成交金额
+		tradeOrder.setTotalExchangeMoney();
 		//如果买卖标识位都为false，则抛出异常
 		if(!tradeOrder.isSellPoint() && !tradeOrder.isBuyPoint()){
 			throw new BusinessException(EmBusinessError.UNKNOWN_ERROR);
@@ -54,12 +56,20 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			sellOrder.setExchangeAmount(sellOrder.getExchangeAmount()+redisOrder.getExchangeAmount());
 			sellOrder.setTotalExchangeMoney(sellOrder.getTotalExchangeMoney()+redisOrder.getTotalExchangeMoney());
 		}
-		if(!tradeOrder.isSellPoint()){
 
+
+		if(!tradeOrder.isSellPoint()){
+			//存入redis
 			transactionRedis.put(String.valueOf(sellOrder.getOrderId()),sellOrder,-1);
 		}else {
+			//清除redis中的数据
+			if(redisOrder!=null){
+				transactionRedis.remove(String.valueOf(sellOrder.getOrderId()));
+			}
+
 			//放入数据库前先计算服务费
 			sellOrder.setServiceTax(sellOrder.getTotalExchangeMoney()*0.0102687+serviceFaxCaculator(sellOrder.getTotalExchangeMoney()));
+
 
 			//存入数据库
 			transactionOrderRepository.saveAndFlush(sellOrder);
@@ -72,9 +82,15 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			buyOrder.setExchangeAmount(buyOrder.getExchangeAmount()+redisOrder.getExchangeAmount());
 			buyOrder.setTotalExchangeMoney(buyOrder.getTotalExchangeMoney()+redisOrder.getTotalExchangeMoney());
 		}
-		if(tradeOrder.isBuyPoint()){
+		//判断
+		if(!tradeOrder.isBuyPoint()){
 			transactionRedis.put(String.valueOf(buyOrder.getOrderId()),buyOrder,-1);
 		}else {
+			//清除redis中的数据
+			if(redisOrder!=null){
+				transactionRedis.remove(String.valueOf(buyOrder.getOrderId()));
+			}
+
 			//计算服务费
 			buyOrder.setServiceTax(buyOrder.getTotalExchangeMoney()*0.0002687+serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));
 
