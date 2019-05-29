@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.stock.xMarket.VO.TransactionOrderProjection;
 import com.stock.xMarket.VO.TransactionOrderVO;
 import com.stock.xMarket.repository.TransactionOrderRepository;
 import com.stock.xMarket.service.TransactionOrderService;
@@ -70,8 +69,10 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			}
 
 			//放入数据库前先计算服务费
-			sellOrder.setServiceTax(sellOrder.getTotalExchangeMoney()*0.0102687+serviceFaxCaculator(sellOrder.getTotalExchangeMoney()));
-
+			sellOrder.setStampTax(sellOrder.getTotalExchangeMoney()*0.01);
+			sellOrder.setOtherFee(sellOrder.getExchangeAmount()*0.0002887);
+			sellOrder.setServiceTax(serviceFaxCaculator(sellOrder.getTotalExchangeMoney()));
+			sellOrder.setActualAmount(sellOrder.getTotalExchangeMoney()-sellOrder.getOtherFee()-sellOrder.getServiceTax()-sellOrder.getStampTax());
 
 			//存入数据库
 			transactionOrderRepository.saveAndFlush(sellOrder);
@@ -94,8 +95,10 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			}
 
 			//计算服务费
-			buyOrder.setServiceTax(buyOrder.getTotalExchangeMoney()*0.0002687+serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));
-
+			buyOrder.setStampTax(0);
+			buyOrder.setOtherFee(buyOrder.getExchangeAmount()*0.0002887);
+			buyOrder.setServiceTax(serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));
+			buyOrder.setActualAmount(buyOrder.getTotalExchangeMoney()+buyOrder.getServiceTax()+buyOrder.getOtherFee());
 			//存入数据库
 			transactionOrderRepository.saveAndFlush(buyOrder);
 		}
