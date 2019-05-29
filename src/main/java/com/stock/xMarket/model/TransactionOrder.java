@@ -1,7 +1,5 @@
 package com.stock.xMarket.model;
 
-import org.springframework.data.annotation.Transient;
-
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
@@ -12,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.springframework.data.annotation.Transient;
 
 @Entity
 @Table(name="transaction_order")
@@ -39,10 +39,10 @@ public class TransactionOrder implements Serializable{
 	}
 
 	@Column(name="point")
-	private boolean point;//买卖标识,true是买
+	private boolean point;//买卖标识,true是买   sellId
 	
 	@Column(name="order_id")
-	private int orderId;//委托单id
+	private int orderId;//委托单id  sellOrderId
 	
 	@Column(name="owner_id")
 	private int ownerId;//拥有者id
@@ -69,16 +69,22 @@ public class TransactionOrder implements Serializable{
 	private double stampTax;//印花税
 	
 	@Column(name="other_fee")
-	private double otherFee;//其他杂费
+	private double otherFee;//其他杂费   incidentalCharge
 	
 	@Column(name="actual_amount")
 	private double actualAmount;//发生金额
 	
 	@Column(name="trade_market")
-	private double tradeMarket;//交易市场
+	private String tradeMarket;//交易市场   market
+	
+	@Column(name="stock_balance")
+	private int stockBalance;//股票余额
+
+	@Column(name="revoke_amount")
+	private int revokeAmount;//撤单数量
 
 	@Transient
-	private double totalExchangeMoney;
+	private double totalExchangeMoney;// exchangeFee
 
 	public double getTotalExchangeMoney() {
 		return totalExchangeMoney;
@@ -200,12 +206,28 @@ public class TransactionOrder implements Serializable{
 		this.actualAmount = actualAmount;
 	}
 
-	public double getTradeMarket() {
+	public String getTradeMarket() {
 		return tradeMarket;
 	}
 
-	public void setTradeMarket(double tradeMarket) {
+	public void setTradeMarket(String tradeMarket) {
 		this.tradeMarket = tradeMarket;
+	}
+	
+	public int getStockBalance() {
+		return stockBalance;
+	}
+
+	public void setStockBalance(int stockBalance) {
+		this.stockBalance = stockBalance;
+	}
+
+	public int getRevokeAmount() {
+		return revokeAmount;
+	}
+
+	public void setRevokeAmount(int revokeAmount) {
+		this.revokeAmount = revokeAmount;
 	}
 
 	public static long getSerialversionuid() {
