@@ -12,6 +12,8 @@ import com.stock.xMarket.service.HoldPositionService;
 import com.stock.xMarket.VO.OrderVO;
 import com.stock.xMarket.model.HoldPosition;
 import com.stock.xMarket.model.TransactionOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,8 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 public class HoldPositionServiceImpl implements HoldPositionService {
+
+	private static Logger LOGGER = LoggerFactory.getLogger(TransactionOrderServiceImpl.class);
 
 	@Autowired
 	private HoldPositionRepository holdPositonRepository;
@@ -46,6 +50,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			int positionNumber;
 			double costPrice;
 			//根据成交单是买还是卖，更新信息
+			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 开始更新持仓信息");
 			if(transactionOrder.isPoint()) {
 				//计算新的持仓数量和可用数量
 				positionNumber = holdPositon.getPositionNumber() - transactionOrder.getExchangeAmount();
@@ -65,8 +70,10 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			holdPositon.setCostPrice(costPrice);
 			//将新的数据存入数据库
 			holdPositonRepository.saveAndFlush(holdPositon);
+			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 持仓信息更新完毕");
 		}else{
 			//如果持仓信息不存在，可能是用户第一次购买该股票，是建仓。创建一条新的持仓信息插入数据库
+			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 该用户为第一次购买此股票，开始建仓");
 			User user = userRepository.findById(userId).get();
 			if(user == null){
 				throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标用户不存在！");
@@ -83,6 +90,9 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			holdPositon.setPositionNumber(transactionOrder.getExchangeAmount());
 			holdPositon.setAvailableNumber(0);
 
+			//存入数据库
+			holdPositonRepository.saveAndFlush(holdPositon);
+			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 建仓完毕");
 		}
 
 
