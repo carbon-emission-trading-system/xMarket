@@ -11,7 +11,7 @@ public class CommonReturnType {
     //定义一个通用的创建方法
     public static CommonReturnType success() {
         CommonReturnType type = new CommonReturnType();
-        type.setCode(0);
+        type.setCode(200);
         type.setMessage("ok");
         return type;
     }
@@ -19,7 +19,7 @@ public class CommonReturnType {
 
     public static CommonReturnType success(Object data) {
         CommonReturnType type = new CommonReturnType();
-        type.setCode(0);
+        type.setCode(200);
         type.setData(data);
         type.setMessage("ok");
         return type;
