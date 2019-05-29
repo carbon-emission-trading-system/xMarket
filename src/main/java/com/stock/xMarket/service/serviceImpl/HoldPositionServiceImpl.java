@@ -105,7 +105,8 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		int userId=orderVO.getUserId();
 
 		int stockId=orderVO.getStockId();
-		
+
+		LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 开始更新股票可用余额");
 		HoldPosition holdPositon = holdPositonRepository.findByUser_UserIdAndStock_StockId(userId,stockId);
 		if(holdPositon == null){
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标持仓信息不存在！");
@@ -117,8 +118,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		holdPositon.setAvailableNumber(availableNumber);
 
 		holdPositonRepository.saveAndFlush(holdPositon);
-
-
+		LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 股票可用余额更新完毕");
 
 	}
 

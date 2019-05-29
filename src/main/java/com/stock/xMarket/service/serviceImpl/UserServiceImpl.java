@@ -2,6 +2,10 @@ package com.stock.xMarket.service.serviceImpl;
 
 import javax.transaction.Transactional;
 
+import com.stock.xMarket.error.BusinessException;
+import com.stock.xMarket.error.EmBusinessError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +28,8 @@ import com.stock.xMarket.service.UserService;
 @Transactional
 public class UserServiceImpl implements UserService{
 
+	private static Logger LOGGER = LoggerFactory.getLogger(TransactionOrderServiceImpl.class);
+
     @Value("${spring.mail.username}")
     private String from;
     
@@ -43,7 +49,8 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public UserVO getUser(String username) {
+	public UserVO getUser(String username) throws BusinessException {
+		LOGGER.info("获取"+username+"的信息");
 		// TODO Auto-generated method stub
 		UserVO userVO = new UserVO();
 		User user = userRedis.get("username");
@@ -52,11 +59,11 @@ public class UserServiceImpl implements UserService{
 			if(user != null){
 				userRedis.put(user.getUsername(), user, -1);
 			}else{
-				return null;
+				throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标用户不存在");
 			}
 		}
 		BeanUtils.copyProperties(user, userVO);
-		
+		LOGGER.info("获取"+username+"的信息成功");
 		return userVO;
 	}
 
@@ -77,12 +84,14 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void sendMail(String mailAddress, String content) {
 		// TODO Auto-generated method stub
+		LOGGER.info("开始创建邮件");
 		SimpleMailMessage message=new SimpleMailMessage();
 		message.setSubject("感谢您使用xMarket！");
         message.setText(content);
 		message.setTo(mailAddress);
         message.setFrom(from);
         mailSender.send(message);
+		LOGGER.info("邮件发送成功");
 	}
 
 	
