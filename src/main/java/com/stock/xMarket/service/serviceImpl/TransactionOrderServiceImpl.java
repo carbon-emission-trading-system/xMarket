@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.stock.xMarket.VO.TransactionOrderProjection;
 import com.stock.xMarket.VO.TransactionOrderVO;
 import com.stock.xMarket.repository.TransactionOrderRepository;
 import com.stock.xMarket.service.TransactionOrderService;
