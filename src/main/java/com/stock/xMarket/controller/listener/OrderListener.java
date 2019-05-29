@@ -4,6 +4,11 @@ package com.stock.xMarket.controller.listener;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 
+import com.stock.xMarket.VO.OrderVO;
+import com.stock.xMarket.service.HoldPositionService;
+import com.stock.xMarket.service.OrderService;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -11,11 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 
-import com.xmarket.order.VO.OrderVO;
-import com.xmarket.order.service.HoldPositionService;
-import com.xmarket.order.service.MarchService;
-import com.xmarket.order.service.OrderService;
-import com.xmarket.order.service.UserFundService;
+
 
 @Controller
 public class OrderListener  {

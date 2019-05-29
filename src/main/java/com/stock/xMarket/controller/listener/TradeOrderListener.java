@@ -36,7 +36,6 @@ public class TradeOrderListener  {
         try {
         	logger.info("交易单监听器监听到消息: {} ",tradeOrder);
         	
-        	
         }catch (Exception e){
             logger.error("委托单监听器监听发生异常：{} ",e.fillInStackTrace());
         }
@@ -49,8 +48,6 @@ public class TradeOrderListener  {
         
     	tradeOrderService.saveTradeOrder(tradeOrder);
 //    	orderService.updateOrder(tradeOrder);
-    	
-        
 
     }
 
