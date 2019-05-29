@@ -91,6 +91,22 @@ public abstract class BaseRedis<T> {
    public T get(String key) {
        return hashOperations.get(getRedisKey(), key);
    }
+   
+   /**
+    * 清除
+    *
+    * @param key 清除的key
+    * @return
+    */
+   public void remove(String key) {
+	   
+       try {
+    	   hashOperations.delete(getRedisKey(),key);
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+   }
+   
 
    public static <T> String beanToString(T value) {
 		if(value == null) {
