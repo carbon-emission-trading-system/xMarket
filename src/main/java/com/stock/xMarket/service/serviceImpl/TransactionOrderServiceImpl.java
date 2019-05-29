@@ -7,14 +7,16 @@ import javax.transaction.Transactional;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
 import com.stock.xMarket.model.TradeOrder;
+import com.stock.xMarket.model.TransactionOrder;
 import com.stock.xMarket.redis.TransactionRedis;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.stock.xMarket.VO.TransactionOrderProjection;
-import com.stock.xMarket.model.TransactionOrder;
+import com.stock.xMarket.VO.TransactionOrderVO;
 import com.stock.xMarket.repository.TransactionOrderRepository;
 import com.stock.xMarket.service.TransactionOrderService;
 
@@ -28,9 +30,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	@Autowired
 	private TransactionRedis transactionRedis;
 
-
+	//返回全部历史成交单
 	@Override
-	public List<TransactionOrderProjection> findByOwnerId(int ownerId){
+	public List<TransactionOrderVO> findByOwnerId(int ownerId){
 		
 		return transactionOrderRepository.findByOwnerId(ownerId);
     }
