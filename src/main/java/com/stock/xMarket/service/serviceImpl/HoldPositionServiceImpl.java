@@ -1,16 +1,17 @@
 package com.stock.xMarket.service.serviceImpl;
 
+
+import com.stock.xMarket.error.BusinessException;
+import com.stock.xMarket.error.EmBusinessError;
+import com.stock.xMarket.model.Stock;
+import com.stock.xMarket.model.User;
+import com.stock.xMarket.repository.HoldPositionRepository;
+import com.stock.xMarket.repository.StockRepository;
+import com.stock.xMarket.repository.UserRepository;
+import com.stock.xMarket.service.HoldPositionService;
 import com.xmarket.order.VO.OrderVO;
-import com.xmarket.order.error.BusinessException;
-import com.xmarket.order.error.EmBusinessError;
 import com.xmarket.order.model.HoldPosition;
-import com.xmarket.order.model.Stock;
 import com.xmarket.order.model.TransactionOrder;
-import com.xmarket.order.model.User;
-import com.xmarket.order.repository.HoldPositionRepository;
-import com.xmarket.order.repository.StockRepository;
-import com.xmarket.order.repository.UserRepository;
-import com.xmarket.order.service.HoldPositionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
