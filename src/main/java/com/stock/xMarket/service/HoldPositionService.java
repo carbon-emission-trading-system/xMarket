@@ -6,7 +6,7 @@ import com.stock.xMarket.model.TransactionOrder;
 
 public interface HoldPositionService {
 
-	void updateHoldPosition(TransactionOrder transactionOrder) throws BusinessException;
+	void updateHoldPositionByOrder(OrderVO orderVO) throws BusinessException;
 
-	void updateAvailable(OrderVO orderVO) throws BusinessException;
+	void updateHoldPositionByTransaction(TransactionOrder transactionOrder) throws BusinessException;
 }

@@ -33,7 +33,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 
 	//更新持仓信息
 	@Override
-	public void updateHoldPosition(TransactionOrder transactionOrder) throws BusinessException {
+	public void updateHoldPositionByTransaction(TransactionOrder transactionOrder) throws BusinessException {
 		// TODO Auto-generated method stub
 		int userId=transactionOrder.getOwnerId();
 
@@ -90,7 +90,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 
 	//更新股票可用余额
 	@Override
-	public void updateAvailable(OrderVO orderVO) throws BusinessException {
+	public void updateHoldPositionByOrder(OrderVO orderVO) throws BusinessException {
 		// TODO Auto-generated method stub
 		int userId=orderVO.getUserId();
 
@@ -112,18 +112,6 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 
 	}
 
-//	@Override
-//	public void updateHoldPosition(TransactionOrder transactionOrder)
-//			throws com.xmarket.order.error.BusinessException {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	public void updateAvailable(OrderVO orderVO) throws BusinessException {
-//		// TODO Auto-generated method stub
-//		
-//	}
 
 	
 	
