@@ -10,7 +10,7 @@ import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.TransactionOrderRepository;
 import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.service.HoldPositionService;
-import com.xmarket.order.model.Order;
+import com.stock.xMarket.model.Order;
 import com.stock.xMarket.VO.OrderVO;
 import com.stock.xMarket.model.HoldPosition;
 import com.stock.xMarket.model.TransactionOrder;

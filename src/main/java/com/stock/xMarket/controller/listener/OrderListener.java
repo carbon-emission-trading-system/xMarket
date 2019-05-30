@@ -11,18 +11,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.alibaba.fastjson.JSON;
-import com.xmarket.order.VO.OrderVO;
-import com.xmarket.order.error.BusinessException;
-import com.xmarket.order.error.EmBusinessError;
-import com.xmarket.order.model.Order;
-import com.xmarket.order.model.Stock;
-import com.xmarket.order.model.User;
-import com.xmarket.order.repository.StockRepository;
-import com.xmarket.order.repository.UserRepository;
-import com.xmarket.order.service.HoldPositionService;
-import com.xmarket.order.service.MarchService;
-import com.xmarket.order.service.OrderService;
-import com.xmarket.order.service.UserFundService;
+import com.stock.xMarket.VO.OrderVO;
+import com.stock.xMarket.error.BusinessException;
+import com.stock.xMarket.error.EmBusinessError;
+import com.stock.xMarket.model.Order;
+import com.stock.xMarket.model.Stock;
+import com.stock.xMarket.model.User;
+import com.stock.xMarket.repository.StockRepository;
+import com.stock.xMarket.repository.UserRepository;
+import com.stock.xMarket.service.HoldPositionService;
+import com.stock.xMarket.service.MarchService;
+import com.stock.xMarket.service.OrderService;
+import com.stock.xMarket.service.UserFundService;
 
 @Controller
 public class OrderListener  {
@@ -81,7 +81,7 @@ public class OrderListener  {
         	
         	//更新持仓股
         	if(orderVO.getType()==0) {
-        		holdPositionService.updateHoldPositionByOrder(order);
+        		holdPositionService.updateHoldPositionByOrder(order);;
         	}
         	//更新个人资金
         	userFundService.updateUserFundByOrder(order);

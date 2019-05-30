@@ -1,5 +1,6 @@
 package com.stock.xMarket.model;
 
+
 import org.springframework.data.annotation.Transient;
 
 import java.sql.Date;
@@ -18,11 +19,12 @@ import javax.persistence.Table;
 public class TradeOrder {
 	
 	
-	public TradeOrder(int tradeOrderId, String stockID, int buyOrderId, int sellOrderId, boolean sellPoint,
-			boolean buyPoint, Time time, Date date, double tradePrice, int exchangeAmount, boolean tradeType) {
+	public TradeOrder(int tradeOrderId, int stockId, int buyOrderId, int sellOrderId,boolean buyPoint, boolean sellPoint,
+			 Time time, Date date, double tradePrice, int exchangeAmount, boolean tradeType,
+			  int buyId,int sellId) {
 		super();
 		this.tradeOrderId = tradeOrderId;
-		this.stockID = stockID;
+		this.stockId = stockId;
 		this.buyOrderId = buyOrderId;
 		this.sellOrderId = sellOrderId;
 		this.sellPoint = sellPoint;
@@ -32,8 +34,9 @@ public class TradeOrder {
 		this.tradePrice = tradePrice;
 		this.exchangeAmount = exchangeAmount;
 		this.tradeType = tradeType;
+		this.sellId = sellId;
+		this.buyId = buyId;
 	}
-	
 	
 	public TradeOrder() {
 		super();
@@ -44,7 +47,7 @@ public class TradeOrder {
 	@Column
 	private int tradeOrderId;
 	@Column
-	private String stockID;
+	private int stockId;
 	@Column
 	private int buyOrderId;
 	@Column
@@ -81,12 +84,14 @@ public class TradeOrder {
 		this.tradeOrderId = tradeOrderId;
 	}
 
-	public String getStockID() {
-		return stockID;
+
+
+	public int getStockId() {
+		return stockId;
 	}
 
-	public void setStockID(String stockID) {
-		this.stockID = stockID;
+	public void setStockId(int stockId) {
+		this.stockId = stockId;
 	}
 
 	public int getBuyOrderId() {

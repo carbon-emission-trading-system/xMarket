@@ -2,8 +2,9 @@ package com.stock.xMarket.service;
 
 import com.stock.xMarket.VO.OrderVO;
 import com.stock.xMarket.error.BusinessException;
+import com.stock.xMarket.model.Order;
 import com.stock.xMarket.model.TransactionOrder;
-import com.xmarket.order.model.Order;
+
 
 public interface HoldPositionService {
 

@@ -44,7 +44,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 	//将交易单转化为成交单
 	@Override
-	public void transaction(TradeOrder tradeOrder) throws BusinessException {
+	public void addTransactionOrder(TradeOrder tradeOrder) throws BusinessException {
 
 		//先判断是否为撤单
 		if(tradeOrder.getBuyOrderId() == 0 || tradeOrder.getSellId() == 0){

@@ -12,6 +12,7 @@ public class OrderVO implements Serializable {
 	private Date date;//委托日期
 	private Date localTime;//委托时间
     private int stockId;//股票代码
+    private int userId;
 	private String stockName;//股票简称
 	private int type;//操作：买入卖出
 	private int orderAmount;//委托数量
@@ -39,8 +40,27 @@ public class OrderVO implements Serializable {
 		this.orderId = orderId;
 	}
 	
+	
+	
 	public OrderVO() {
 	}
+
+	
+	
+	
+	
+	
+	public int getUserId() {
+		return userId;
+	}
+
+
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+
 
 	public Date getDate() {
 		return date;

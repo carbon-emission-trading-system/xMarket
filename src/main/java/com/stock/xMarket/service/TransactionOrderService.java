@@ -9,5 +9,6 @@ public interface TransactionOrderService {
 
 	List<TransactionOrderVO> findByOwnerId(int ownerId);
 
-	void transaction(TradeOrder tradeOrder) throws BusinessException;
+	void addTransactionOrder(TradeOrder tradeOrder) throws BusinessException;
+
 }
