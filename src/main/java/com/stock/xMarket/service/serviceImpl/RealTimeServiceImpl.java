@@ -22,35 +22,29 @@ import com.stock.xMarket.service.RealTimeService;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
 
-
-
-
 @Service
 @Transactional
-public class RealTimeServiceImpl implements RealTimeService{
+public class RealTimeServiceImpl implements RealTimeService {
 
 	private Environment env;
-	
+
 	@Autowired
 	AmqpAdmin amqpAdmin;
-	
+
 	@Autowired
 	RabbitMqConfig rabbitmqConfig;
 
 	@Autowired
 	RabbitTemplate rabbitTemplate;
 
-	public static final String ALL_REALTIME_REDIS="allRealTimeRedis";
-	
+	public static final String ALL_REALTIME_REDIS = "allRealTimeRedis";
 
 	@Autowired
 	private RealTimeRedis realTimeRedis;
 
-
 	@Override
 	public void updateRealTime() {
-		
-		
+
 //		String id=tradeOrder.getStockID();
 //		
 //		RealTimeVO realTime=realTimeRedis.get(id);
@@ -74,33 +68,32 @@ public class RealTimeServiceImpl implements RealTimeService{
 //
 //			realTimeList.add(realTime);
 //		}
-		
-		
+
 		List<RealTimeVO> realTimeList = new ArrayList<RealTimeVO>();
-		RealTimeVO realTime=new RealTimeVO(600000,10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,10);
+		RealTimeVO realTime = new RealTimeVO(600000, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+				10);
 		realTimeList.add(realTime);
-		RealTimeVO realTime1=new RealTimeVO(600000,10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,10);
+		RealTimeVO realTime1 = new RealTimeVO(600000, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+				10);
 		realTimeList.add(realTime1);
 		String coursesString = JSON.toJSONString(realTimeList);
 		realTimeRedis.putString(ALL_REALTIME_REDIS, coursesString, -1);
-		
+
 	}
-	
-	
-	
+
 	@Override
 //	@Scheduled(fixedRate = 6000)
 	public void sendRealTime() {
 		updateRealTime();
 		List<RealTimeVO> realTimeList = new ArrayList<RealTimeVO>();
-		//redis 中读取数据
+		// redis 中读取数据
 		String courseListString = (String) realTimeRedis.getString(ALL_REALTIME_REDIS);
-		realTimeList = JSON.parseArray(courseListString, RealTimeVO.class);	
+		realTimeList = JSON.parseArray(courseListString, RealTimeVO.class);
 		// TODO Auto-generated method stub
-		for(RealTimeVO realTime:realTimeList) {
-			int stockID=realTime.getStockID();
-			rabbitTemplate.convertAndSend("realTimeExchange","stock.SZSE."+stockID,JSON.toJSONString(realTime));
+		for (RealTimeVO realTime : realTimeList) {
+			int stockID = realTime.getStockID();
+			rabbitTemplate.convertAndSend("realTimeExchange", "stock.SZSE." + stockID, JSON.toJSONString(realTime));
 		}
-		
+
 	}
 }

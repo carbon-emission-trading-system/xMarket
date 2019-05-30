@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService{
 		if(user == null){
 			user = userRpository.findByUsername(username);
 			if(user != null){
-				userRedis.put(user.getUsername(), user, -1);
+				userRedis.put(user.getUserName(), user, -1);
 			}else{
 				throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标用户不存在");
 			}

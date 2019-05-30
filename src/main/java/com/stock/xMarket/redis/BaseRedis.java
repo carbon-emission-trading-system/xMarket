@@ -1,5 +1,6 @@
 package com.stock.xMarket.redis;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
@@ -88,6 +89,12 @@ public abstract class BaseRedis<T> {
 			 redisTemplate.expire(getRedisKey(), expire, TimeUnit.SECONDS);
 		 }
 	 }
+	 
+	 
+	 public Map<String, T> getEntities() {
+		   
+	       return hashOperations.entries(getRedisKey());
+	   }
 	 
 	 /**
     * 查询

@@ -40,7 +40,7 @@ public class Stock implements Serializable{
 	@JsonBackReference
 	private List<Order> orders;
 */
-	public long getStockId() {
+	public int getStockId() {
 		return stockId;
 	}
 

@@ -15,35 +15,26 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name="user_fund")
 public class UserFund implements Serializable{
-	
-	private static final long serialVersionUID = 7521391360002308184L;
 
 	public UserFund(){}
 	
 
+	
 
-
-
-
-
+	
 	@Id
-	@Column(name="id")
-	private String id;
+	@Column
+	private int id;
 	
 	@OneToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name="user_name")
+	@JoinColumn(name="user_id")
 	private User user;
 	
-	@Column(name="money")
-	private double money;
+	@Column
+	private double balance;
 	
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+	@Column
+	private double frozenAmount;
 
 	public User getUser() {
 		return user;
@@ -53,12 +44,22 @@ public class UserFund implements Serializable{
 		this.user = user;
 	}
 
-	public double getMoney() {
-		return money;
+	public double getBalance() {
+		return balance;
 	}
 
-	public void setMoney(double money) {
-		this.money = money;
+	public void setBalance(double balance) {
+		this.balance = balance;
 	}
+
+	public double getFrozenAmount() {
+		return frozenAmount;
+	}
+
+	public void setFrozenAmount(double frozenAmount) {
+		this.frozenAmount = frozenAmount;
+	}
+
+	
 
 }
