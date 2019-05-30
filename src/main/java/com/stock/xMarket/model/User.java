@@ -1,33 +1,38 @@
 package com.stock.xMarket.model;
 
 import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 @Table(name="user")
 public class User implements Serializable{
-
+	
 
 	public User(){}
-
-	public User(String username, String password){
-		this.username = username;
+	
+	public User(String userName, String password){
+		this.userName = userName;
 		this.loginPassword = password;
 	}
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="user_id")
-	private long userId;
+	private int userId;
 	
-	@Column(name="username")
-	private String username;
+	@Column(name="user_name")
+	private String userName;
 	
 	@Column(name="login_password")
 	private String loginPassword;
@@ -37,19 +42,19 @@ public class User implements Serializable{
 
 	@Column(name="email")
 	private String email;
+	
+	/*@OneToMany(mappedBy = "user")
+	@JsonBackReference
+	private List<Order> orders;
+*/
 
-
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUsername(String userName) {
+		this.userName = userName;
 	}
-
-	
-
-	
 
 	public String getLoginPassword() {
 		return loginPassword;
@@ -75,19 +80,12 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
-	public long getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(long userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
-	
-
-	
-
-	
-
-	
 }
