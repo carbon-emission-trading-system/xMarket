@@ -18,43 +18,11 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name="commission_order")
 public class Order implements Serializable{
-	
-
-	public Order(){}
-
-	
-	
-
-
-
-	public Order(int orderId, Stock stock, User user, Time localTime, int type, Date date, int tradeStraregy,
-			int orderAmount, int exchangeAmount, double orderPrice, double exchangeAveragePrice, int cancel_number) {
-		super();
-		OrderId = orderId;
-		this.stock = stock;
-		this.user = user;
-		this.localTime = localTime;
-		this.type = type;
-		this.date = date;
-		this.tradeStraregy = tradeStraregy;
-		this.orderAmount = orderAmount;
-		this.exchangeAmount = exchangeAmount;
-		this.orderPrice = orderPrice;
-		this.exchangeAveragePrice = exchangeAveragePrice;
-		this.cancel_number = cancel_number;
-	}
-
-
-
-
-
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="order_id")
 	private int OrderId;
-
-	
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="stock_id")
@@ -73,11 +41,8 @@ public class Order implements Serializable{
 	@Column(name="date")
 	private Date date;
 	
-	
 	@Column
 	private int tradeStraregy;
-	
-	
 	
 	@Column(name="order_amount")
 	private int orderAmount;
@@ -87,10 +52,6 @@ public class Order implements Serializable{
 	
 	@Column(name="order_price",columnDefinition = "decimal")
 	private double orderPrice;
-
-	
-	
-
 	
 	@Column(name="exchange_average_price" ,columnDefinition = "decimal")
 	private double exchangeAveragePrice;
@@ -98,6 +59,25 @@ public class Order implements Serializable{
 	@Column(name="cancel_number")
 	private int cancel_number;
 
+	public Order(){}
+
+	public Order(int orderId, Stock stock, User user, Time localTime, int type, Date date, int tradeStraregy,
+			int orderAmount, int exchangeAmount, double orderPrice, double exchangeAveragePrice, int cancel_number) {
+		super();
+		OrderId = orderId;
+		this.stock = stock;
+		this.user = user;
+		this.localTime = localTime;
+		this.type = type;
+		this.date = date;
+		this.tradeStraregy = tradeStraregy;
+		this.orderAmount = orderAmount;
+		this.exchangeAmount = exchangeAmount;
+		this.orderPrice = orderPrice;
+		this.exchangeAveragePrice = exchangeAveragePrice;
+		this.cancel_number = cancel_number;
+	}
+	
 	public int getOrderId() {
 		return OrderId;
 	}
@@ -193,8 +173,5 @@ public class Order implements Serializable{
 	public void setTradeStraregy(int tradeStraregy) {
 		this.tradeStraregy = tradeStraregy;
 	}
-	
-	
-	
 	
 }
