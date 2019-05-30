@@ -86,12 +86,13 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 				transactionRedis.remove(String.valueOf(sellOrder.getOrderId()));
 			}
 
-			//放入数据库前先计算服务费
+			//放入数据库前先计算服务费、成交价和股票余额
 			sellOrder.setStampTax(sellOrder.getTotalExchangeMoney()*0.01);
 			sellOrder.setOtherFee(sellOrder.getExchangeAmount()*0.0002887);
 			sellOrder.setServiceTax(serviceFaxCaculator(sellOrder.getTotalExchangeMoney()));
 			sellOrder.setActualAmount(sellOrder.getTotalExchangeMoney()-sellOrder.getOtherFee()-sellOrder.getServiceTax()-sellOrder.getStampTax());
 			sellOrder.setTradePrice(sellOrder.getTotalExchangeMoney()/sellOrder.getExchangeAmount());
+			sellOrder.setStockBalance(sellOrder.getExchangeAmount());
 
 			//存入数据库
 			LOGGER.info("委托单号："+sellOrder.getOrderId()+" 的委托卖单完成交易，成交单存入数据库");
@@ -118,12 +119,13 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 				transactionRedis.remove(String.valueOf(buyOrder.getOrderId()));
 			}
 
-			//计算服务费
+			//计算服务费、成交价和股票余额
 			buyOrder.setStampTax(0);
 			buyOrder.setOtherFee(buyOrder.getExchangeAmount()*0.0002887);
 			buyOrder.setServiceTax(serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));
 			buyOrder.setActualAmount(buyOrder.getTotalExchangeMoney()+buyOrder.getServiceTax()+buyOrder.getOtherFee());
 			buyOrder.setTradePrice(buyOrder.getTotalExchangeMoney()/buyOrder.getExchangeAmount());
+			buyOrder.setStockBalance(buyOrder.getExchangeAmount());
 
 			//存入数据库
 			LOGGER.info("委托单号："+buyOrder.getOrderId()+" 的委托买单完成交易，成交单存入数据库");
