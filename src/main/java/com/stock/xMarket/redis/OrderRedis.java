@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import com.stock.xMarket.VO.OrderVO;
+import com.stock.xMarket.model.Order;
 
 @Repository
-public class OrderRedis extends BaseRedis<List<OrderVO>>{
+public class OrderRedis extends BaseRedis<List<Order>>{
 
 	private static final String REDIS_KEY = "com.xmarket.order.redis.OrderRedis";
 	

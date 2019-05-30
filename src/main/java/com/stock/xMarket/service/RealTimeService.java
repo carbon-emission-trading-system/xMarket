@@ -7,5 +7,7 @@ public interface RealTimeService {
 
 	void sendRealTime();
 
+	void updateRealTime();
+
 
 }

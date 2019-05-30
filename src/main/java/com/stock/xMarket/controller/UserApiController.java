@@ -51,7 +51,7 @@ public class UserApiController extends BaseApiController {
 			throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"验证码错误");
 		}
 
-		UserVO dbUser = userService.getUser(user.getUsername());
+		UserVO dbUser = userService.getUser(user.getUserName());
 
 		if (dbUser != null) {
 			if (dbUser.getLoginPassword().equals(MD5Util.inputToDb(user.getLoginPassword()))) {
@@ -106,7 +106,7 @@ public class UserApiController extends BaseApiController {
 		user.setLoginPassword(newPassword);
 		userService.regist(user);
 //		log.info(user.getTransactionPassword());
-		log.info("用户注册成功,用户名为："+user.getUsername());
+		log.info("用户注册成功,用户名为："+user.getUserName());
 		return CommonReturnType.success();
 
 	}

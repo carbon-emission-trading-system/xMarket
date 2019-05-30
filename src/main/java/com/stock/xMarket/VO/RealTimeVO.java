@@ -4,16 +4,150 @@ import java.io.Serializable;
 
 public class RealTimeVO implements Serializable{
 	
+
 	
+
+	public RealTimeVO() {
+		// TODO Auto-generated constructor stub
+	}
+
+	private int stockID;
+	private double commissionProportion;
+	private double openPrice;
+	private double highestPrice;
+	private double lowestPrice;
+	private double latestPrice;
+	private double upsAndDowns;
+	private double increase;
+	private double outMarket;
+	private double inMarket;
+	private double conversionHand;
+	private double totalMarketCapitalization;
+	private double staticPERatio;
+	private double dailyLimit;
+	private double downLimitBoard;
+	private double cityNet;
+	private int volume;
+	private double ytdClosePrice;
 	
-	
-	
-	
-	
-	public RealTimeVO(int stockID,  float commissionProportion, float openPrice, float highestPrice,
-			float lowestPrice, float latestPrice, float upsAndDowns, float increase, float outMarket, float inMarket,
-			float conversionHand, float totalMarketCapitalization, float staticPERatio, float dailyLimit,
-			float downLimitBoard, float cityNet) {
+	public int getVolume() {
+		return volume;
+	}
+
+	public void setVolume(int volume) {
+		this.volume = volume;
+	}
+
+	public int getStockID() {
+		return stockID;
+	}
+	public void setStockID(int stockID) {
+		this.stockID = stockID;
+	}
+
+	public double getCommissionProportion() {
+		return commissionProportion;
+	}
+	public void setCommissionProportion(double commissionProportion) {
+		this.commissionProportion = commissionProportion;
+	}
+	public double getOpenPrice() {
+		return openPrice;
+	}
+	public void setOpenPrice(double openPrice) {
+		this.openPrice = openPrice;
+	}
+	public double getHighestPrice() {
+		return highestPrice;
+	}
+	public void setHighestPrice(double highestPrice) {
+		this.highestPrice = highestPrice;
+	}
+	public double getLowestPrice() {
+		return lowestPrice;
+	}
+	public void setLowestPrice(double lowestPrice) {
+		this.lowestPrice = lowestPrice;
+	}
+	public double getLatestPrice() {
+		return latestPrice;
+	}
+	public void setLatestPrice(double latestPrice) {
+		this.latestPrice = latestPrice;
+	}
+	public double getUpsAndDowns() {
+		return upsAndDowns;
+	}
+	public void setUpsAndDowns(double upsAndDowns) {
+		this.upsAndDowns = upsAndDowns;
+	}
+	public double getIncrease() {
+		return increase;
+	}
+	public void setIncrease(double increase) {
+		this.increase = increase;
+	}
+	public double getOutMarket() {
+		return outMarket;
+	}
+	public void setOutMarket(double outMarket) {
+		this.outMarket = outMarket;
+	}
+	public double getInMarket() {
+		return inMarket;
+	}
+	public void setInMarket(double inMarket) {
+		this.inMarket = inMarket;
+	}
+	public double getConversionHand() {
+		return conversionHand;
+	}
+	public void setConversionHand(double conversionHand) {
+		this.conversionHand = conversionHand;
+	}
+	public double getTotalMarketCapitalization() {
+		return totalMarketCapitalization;
+	}
+	public void setTotalMarketCapitalization(double totalMarketCapitalization) {
+		this.totalMarketCapitalization = totalMarketCapitalization;
+	}
+	public double getStaticPERatio() {
+		return staticPERatio;
+	}
+	public void setStaticPERatio(double staticPERatio) {
+		this.staticPERatio = staticPERatio;
+	}
+	public double getDailyLimit() {
+		return dailyLimit;
+	}
+	public void setDailyLimit(double dailyLimit) {
+		this.dailyLimit = dailyLimit;
+	}
+	public double getDownLimitBoard() {
+		return downLimitBoard;
+	}
+	public void setDownLimitBoard(double downLimitBoard) {
+		this.downLimitBoard = downLimitBoard;
+	}
+	public double getCityNet() {
+		return cityNet;
+	}
+	public void setCityNet(double cityNet) {
+		this.cityNet = cityNet;
+	}
+
+	public double getYtdClosePrice() {
+		return ytdClosePrice;
+	}
+
+	public void setYtdClosePrice(double ytdClosePrice) {
+		this.ytdClosePrice = ytdClosePrice;
+	}
+
+	public RealTimeVO(int stockID, double commissionProportion, double openPrice, double highestPrice,
+			double lowestPrice, double latestPrice, double upsAndDowns, double increase, double outMarket,
+			double inMarket, double conversionHand, double totalMarketCapitalization, double staticPERatio,
+			double dailyLimit, double downLimitBoard, double cityNet, int volume, double ytdClosePrice) {
 		super();
 		this.stockID = stockID;
 		this.commissionProportion = commissionProportion;
@@ -31,121 +165,17 @@ public class RealTimeVO implements Serializable{
 		this.dailyLimit = dailyLimit;
 		this.downLimitBoard = downLimitBoard;
 		this.cityNet = cityNet;
+		this.volume = volume;
+		this.ytdClosePrice = ytdClosePrice;
 	}
-	
-	private int stockID;
-	private float commissionProportion;
-	private float openPrice;
-	private float highestPrice;
-	private float lowestPrice;
-	private float latestPrice;
-	private float upsAndDowns;
-	private float increase;
-	private float outMarket;
-	private float inMarket;
-	private float conversionHand;
-	private float totalMarketCapitalization;
-	private float staticPERatio;
-	private float dailyLimit;
-	private float downLimitBoard;
-	private float cityNet;
-	public int getStockID() {
-		return stockID;
-	}
-	public void setStockID(int stockID) {
+
+	public RealTimeVO(int stockId) {
+		// TODO Auto-generated constructor stub
+		
 		this.stockID = stockID;
 	}
 
-	public float getCommissionProportion() {
-		return commissionProportion;
-	}
-	public void setCommissionProportion(float commissionProportion) {
-		this.commissionProportion = commissionProportion;
-	}
-	public float getOpenPrice() {
-		return openPrice;
-	}
-	public void setOpenPrice(float openPrice) {
-		this.openPrice = openPrice;
-	}
-	public float getHighestPrice() {
-		return highestPrice;
-	}
-	public void setHighestPrice(float highestPrice) {
-		this.highestPrice = highestPrice;
-	}
-	public float getLowestPrice() {
-		return lowestPrice;
-	}
-	public void setLowestPrice(float lowestPrice) {
-		this.lowestPrice = lowestPrice;
-	}
-	public float getLatestPrice() {
-		return latestPrice;
-	}
-	public void setLatestPrice(float latestPrice) {
-		this.latestPrice = latestPrice;
-	}
-	public float getUpsAndDowns() {
-		return upsAndDowns;
-	}
-	public void setUpsAndDowns(float upsAndDowns) {
-		this.upsAndDowns = upsAndDowns;
-	}
-	public float getIncrease() {
-		return increase;
-	}
-	public void setIncrease(float increase) {
-		this.increase = increase;
-	}
-	public float getOutMarket() {
-		return outMarket;
-	}
-	public void setOutMarket(float outMarket) {
-		this.outMarket = outMarket;
-	}
-	public float getInMarket() {
-		return inMarket;
-	}
-	public void setInMarket(float inMarket) {
-		this.inMarket = inMarket;
-	}
-	public float getConversionHand() {
-		return conversionHand;
-	}
-	public void setConversionHand(float conversionHand) {
-		this.conversionHand = conversionHand;
-	}
-	public float getTotalMarketCapitalization() {
-		return totalMarketCapitalization;
-	}
-	public void setTotalMarketCapitalization(float totalMarketCapitalization) {
-		this.totalMarketCapitalization = totalMarketCapitalization;
-	}
-	public float getStaticPERatio() {
-		return staticPERatio;
-	}
-	public void setStaticPERatio(float staticPERatio) {
-		this.staticPERatio = staticPERatio;
-	}
-	public float getDailyLimit() {
-		return dailyLimit;
-	}
-	public void setDailyLimit(float dailyLimit) {
-		this.dailyLimit = dailyLimit;
-	}
-	public float getDownLimitBoard() {
-		return downLimitBoard;
-	}
-	public void setDownLimitBoard(float downLimitBoard) {
-		this.downLimitBoard = downLimitBoard;
-	}
-	public float getCityNet() {
-		return cityNet;
-	}
-	public void setCityNet(float cityNet) {
-		this.cityNet = cityNet;
-	}
+
 	
 	
 }
