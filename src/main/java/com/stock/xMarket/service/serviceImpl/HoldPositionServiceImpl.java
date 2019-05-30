@@ -7,6 +7,7 @@ import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.User;
 import com.stock.xMarket.repository.HoldPositionRepository;
 import com.stock.xMarket.repository.StockRepository;
+import com.stock.xMarket.repository.TransactionOrderRepository;
 import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.service.HoldPositionService;
 import com.stock.xMarket.VO.OrderVO;
@@ -34,6 +35,8 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	@Autowired
 	private StockRepository stockRepository;
 
+	@Autowired
+	private TransactionOrderRepository transactionOrderRepository;
 
 	//更新持仓信息
 	@Override
@@ -68,8 +71,10 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			}
 			holdPositon.setPositionNumber(positionNumber);
 			holdPositon.setCostPrice(costPrice);
+			transactionOrder.setStockBalance(positionNumber);
 			//将新的数据存入数据库
 			holdPositonRepository.saveAndFlush(holdPositon);
+			transactionOrderRepository.saveAndFlush(transactionOrder);
 			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 持仓信息更新完毕");
 		}else{
 			//如果持仓信息不存在，可能是用户第一次购买该股票，是建仓。创建一条新的持仓信息插入数据库
