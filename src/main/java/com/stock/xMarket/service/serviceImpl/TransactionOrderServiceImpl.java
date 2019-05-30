@@ -46,6 +46,16 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	@Override
 	public void transaction(TradeOrder tradeOrder) throws BusinessException {
 
+		//先判断是否为撤单
+		if(tradeOrder.getBuyOrderId() == 0 || tradeOrder.getSellId() == 0){
+			//创建撤单成交单
+			TransactionOrder revokeOrder = createSellTransactionOrder(tradeOrder);
+			//存入数据库
+			LOGGER.info("委托单号："+revokeOrder.getOrderId()+" 的委托买单已被撤单，成交单存入数据库");
+			transactionOrderRepository.saveAndFlush(revokeOrder);
+			return;
+		}
+
 		//计算总成交金额
 		tradeOrder.setTotalExchangeMoney();
 		//如果买卖标识位都为false，则抛出异常
@@ -81,7 +91,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			sellOrder.setOtherFee(sellOrder.getExchangeAmount()*0.0002887);
 			sellOrder.setServiceTax(serviceFaxCaculator(sellOrder.getTotalExchangeMoney()));
 			sellOrder.setActualAmount(sellOrder.getTotalExchangeMoney()-sellOrder.getOtherFee()-sellOrder.getServiceTax()-sellOrder.getStampTax());
-
+			sellOrder.setTradePrice(sellOrder.getTotalExchangeMoney()/sellOrder.getExchangeAmount());
 
 			//存入数据库
 			LOGGER.info("委托单号："+sellOrder.getOrderId()+" 的委托卖单完成交易，成交单存入数据库");
@@ -113,6 +123,8 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			buyOrder.setOtherFee(buyOrder.getExchangeAmount()*0.0002887);
 			buyOrder.setServiceTax(serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));
 			buyOrder.setActualAmount(buyOrder.getTotalExchangeMoney()+buyOrder.getServiceTax()+buyOrder.getOtherFee());
+			buyOrder.setTradePrice(buyOrder.getTotalExchangeMoney()/buyOrder.getExchangeAmount());
+
 			//存入数据库
 			LOGGER.info("委托单号："+buyOrder.getOrderId()+" 的委托买单完成交易，成交单存入数据库");
 			transactionOrderRepository.saveAndFlush(buyOrder);
@@ -157,5 +169,30 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			return money*0.03;
 		}
 		return 5;
+	}
+
+	public TransactionOrder createRevokeOrder(TradeOrder tradeOrder){
+		TransactionOrder revokeOrder = new TransactionOrder();
+		if(tradeOrder.getBuyOrderId() == 0){
+			LOGGER.info("委托单"+tradeOrder.getSellOrderId()+"撤单");
+			revokeOrder = createSellTransactionOrder(tradeOrder);
+		}else{
+			LOGGER.info("委托单"+tradeOrder.getBuyOrderId()+"撤单");
+			revokeOrder = createBuyTransactionOrder(tradeOrder);
+		}
+		revokeOrder.setRevokeAmount(tradeOrder.getExchangeAmount());
+		//redis中查重
+		TransactionOrder redisOrder =  transactionRedis.get(String.valueOf(revokeOrder.getOrderId()));
+		if(redisOrder!=null){
+			LOGGER.info("在redis中找到已成交卖单");
+			revokeOrder.setExchangeAmount(redisOrder.getExchangeAmount());
+			revokeOrder.setTotalExchangeMoney(redisOrder.getTotalExchangeMoney());
+			revokeOrder.setTradePrice(revokeOrder.getTotalExchangeMoney()/revokeOrder.getExchangeAmount());
+			revokeOrder.setStampTax(revokeOrder.getTotalExchangeMoney()*0.01);
+			revokeOrder.setOtherFee(revokeOrder.getTotalExchangeMoney()*0.0002887);
+			revokeOrder.setServiceTax(serviceFaxCaculator(revokeOrder.getTotalExchangeMoney()));
+			revokeOrder.setActualAmount(revokeOrder.getTotalExchangeMoney()-revokeOrder.getOtherFee()-revokeOrder.getServiceTax()-revokeOrder.getStampTax());
+		}
+		return revokeOrder;
 	}
 }
