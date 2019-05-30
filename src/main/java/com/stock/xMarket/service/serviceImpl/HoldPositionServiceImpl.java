@@ -10,6 +10,7 @@ import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.TransactionOrderRepository;
 import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.service.HoldPositionService;
+import com.xmarket.order.model.Order;
 import com.stock.xMarket.VO.OrderVO;
 import com.stock.xMarket.model.HoldPosition;
 import com.stock.xMarket.model.TransactionOrder;
@@ -103,29 +104,34 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 
 	}
 
-	//更新股票可用余额
+	
+	
 	@Override
-	public void updateHoldPositionByOrder(OrderVO orderVO) throws BusinessException {
+	public void updateHoldPositionByOrder(Order order) throws BusinessException {
 		// TODO Auto-generated method stub
-		int userId=orderVO.getUserId();
+		int userId=order.getUser().getUserId();
 
-		int stockId=orderVO.getStockId();
+		int stockId=order.getStock().getStockId();
+		
 
 		LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 开始更新股票可用余额");
-		HoldPosition holdPositon = holdPositonRepository.findByUser_UserIdAndStock_StockId(userId,stockId);
+		
+		HoldPosition holdPositon=holdPositonRepository.findByUser_UserIdAndStock_StockId(userId,stockId);
+		
 		if(holdPositon == null){
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标持仓信息不存在！");
 		}
-
-		//更新信息
-		int availableNumber=holdPositon.getAvailableNumber()-orderVO.getExchangeAmount();
-
+		
+		int availableNumber=holdPositon.getAvailableNumber()-order.getExchangeAmount();
+		
 		holdPositon.setAvailableNumber(availableNumber);
-
+		
 		holdPositonRepository.saveAndFlush(holdPositon);
-		LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 股票可用余额更新完毕");
 
+		LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 股票可用余额更新完毕");
 	}
+	
+
 
 
 	

@@ -47,27 +47,40 @@ public class RealTimeServiceImpl implements RealTimeService{
 	private RealTimeRedis realTimeRedis;
 
 
-	@Scheduled(fixedRate = 6000)
-	public void updateAndSendRealTime() {
-		
-		updateRealTime();
-		sendRealTime();
-		
-	}
-
+	@Override
 	public void updateRealTime() {
+		
+		
+//		String id=tradeOrder.getStockID();
+//		
+//		RealTimeVO realTime=realTimeRedis.get(id);
+//		
+//		realTime.setLatestPrice(tradeOrder.getTradePrice());
+//		if(tradeOrder.getTradePrice()<realTime.getLowestPrice()) {
+//			realTime.setLowestPrice(tradeOrder.getTradePrice());
+//		}else if(tradeOrder.getTradePrice()>realTime.getLowestPrice()) {
+//			realTime.setHighestPrice(tradeOrder.getTradePrice());
+//		}
+//		realTime.setUpsAndDowns(tradeOrder.getTradePrice()-realTime.getOpenPrice());
+//		realTime.setIncrease((tradeOrder.getTradePrice()-realTime.getOpenPrice())/realTime.getOpenPrice());
+//		
+//		
+//		realTimeRedis.put(id, domain,-1);
+//		
+//		String courseListString = (String) realTimeRedis.getString(ALL_REALTIME_REDIS);
+//		realTimeList = JSON.parseArray(courseListString, RealTimeVO.class);	
+//		for(int i=0; i<realTimeList.size();i++) {
+//			RealTimeVO realTime=new RealTimeVO(600000,10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+//
+//			realTimeList.add(realTime);
+//		}
+		
+		
 		List<RealTimeVO> realTimeList = new ArrayList<RealTimeVO>();
-		RealTimeVO realTime=new RealTimeVO(600000,10,
-				10, 10, 10, 10, 10,
-				10, 10, 10, 10, 10, 
-				10, 10, 10, 10);
-
-		RealTimeVO realTime2=new RealTimeVO(600446,10,
-				10, 10, 10, 10,
-				10, 10, 10, 10, 10,
-				10, 10, 10, 10, 10);
+		RealTimeVO realTime=new RealTimeVO(600000,10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,10);
 		realTimeList.add(realTime);
-		realTimeList.add(realTime2);
+		RealTimeVO realTime1=new RealTimeVO(600000,10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,10);
+		realTimeList.add(realTime1);
 		String coursesString = JSON.toJSONString(realTimeList);
 		realTimeRedis.putString(ALL_REALTIME_REDIS, coursesString, -1);
 		
@@ -76,7 +89,9 @@ public class RealTimeServiceImpl implements RealTimeService{
 	
 	
 	@Override
+//	@Scheduled(fixedRate = 6000)
 	public void sendRealTime() {
+		updateRealTime();
 		List<RealTimeVO> realTimeList = new ArrayList<RealTimeVO>();
 		//redis 中读取数据
 		String courseListString = (String) realTimeRedis.getString(ALL_REALTIME_REDIS);
