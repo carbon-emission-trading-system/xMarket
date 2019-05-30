@@ -1,5 +1,6 @@
 package com.stock.xMarket.service.serviceImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -107,7 +108,15 @@ public class OrderServiceImpl implements OrderService {
 		
 		if(orderRedis.hasKey(String.valueOf(userId))){
 			//从缓存中获取当日委托
-			return orderRedis.get(String.valueOf(userId));
+			List<Order> orderList=new ArrayList<Order>();
+			List<OrderVO> orderVOList=new ArrayList<OrderVO>();
+			List<Integer> orderIdList=orderRepository.findOrderId(userId);
+			for(Integer orderId : orderIdList) {
+				
+				orderList.add(orderRedis.get(String.valueOf(orderId)));
+			}
+			BeanUtils.copyProperties(orderVOList, orderList); 
+			return orderVOList;
 		}else {
 			//从DB中获取当日委托列表
 			List<OrderVO> list=orderRepository.findByUserId(userId);

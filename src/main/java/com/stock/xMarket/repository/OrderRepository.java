@@ -17,4 +17,7 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 			+ "from Order o left join o.stock s left join o.user u where u.userId=:userId")
 	List<OrderVO> findByUserId(Integer userId);
 	
+	@Query(value="select new com.stock.xMarket.VO.OrderVO(o.orderId) from Order o left join o.user u where u.userId=:userId")
+	List<Integer> findOrderId(Integer userId);
+	
 }
