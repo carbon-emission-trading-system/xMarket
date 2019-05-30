@@ -12,15 +12,15 @@ import javax.validation.constraints.NotBlank;
 @Entity
 @Table(name="user")
 public class User implements Serializable{
-	
+
 
 	public User(){}
-	
+
 	public User(String username, String password){
 		this.username = username;
 		this.loginPassword = password;
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="user_id")

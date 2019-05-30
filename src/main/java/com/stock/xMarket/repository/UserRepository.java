@@ -9,7 +9,7 @@ import com.stock.xMarket.model.User;
 
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String>{
+public interface UserRepository extends JpaRepository<User, Integer>{
 
 	//public User findByUsernameAndPassword(String username,String Password);
 	

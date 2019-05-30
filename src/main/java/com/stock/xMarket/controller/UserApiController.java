@@ -46,8 +46,7 @@ public class UserApiController extends BaseApiController {
 	
 		//验证码
 		String sessionCode = (String) session.getAttribute("code");
-		log.info(validateCode);
-		log.info(sessionCode);
+		log.info("id为"+user.getUserId()+"的用户输入验证码："+validateCode+"   正确验证码："+sessionCode);
 		if(!StringUtils.equalsIgnoreCase(validateCode, sessionCode)){
 			throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"验证码错误");
 		}
@@ -64,7 +63,7 @@ public class UserApiController extends BaseApiController {
 				cookie.setMaxAge(3600);
 				cookie.setPath("/");
 				response.addCookie(cookie);
-
+				log.info("id为"+dbUser.getId()+"的用户登录成功");
 				return success(); // Result.success(); 200, "success"
 			} else {
 				throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"密码错误");
@@ -98,7 +97,6 @@ public class UserApiController extends BaseApiController {
 //		log.info("username=" + user.getUsername() + ";password=" + user.getLoginPassword());
 
 		String sessionCode = (String) session.getAttribute("mailcode");
-		log.info(mailCode);
 		if (!StringUtils.equalsIgnoreCase(mailCode, sessionCode)) {
 			throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"验证码错误");
 
@@ -108,6 +106,7 @@ public class UserApiController extends BaseApiController {
 		user.setLoginPassword(newPassword);
 		userService.regist(user);
 //		log.info(user.getTransactionPassword());
+		log.info("用户注册成功,用户名为："+user.getUsername());
 		return CommonReturnType.success();
 
 	}
@@ -117,7 +116,7 @@ public class UserApiController extends BaseApiController {
 
 		String mailCode = String.valueOf(new Random().nextInt(899999) + 100000);
 		String message = "您的验证码为：" + mailCode;
-		log.info(mailCode);
+		log.info("邮箱验证码为："+mailCode);
 
 		try {
 			userService.sendMail(mailAdress, message);

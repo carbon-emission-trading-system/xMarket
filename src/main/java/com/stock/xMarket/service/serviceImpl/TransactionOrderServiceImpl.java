@@ -10,6 +10,8 @@ import com.stock.xMarket.model.TradeOrder;
 import com.stock.xMarket.model.TransactionOrder;
 import com.stock.xMarket.redis.TransactionRedis;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,11 +25,14 @@ import com.stock.xMarket.service.TransactionOrderService;
 @Transactional
 public class TransactionOrderServiceImpl implements TransactionOrderService {
 
+	private static Logger LOGGER = LoggerFactory.getLogger(TransactionOrderServiceImpl.class);
+
 	@Autowired
     private TransactionOrderRepository transactionOrderRepository ;
 
 	@Autowired
 	private TransactionRedis transactionRedis;
+
 
 	//返回全部历史成交单
 	@Override
@@ -45,7 +50,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		tradeOrder.setTotalExchangeMoney();
 		//如果买卖标识位都为false，则抛出异常
 		if(!tradeOrder.isSellPoint() && !tradeOrder.isBuyPoint()){
-			throw new BusinessException(EmBusinessError.UNKNOWN_ERROR);
+			throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"买卖标识位都为false，错误原因未知");
 		}
 		TransactionOrder buyOrder = createBuyTransactionOrder(tradeOrder);
 		TransactionOrder sellOrder = createSellTransactionOrder(tradeOrder);
@@ -54,6 +59,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		//redis中查重
 		TransactionOrder redisOrder =  transactionRedis.get(String.valueOf(sellOrder.getOrderId()));
 		if(redisOrder!=null){
+			LOGGER.info("在redis中找到卖单，更新信息");
 			sellOrder.setExchangeAmount(sellOrder.getExchangeAmount()+redisOrder.getExchangeAmount());
 			sellOrder.setTotalExchangeMoney(sellOrder.getTotalExchangeMoney()+redisOrder.getTotalExchangeMoney());
 		}
@@ -61,18 +67,24 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 		if(!tradeOrder.isSellPoint()){
 			//存入redis
+			LOGGER.info("委托单号："+sellOrder.getOrderId()+" 的委托卖单未完成交易，存入redis");
 			transactionRedis.put(String.valueOf(sellOrder.getOrderId()),sellOrder,-1);
 		}else {
 			//清除redis中的数据
 			if(redisOrder!=null){
+				LOGGER.info("委托单号："+sellOrder.getOrderId()+" 的委托卖单完成交易，清除redis中数据");
 				transactionRedis.remove(String.valueOf(sellOrder.getOrderId()));
 			}
 
 			//放入数据库前先计算服务费
-			sellOrder.setServiceTax(sellOrder.getTotalExchangeMoney()*0.0102687+serviceFaxCaculator(sellOrder.getTotalExchangeMoney()));
+			sellOrder.setStampTax(sellOrder.getTotalExchangeMoney()*0.01);
+			sellOrder.setOtherFee(sellOrder.getExchangeAmount()*0.0002887);
+			sellOrder.setServiceTax(serviceFaxCaculator(sellOrder.getTotalExchangeMoney()));
+			sellOrder.setActualAmount(sellOrder.getTotalExchangeMoney()-sellOrder.getOtherFee()-sellOrder.getServiceTax()-sellOrder.getStampTax());
 
 
 			//存入数据库
+			LOGGER.info("委托单号："+sellOrder.getOrderId()+" 的委托卖单完成交易，成交单存入数据库");
 			transactionOrderRepository.saveAndFlush(sellOrder);
 		}
 
@@ -80,22 +92,29 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		//redis中查重
 		redisOrder =  transactionRedis.get(String.valueOf(buyOrder.getOrderId()));
 		if(redisOrder!=null){
+			LOGGER.info("在redis中找到买单，更新信息");
 			buyOrder.setExchangeAmount(buyOrder.getExchangeAmount()+redisOrder.getExchangeAmount());
 			buyOrder.setTotalExchangeMoney(buyOrder.getTotalExchangeMoney()+redisOrder.getTotalExchangeMoney());
 		}
 		//判断
 		if(!tradeOrder.isBuyPoint()){
+			//存入redis
+			LOGGER.info("委托单号："+buyOrder.getOrderId()+" 的委托买单未完成交易，存入redis");
 			transactionRedis.put(String.valueOf(buyOrder.getOrderId()),buyOrder,-1);
 		}else {
 			//清除redis中的数据
 			if(redisOrder!=null){
+				LOGGER.info("委托单号："+buyOrder.getOrderId()+" 的委托买单完成交易，清除redis中数据");
 				transactionRedis.remove(String.valueOf(buyOrder.getOrderId()));
 			}
 
 			//计算服务费
-			buyOrder.setServiceTax(buyOrder.getTotalExchangeMoney()*0.0002687+serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));
-
+			buyOrder.setStampTax(0);
+			buyOrder.setOtherFee(buyOrder.getExchangeAmount()*0.0002887);
+			buyOrder.setServiceTax(serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));
+			buyOrder.setActualAmount(buyOrder.getTotalExchangeMoney()+buyOrder.getServiceTax()+buyOrder.getOtherFee());
 			//存入数据库
+			LOGGER.info("委托单号："+buyOrder.getOrderId()+" 的委托买单完成交易，成交单存入数据库");
 			transactionOrderRepository.saveAndFlush(buyOrder);
 		}
 
