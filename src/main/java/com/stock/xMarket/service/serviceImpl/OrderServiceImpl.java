@@ -1,3 +1,4 @@
+
 package com.stock.xMarket.service.serviceImpl;
 
 import java.util.ArrayList;
@@ -12,84 +13,36 @@ import org.springframework.stereotype.Service;
 import com.stock.xMarket.VO.OrderVO;
 import com.stock.xMarket.model.Order;
 import com.stock.xMarket.model.TradeOrder;
+import com.stock.xMarket.model.TransactionOrder;
 import com.stock.xMarket.redis.OrderRedis;
 import com.stock.xMarket.repository.OrderRepository;
 import com.stock.xMarket.service.OrderService;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OrderServiceImpl.
+ */
 @Service
 @Transactional
 public class OrderServiceImpl implements OrderService {
 	
+	/** The order repository. */
 	@Autowired
     private OrderRepository orderRepository ;
 	
+	/** The order redis. */
 	@Autowired
 	private OrderRedis orderRedis;
 	
 	
 	
-	@Override
-	public void updateOrderByTradeOrder(TradeOrder tradeOrder) {
-		// TODO Auto-generated method stub
-		String buyKey=String.valueOf(tradeOrder.getBuyOrderId());
-		String sellKey=String.valueOf(tradeOrder.getSellOrderId());
-		Order buyOrder=orderRedis.get(buyKey);
-		Order sellOrder=orderRedis.get(sellKey);
-		
-		if(tradeOrder.getBuyOrderId()==0) {
-			
-			Order order=new Order();
-			BeanUtils.copyProperties(sellOrder, order);
-			orderRepository.saveAndFlush(order);
-			orderRedis.remove(sellKey);
-			
-			
-		}else if(tradeOrder.getSellOrderId()==0) {
-			
-			Order order=new Order();
-			BeanUtils.copyProperties(buyOrder, order);
-			orderRepository.saveAndFlush(order);
-			orderRedis.remove(buyKey);
-		}else {
-		
-		int buyExchangeAmount=buyOrder.getExchangeAmount()+tradeOrder.getExchangeAmount();
-		double buyExchangeAveragePrice= (buyOrder.getExchangeAmount()*buyOrder.getExchangeAveragePrice()+tradeOrder.getExchangeAmount()*tradeOrder.getTradePrice());
-		buyOrder.setExchangeAmount(buyExchangeAmount);
-		buyOrder.setExchangeAveragePrice(buyExchangeAveragePrice);
-		
-		if(buyOrder.getExchangeAmount()==buyOrder.getOrderAmount()) {
-			
-			Order order=new Order();
-			BeanUtils.copyProperties(buyOrder, order);
-			orderRepository.saveAndFlush(order);
-			orderRedis.remove(buyKey);
-		}else {
+	
 
-			orderRedis.put(buyKey, buyOrder, -1);
-		}
-		
-		
-		int sellExchangeAmount=sellOrder.getExchangeAmount()+tradeOrder.getExchangeAmount();
-		double sellExchangeAveragePrice= (sellOrder.getExchangeAmount()*sellOrder.getExchangeAveragePrice()+tradeOrder.getExchangeAmount()*tradeOrder.getTradePrice());
-		sellOrder.setExchangeAmount(sellExchangeAmount);
-		sellOrder.setExchangeAveragePrice(sellExchangeAveragePrice);
-		orderRedis.put(sellKey, sellOrder, -1);
-
-		if(sellOrder.getExchangeAmount()==sellOrder.getOrderAmount()) {
-			
-			Order order=new Order();
-			BeanUtils.copyProperties(sellOrder, order);
-			orderRepository.saveAndFlush(order);
-			orderRedis.remove(sellKey);
-			
-		}else {
-
-			orderRedis.put(sellKey, sellOrder, -1);
-		}
-		}
-	}
-
-
+	/**
+	 * Adds the order to redis.
+	 *
+	 * @param order the order
+	 */
 	@Override
 	public void addOrderToRedis(Order order) {
 		// TODO Auto-generated method stub
@@ -102,6 +55,12 @@ public class OrderServiceImpl implements OrderService {
 		}
 	}
 	
+	/**
+	 * Find by user id.
+	 *
+	 * @param userId the user id
+	 * @return the list
+	 */
 	//根据用户id获取用户当日所有的委托
 	@Override
 	public List<OrderVO> findByUserId(int userId){
@@ -127,5 +86,32 @@ public class OrderServiceImpl implements OrderService {
 		
     }
 
+	@Override
+	public void addOrderToDb(Order order) {
+		// TODO Auto-generated method stub
+		
+		orderRepository.saveAndFlush(order);
+		
+	}
+
+	@Override
+	public void updateOrderByTradeOrder(TransactionOrder transactionOrder) {
+		// TODO Auto-generated method stub
+		int OrderId=transactionOrder.getOrderId();
+		
+		Order order=orderRedis.get(String.valueOf(OrderId));
+		
+		orderRedis.remove(String.valueOf(OrderId));
+		
+		BeanUtils.copyProperties(transactionOrder, order);
+		
+		addOrderToDb(order);
+		
+		
+		
+		
+	}
+
+	
 	
 }
