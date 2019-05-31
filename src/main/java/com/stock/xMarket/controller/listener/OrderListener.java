@@ -1,3 +1,13 @@
+/*
+ * <p>项目名称: xMarket </p> 
+ * <p>文件名称: OrderListener.java </p> 
+ * <p>描述: [类型描述] </p>
+ * <p>创建时间: 2019-5-31 </p>
+ * <p>公司信息: ************公司 *********部</p> 
+ * @author <a href="mail to: *******@******.com" rel="nofollow">作者</a>
+ * @version v1.0
+ * @update [序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
+ */
 package com.stock.xMarket.controller.listener;
 
 
@@ -24,36 +34,69 @@ import com.stock.xMarket.service.MarchService;
 import com.stock.xMarket.service.OrderService;
 import com.stock.xMarket.service.UserFundService;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The listener interface for receiving order events.
+ * The class that is interested in processing a order
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addOrderListener<code> method. When
+ * the order event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see OrderEvent
+ */
 @Controller
 public class OrderListener  {
+    
+    /** The Constant logger. */
     private static final Logger logger = LoggerFactory.getLogger(OrderListener.class);
 
+    /** The order service. */
     @Autowired
     OrderService orderService;
     
+    /** The hold position service. */
     @Autowired
     HoldPositionService holdPositionService;
     
+    /** The user fund service. */
     @Autowired
     UserFundService userFundService;
     
+	/** The user repository. */
 	@Autowired
 	UserRepository userRepository;
 	
 
+	/** The stock repository. */
 	@Autowired
 	private StockRepository stockRepository;
 
+    /** The march service. */
     @Autowired
     MarchService marchService;
     
+    
+    /**
+     * Consume order.
+     *
+     * @param str the JSON
+     * @throws BusinessException 
+     */
     @RabbitListener(queues = "${order.queue.name}")
-    public void consumeOrder(String str){
+    public void consumeOrder(String str) throws BusinessException{
         try {
         	logger.info("委托单监听器监听到消息: {} ",str);
+        }catch (Exception e){
+            logger.error("委托单监听器监听发生异常：{} ",str,e.fillInStackTrace());
+        }
         	
         	OrderVO orderVO=JSON.parseObject(str, OrderVO.class);
         	Order order=new Order();
+        	
+        	
+        	
         	try {
         		User user = userRepository.findById(orderVO.getUserId()).get();
         		order.setUser(user);
@@ -90,9 +133,7 @@ public class OrderListener  {
             marchService.march(order);
             
 
-        }catch (Exception e){
-            logger.error("委托单监听器监听发生异常：{} ",str,e.fillInStackTrace());
-        }
+      
     }
 
 }

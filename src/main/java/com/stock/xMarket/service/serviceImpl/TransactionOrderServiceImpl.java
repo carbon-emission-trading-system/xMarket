@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.stock.xMarket.VO.TransactionOrderVO;
 import com.stock.xMarket.repository.TransactionOrderRepository;
+import com.stock.xMarket.service.OrderService;
 import com.stock.xMarket.service.TransactionOrderService;
 
 @Service
@@ -33,7 +34,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	@Autowired
 	private TransactionRedis transactionRedis;
 
-
+	@Autowired
+	OrderService orderService;
+	
 	//返回全部历史成交单
 	@Override
 	public List<TransactionOrderVO> findByOwnerId(int ownerId){
@@ -53,6 +56,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			//存入数据库
 			LOGGER.info("委托单号："+revokeOrder.getOrderId()+" 的委托买单已被撤单，成交单存入数据库");
 			transactionOrderRepository.saveAndFlush(revokeOrder);
+			
+			orderService.updateOrderByTradeOrder(revokeOrder);
+			
 			return;
 		}
 
@@ -97,6 +103,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			//存入数据库
 			LOGGER.info("委托单号："+sellOrder.getOrderId()+" 的委托卖单完成交易，成交单存入数据库");
 			transactionOrderRepository.saveAndFlush(sellOrder);
+			
+			orderService.updateOrderByTradeOrder(sellOrder);
+			
 		}
 
 		//如果买方标识位为false，则将买方成交单放入redis；反之则放入数据库
@@ -130,6 +139,8 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			//存入数据库
 			LOGGER.info("委托单号："+buyOrder.getOrderId()+" 的委托买单完成交易，成交单存入数据库");
 			transactionOrderRepository.saveAndFlush(buyOrder);
+			
+			orderService.updateOrderByTradeOrder(buyOrder);
 		}
 
 
