@@ -7,6 +7,7 @@ import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
@@ -133,6 +134,28 @@ public class RabbitMqConfig {
 	        return new TopicExchange(env.getProperty("realTime.exchange.name"),true,false);
 	    }
 
+	    
+	    //分时信息
+	    @Bean
+	    public TopicExchange timeShareExchange(){
+	        return new TopicExchange(env.getProperty("timeShare.exchange.name"),true,false);
+	    }
 	   
+	    //交易单
+	    @Bean
+	    public DirectExchange tradeOrderExchange(){
+	        return new DirectExchange(env.getProperty("tradeOrder.exchange.name"),true,false);
+	    }
+	    
+	    @Bean
+	    public Queue tradeOrderQueue(){
+	        return new Queue(env.getProperty("tradeOrder.queue.name"),true);
+	    }
+
+	    @Bean
+	    public Binding tradeOrderBinding(){
+	        return BindingBuilder.bind(tradeOrderQueue()).to(tradeOrderExchange()).with(env.getProperty("tradeOrder.routing.key.name"));
+	    }
+	    
 	    }
 

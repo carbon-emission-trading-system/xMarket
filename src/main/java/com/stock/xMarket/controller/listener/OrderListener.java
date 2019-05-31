@@ -116,13 +116,13 @@ public class OrderListener {
 		// 更新持仓股
 		if (orderVO.getType() == 0) {
 			holdPositionService.updateHoldPositionByOrder(order);
-			;
+			
 		}
 		// 更新个人资金
 		userFundService.updateUserFundByOrder(order);
 
 		// 匹配
-		marchService.march(order);
+		//marchService.march(order);
 
 	}
 	
