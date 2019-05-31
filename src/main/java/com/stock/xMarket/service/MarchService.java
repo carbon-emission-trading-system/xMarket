@@ -41,6 +41,11 @@ public class MarchService {
 
 	}
 	
+	public void cancel(int orderId) {
+	
+
+	}
+	
 	public void sendTradeOrder(List<TradeOrder> tradeOrderList) {
 	// TODO Auto-generated method stub
 	for(TradeOrder tradeOrder:tradeOrderList) {

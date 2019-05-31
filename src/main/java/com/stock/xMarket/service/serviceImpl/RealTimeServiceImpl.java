@@ -45,30 +45,6 @@ public class RealTimeServiceImpl implements RealTimeService {
 	@Override
 	public void updateRealTime() {
 
-//		String id=tradeOrder.getStockID();
-//		
-//		RealTimeVO realTime=realTimeRedis.get(id);
-//		
-//		realTime.setLatestPrice(tradeOrder.getTradePrice());
-//		if(tradeOrder.getTradePrice()<realTime.getLowestPrice()) {
-//			realTime.setLowestPrice(tradeOrder.getTradePrice());
-//		}else if(tradeOrder.getTradePrice()>realTime.getLowestPrice()) {
-//			realTime.setHighestPrice(tradeOrder.getTradePrice());
-//		}
-//		realTime.setUpsAndDowns(tradeOrder.getTradePrice()-realTime.getOpenPrice());
-//		realTime.setIncrease((tradeOrder.getTradePrice()-realTime.getOpenPrice())/realTime.getOpenPrice());
-//		
-//		
-//		realTimeRedis.put(id, domain,-1);
-//		
-//		String courseListString = (String) realTimeRedis.getString(ALL_REALTIME_REDIS);
-//		realTimeList = JSON.parseArray(courseListString, RealTimeVO.class);	
-//		for(int i=0; i<realTimeList.size();i++) {
-//			RealTimeVO realTime=new RealTimeVO(600000,10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
-//
-//			realTimeList.add(realTime);
-//		}
-
 		List<RealTimeVO> realTimeList = new ArrayList<RealTimeVO>();
 		RealTimeVO realTime = new RealTimeVO(600000, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
 				10);

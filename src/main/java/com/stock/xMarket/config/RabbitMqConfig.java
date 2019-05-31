@@ -98,20 +98,34 @@ public class RabbitMqConfig {
 	    }
 	    
 	    //委托单
+	
+
+	    @Bean
+	    public TopicExchange userOrderExchange(){
+	        return new TopicExchange(env.getProperty("order.exchange.name"),true,false);
+	    }
+	    
 	    @Bean(name = "userOrderQueue")
 	    public Queue userOrderQueue(){
 	        return new Queue(env.getProperty("order.queue.name"),true);
 	    }
 
 	    @Bean
-	    public TopicExchange userOrderExchange(){
-	        return new TopicExchange(env.getProperty("order.exchange.name"),true,false);
-	    }
-
-	    @Bean
 	    public Binding userOrderBinding(){
 	        return BindingBuilder.bind(userOrderQueue()).to(userOrderExchange()).with(env.getProperty("order.routing.key.name"));
 	    }
+	    
+	    @Bean(name = "cancelOrderQueue")
+	    public Queue cancelOrderQueue(){
+	        return new Queue(env.getProperty("cancelOrder.queue.name"),true);
+	    }
+
+	    @Bean
+	    public Binding cancelOrderBinding(){
+	        return BindingBuilder.bind(cancelOrderQueue()).to(userOrderExchange()).with(env.getProperty("cancelOrder.routing.key.name"));
+	    }
+	    
+	    
 
 	  //实时消息
 	    @Bean

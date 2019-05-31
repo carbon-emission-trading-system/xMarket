@@ -22,6 +22,7 @@ import com.stock.xMarket.repository.OrderRepository;
 import com.stock.xMarket.repository.StockHistoryRepository;
 import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.UserFundRepository;
+import com.stock.xMarket.service.MarchService;
 import com.stock.xMarket.service.SystemService;
 
 
@@ -51,7 +52,9 @@ public class SystemServiceImpl implements SystemService {
 	@Autowired
 	private HoldPositionRepository holdPositionRepository;
 	
-	
+
+	@Autowired
+	private MarchService marchService;
 	
 
 	@Autowired
@@ -112,20 +115,10 @@ public class SystemServiceImpl implements SystemService {
 		Map<String, Order> orderMap=orderRedis.getEntities();
 		
 		for (Entry<String, Order> entry :orderMap.entrySet()) {
-			Order order=entry.getValue();
-			String key =entry.getKey();
-			int cancelNumber=order.getOrderAmount()-order.getExchangeAmount();
-			order.setCancelNumber(cancelNumber);
-			
-			//解冻金额
-			
-			
-			
-			
-			
-			
-			
-			orderRepository.saveAndFlush(order);
+	
+			int orderId =Integer.parseInt(entry.getKey());
+		
+		marchService.cancel(orderId);
 			
 			
 		}
