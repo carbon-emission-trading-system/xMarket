@@ -9,7 +9,7 @@ import com.stock.xMarket.model.TransactionOrder;
 
 public interface OrderService {
 
-	List<OrderVO> findByUserId(int userId);
+	List<Order> findByUserId(int userId);
 
 
 	void addOrderToDb(Order order);
