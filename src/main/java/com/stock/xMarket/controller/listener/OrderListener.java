@@ -126,7 +126,7 @@ public class OrderListener {
 
 	}
 	
-	@RabbitListener(queues = "${canOrder.queue.name}")
+	@RabbitListener(queues = "${cancelOrder.queue.name}")
 	public void consumeCancelOrder(int orderId) throws BusinessException {
 		try {
 			logger.info("委托单监听器监听到消息: {} ", orderId);
