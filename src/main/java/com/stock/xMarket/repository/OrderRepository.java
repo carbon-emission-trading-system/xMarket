@@ -18,6 +18,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 	List<OrderVO> findByUserId(Integer userId);
 	
 	@Query(value="select new com.stock.xMarket.VO.OrderVO(o.orderId) from Order o left join o.user u where u.userId=:userId")
-	List<Integer> findOrderId(Integer userId);
+	List<OrderVO> findOrderId(Integer userId);
 	
 }
