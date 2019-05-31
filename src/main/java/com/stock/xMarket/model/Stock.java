@@ -19,6 +19,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class Stock implements Serializable{
 	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7367673609684216060L;
+
 	public Stock(){}
 	
 	@Id

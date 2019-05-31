@@ -15,6 +15,7 @@ import com.stock.xMarket.model.Order;
 import com.stock.xMarket.model.TradeOrder;
 import com.stock.xMarket.model.TransactionOrder;
 import com.stock.xMarket.redis.OrderRedis;
+import com.stock.xMarket.redis.UserOrderRedis;
 import com.stock.xMarket.repository.OrderRepository;
 import com.stock.xMarket.service.OrderService;
 
@@ -34,7 +35,8 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private OrderRedis orderRedis;
 	
-	
+	@Autowired
+	private UserOrderRedis userOrderRedis;
 	
 	
 
@@ -50,6 +52,15 @@ public class OrderServiceImpl implements OrderService {
 		try {
 		String key=String.valueOf(order.getOrderId());
 		orderRedis.put(key, order, -1);
+		
+		String userId=String.valueOf(order.getUser().getUserId());
+		
+		ArrayList<Integer> orderIdList= userOrderRedis.get(userId);
+
+		orderIdList.add(order.getOrderId());
+		userOrderRedis.put(userId, orderIdList, -1);
+		
+		
 		}catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -63,20 +74,25 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	//根据用户id获取用户当日所有的委托
 	@Override
-	public List<OrderVO> findByUserId(int userId){
+	public List<Order> findByUserId(int userId){
 		
-		List<OrderVO> orderVOList=new ArrayList<OrderVO>();
-		List<OrderVO> orderIdList=orderRepository.findOrderId(userId);			
-		for(OrderVO orderId : orderIdList) {
-			OrderVO orderVO=new OrderVO();
-			Order order=new Order();
-			order=orderRedis.get(String.valueOf(orderId.getOrderId()));
-			BeanUtils.copyProperties(order,orderVO);
-			orderVO.setStockId(order.getStock().getStockId());
-			orderVO.setStockName(order.getStock().getStockName());
-			orderVOList.add(orderVO);		
+		List<Order> orderList=new ArrayList<>();
+		
+		ArrayList<Integer> orderIdList=userOrderRedis.get(String.valueOf(userId));
+		
+		
+		for(Integer orderId:orderIdList) {
+			Order order=orderRedis.get(String.valueOf(orderId));
+			orderList.add(order);
 		}
-		return orderVOList;
+		
+
+		List<Order> dbOrderList=orderRepository.findByUser_UserId(userId);
+		
+
+		orderList.addAll(dbOrderList);
+		
+		return orderList;
 		
     }
 
@@ -101,7 +117,12 @@ public class OrderServiceImpl implements OrderService {
 		
 		addOrderToDb(order);
 		
+		String userId=String.valueOf(transactionOrder.getOwnerId());
 		
+		ArrayList<Integer> orderIdList= userOrderRedis.get(userId);
+
+		orderIdList.remove(order.getOrderId());
+		userOrderRedis.put(userId, orderIdList, -1);
 		
 		
 	}

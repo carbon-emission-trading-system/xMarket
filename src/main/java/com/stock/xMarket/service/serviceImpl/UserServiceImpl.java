@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService{
 		UserVO userVO = new UserVO();
 		User user = userRedis.get("username");
 		if(user == null){
-			user = userRpository.findByUsername(username);
+			user = userRpository.findByUserName(username);
 			if(user != null){
 				userRedis.put(user.getUserName(), user, -1);
 			}else{
