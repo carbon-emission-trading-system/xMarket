@@ -1,13 +1,13 @@
 package com.stock.xMarket.VO;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.util.Date;
+
 
 public class TransactionOrderVO {
 	
 	
 	private Date date;//成交日期
-	private Time time;//成交时间
+	private Date time;//成交时间
 	private int stockId;
 	private String stockName;
 	private Boolean point;//买入卖出  true=买入
@@ -26,7 +26,7 @@ public class TransactionOrderVO {
 	private int tradeMarket;//交易市场
 	private int revokeAmount;//撤单数量
 	
-	public TransactionOrderVO(Date date, Time time, int stockId, String stockName, Boolean point, double tradePrice,
+	public TransactionOrderVO(Date date, Date time, int stockId, String stockName, Boolean point, double tradePrice,
 			int exchangeAmount,double totalExchangeMoney,int stockBalance,int orderId,int transactionOrderId,double serviceTax, double stampTax, double otherFee, double actualAmount, int tradeMarket,int revokeAmount) {
 		super();
 		this.date = date;
@@ -58,10 +58,10 @@ public class TransactionOrderVO {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public Time getTime() {
+	public Date getTime() {
 		return time;
 	}
-	public void setTime(Time time) {
+	public void setTime(Date time) {
 		this.time = time;
 	}
 	

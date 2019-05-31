@@ -99,7 +99,8 @@ public class OrderListener {
 		}
 
 		try {
-			Stock stock = stockRepository.findById(orderVO.getStockId()).get();
+			System.out.println("kaishiduqvgupiao");
+			Stock stock = stockRepository.findByStockId(orderVO.getStockId());
 			order.setStock(stock);
 		} catch (IllegalArgumentException e) {
 			// TODO: handle exception
