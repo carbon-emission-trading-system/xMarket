@@ -8,4 +8,6 @@ import com.stock.xMarket.model.SelfSelectStock;
 @Repository
 public interface SelfSelectStockRepository extends JpaRepository<SelfSelectStock, Integer> {
 
+	void findByUser_UserIdAndStock_StockId();
+
 }
