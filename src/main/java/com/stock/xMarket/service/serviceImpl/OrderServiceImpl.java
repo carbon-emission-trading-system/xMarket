@@ -86,10 +86,8 @@ public class OrderServiceImpl implements OrderService {
 			orderList.add(order);
 		}
 		
-
+		orderList.addAll(orderRepository.findByUser_UserId(userId));
 //List<Order> dbOrderList=orderRepository.findByUser_UserId();
-		
-
 //orderList.addAll(dbOrderList);
 		
 		return orderList;

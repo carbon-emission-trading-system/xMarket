@@ -31,8 +31,16 @@ public class OrderController {
     	logger.info("传进来的用户ownerId："+id);
     	List<Order> list=orderService.findByUserId(id);
     	List<OrderVO> userVOList=new ArrayList<>();
-    	BeanUtils.copyProperties(list, userVOList);
-    	logger.info("传出去的结果："+list);
+    	
+    	for(Order order : list) {
+    		OrderVO orderVO=new OrderVO();
+    		BeanUtils.copyProperties(order, orderVO);
+    		orderVO.setStockId(order.getStock().getStockId());
+			orderVO.setStockName(order.getStock().getStockName());
+    		userVOList.add(orderVO);
+    	}
+    	
+    	logger.info("传出去的结果："+userVOList);
     	return Result.success(userVOList);
     }
 }
