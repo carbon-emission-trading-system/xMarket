@@ -76,6 +76,9 @@ public class TradeOrder {
 	@Transient
 	private int buyId;
 
+	@Column(name="trade_market")
+	private int tradeMarket;//交易市场   market
+
 	public int getTradeOrderId() {
 		return tradeOrderId;
 	}
@@ -84,7 +87,13 @@ public class TradeOrder {
 		this.tradeOrderId = tradeOrderId;
 	}
 
+	public int getTradeMarket() {
+		return tradeMarket;
+	}
 
+	public void setTradeMarket(int tradeMarket) {
+		this.tradeMarket = tradeMarket;
+	}
 
 	public int getStockId() {
 		return stockId;

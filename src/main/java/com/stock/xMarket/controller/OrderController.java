@@ -24,7 +24,7 @@ public class OrderController {
     private OrderService orderService;
 	final static Logger logger=LoggerFactory.getLogger(OrderController.class);
 	 
-	//找到用户的所有历史交易单信息
+	//找到用户的所有今日委托单信息
     @RequestMapping(value = "/api/todayOrder/{id}", method = RequestMethod.GET)
     public Result<List<OrderVO>> findAllTodayOrder(@PathVariable("id") int id) {
     	
@@ -43,4 +43,7 @@ public class OrderController {
     	logger.info("传出去的结果："+userVOList);
     	return Result.success(userVOList);
     }
+
+
+
 }

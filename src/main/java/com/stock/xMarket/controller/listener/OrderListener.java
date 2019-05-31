@@ -1,9 +1,9 @@
 /*
- * <p>项目名称: xMarket </p> 
- * <p>文件名称: OrderListener.java </p> 
+ * <p>项目名称: xMarket </p>
+ * <p>文件名称: OrderListener.java </p>
  * <p>描述: [类型描述] </p>
  * <p>创建时间: 2019-5-31 </p>
- * <p>公司信息: ************公司 *********部</p> 
+ * <p>公司信息: ************公司 *********部</p>
  * @author <a href="mail to: *******@******.com" rel="nofollow">作者</a>
  * @version v1.0
  * @update [序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
@@ -113,19 +113,19 @@ public class OrderListener {
 		// 将委托单添加至Redis
 		orderService.addOrderToRedis(order);
 
-		// 更新持仓股
-		if (orderVO.getType() == 0) {
+		// 更新可用资金
+		if (orderVO.getType() == 1) {
 			holdPositionService.updateHoldPositionByOrder(order);
-			
 		}
 		// 更新个人资金
 		userFundService.updateUserFundByOrder(order);
 
-		// 匹配
-		//marchService.march(order);
+		// 丢入撮合系统
+		// 待集成
+		marchService.march(order);
 
 	}
-	
+
 	@RabbitListener(queues = "${cancelOrder.queue.name}")
 	public void consumeCancelOrder(int orderId) throws BusinessException {
 		try {
@@ -133,10 +133,10 @@ public class OrderListener {
 		} catch (Exception e) {
 			logger.error("委托单监听器监听发生异常：{} ", orderId, e.fillInStackTrace());
 		}
-		
+
 		marchService.cancel(orderId);
-		
-		
+
+
 	}
 
 }
