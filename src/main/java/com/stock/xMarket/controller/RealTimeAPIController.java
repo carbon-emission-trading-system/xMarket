@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.stock.xMarket.service.RealTimeService;
+import com.stock.xMarket.service.SelfSelectStockService;
 
 
 
@@ -22,6 +23,8 @@ public class RealTimeAPIController extends BaseApiController{
 	@Autowired
 	RealTimeService realTimeService;
 	
+	@Autowired
+	SelfSelectStockService selfSelectStockService;
 	
 	@RequestMapping(value = "/realTimeDataDisplay")
 	public String realTimeDataDisplay(HttpSession session, String validateCode,HttpServletResponse response) {
