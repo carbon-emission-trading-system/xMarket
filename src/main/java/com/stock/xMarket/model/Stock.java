@@ -35,6 +35,9 @@ public class Stock implements Serializable{
 
 	@Column(name="earnings_per_share")
 	private String earningsPerShare;
+
+	@Column(name="trade_market")
+	private int tradeMarket;//交易市场   market
 	
 	/*@OneToMany(mappedBy = "stock")
 	@JsonBackReference
@@ -72,7 +75,15 @@ public class Stock implements Serializable{
 		this.earningsPerShare = earningsPerShare;
 	}
 
-	/*public List<Order> getOrders() {
+	public int getTradeMarket() {
+		return tradeMarket;
+	}
+
+	public void setTradeMarket(int tradeMarket) {
+		this.tradeMarket = tradeMarket;
+	}
+
+/*public List<Order> getOrders() {
 		return orders;
 	}
 

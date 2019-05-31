@@ -75,7 +75,7 @@ public class TransactionOrder implements Serializable{
 	private double actualAmount;//发生金额
 	
 	@Column(name="trade_market")
-	private String tradeMarket;//交易市场   market
+	private int tradeMarket;//交易市场   market
 	
 	@Column(name="stock_balance")
 	private int stockBalance;//股票余额
@@ -205,14 +205,6 @@ public class TransactionOrder implements Serializable{
 	public void setActualAmount(double actualAmount) {
 		this.actualAmount = actualAmount;
 	}
-
-	public String getTradeMarket() {
-		return tradeMarket;
-	}
-
-	public void setTradeMarket(String tradeMarket) {
-		this.tradeMarket = tradeMarket;
-	}
 	
 	public int getStockBalance() {
 		return stockBalance;
@@ -233,5 +225,8 @@ public class TransactionOrder implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
+
+	public void setTradeMarket(int tradeMarket) {
+		this.tradeMarket = tradeMarket;
+	}
 }

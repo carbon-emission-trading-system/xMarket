@@ -19,7 +19,7 @@ public class TransactionOrderController {
     private TransactionOrderService transactionOrderService;
 	final static Logger logger=LoggerFactory.getLogger(TransactionOrderController.class);
 	 
-	//找到用户的所有历史交易单信息
+	//找到用户的所有历史成交单信息
     @RequestMapping(value = "/api/historyExchangeInfo/{id}", method = RequestMethod.GET)
     public Result<List<TransactionOrderVO>> findAllHisExcInfo(@PathVariable("id") int id) {
     	

@@ -94,7 +94,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 			//放入数据库前先计算服务费、成交价和股票余额
 			sellOrder.setStampTax(sellOrder.getTotalExchangeMoney()*0.01);
-			sellOrder.setOtherFee(sellOrder.getExchangeAmount()*0.0002887);
+			sellOrder.setOtherFee(sellOrder.getExchangeAmount()*0.0002687);
 			sellOrder.setServiceTax(serviceFaxCaculator(sellOrder.getTotalExchangeMoney()));
 			sellOrder.setActualAmount(sellOrder.getTotalExchangeMoney()-sellOrder.getOtherFee()-sellOrder.getServiceTax()-sellOrder.getStampTax());
 			sellOrder.setTradePrice(sellOrder.getTotalExchangeMoney()/sellOrder.getExchangeAmount());
@@ -189,23 +189,40 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		if(tradeOrder.getBuyOrderId() == 0){
 			LOGGER.info("委托单"+tradeOrder.getSellOrderId()+"撤单");
 			revokeOrder = createSellTransactionOrder(tradeOrder);
+
+			revokeOrder.setRevokeAmount(tradeOrder.getExchangeAmount());
+			//redis中查重
+			TransactionOrder redisOrder =  transactionRedis.get(String.valueOf(revokeOrder.getOrderId()));
+			if(redisOrder!=null){
+				LOGGER.info("在redis中找到已成交卖单");
+				revokeOrder.setExchangeAmount(redisOrder.getExchangeAmount());
+				revokeOrder.setTotalExchangeMoney(redisOrder.getTotalExchangeMoney());
+				revokeOrder.setTradePrice(revokeOrder.getTotalExchangeMoney()/revokeOrder.getExchangeAmount());
+				revokeOrder.setStampTax(revokeOrder.getTotalExchangeMoney()*0.01);
+				revokeOrder.setOtherFee(revokeOrder.getTotalExchangeMoney()*0.0002687);
+				revokeOrder.setServiceTax(serviceFaxCaculator(revokeOrder.getTotalExchangeMoney()));
+				revokeOrder.setActualAmount(revokeOrder.getTotalExchangeMoney()-revokeOrder.getOtherFee()-revokeOrder.getServiceTax()-revokeOrder.getStampTax());
+			}
 		}else{
 			LOGGER.info("委托单"+tradeOrder.getBuyOrderId()+"撤单");
 			revokeOrder = createBuyTransactionOrder(tradeOrder);
+
+			revokeOrder.setRevokeAmount(tradeOrder.getExchangeAmount());
+			//redis中查重
+			TransactionOrder redisOrder =  transactionRedis.get(String.valueOf(revokeOrder.getOrderId()));
+			if(redisOrder!=null){
+				LOGGER.info("在redis中找到已成交买单");
+				revokeOrder.setExchangeAmount(redisOrder.getExchangeAmount());
+				revokeOrder.setTotalExchangeMoney(redisOrder.getTotalExchangeMoney());
+				revokeOrder.setTradePrice(revokeOrder.getTotalExchangeMoney()/revokeOrder.getExchangeAmount());
+				revokeOrder.setStampTax(0);
+				revokeOrder.setOtherFee(revokeOrder.getTotalExchangeMoney()*0.0002887);
+				revokeOrder.setServiceTax(serviceFaxCaculator(revokeOrder.getTotalExchangeMoney()));
+				revokeOrder.setActualAmount(revokeOrder.getTotalExchangeMoney()+revokeOrder.getOtherFee()+revokeOrder.getServiceTax()+revokeOrder.getStampTax());
+			}
 		}
-		revokeOrder.setRevokeAmount(tradeOrder.getExchangeAmount());
-		//redis中查重
-		TransactionOrder redisOrder =  transactionRedis.get(String.valueOf(revokeOrder.getOrderId()));
-		if(redisOrder!=null){
-			LOGGER.info("在redis中找到已成交卖单");
-			revokeOrder.setExchangeAmount(redisOrder.getExchangeAmount());
-			revokeOrder.setTotalExchangeMoney(redisOrder.getTotalExchangeMoney());
-			revokeOrder.setTradePrice(revokeOrder.getTotalExchangeMoney()/revokeOrder.getExchangeAmount());
-			revokeOrder.setStampTax(revokeOrder.getTotalExchangeMoney()*0.01);
-			revokeOrder.setOtherFee(revokeOrder.getTotalExchangeMoney()*0.0002887);
-			revokeOrder.setServiceTax(serviceFaxCaculator(revokeOrder.getTotalExchangeMoney()));
-			revokeOrder.setActualAmount(revokeOrder.getTotalExchangeMoney()-revokeOrder.getOtherFee()-revokeOrder.getServiceTax()-revokeOrder.getStampTax());
-		}
+
+
 		return revokeOrder;
 	}
 }

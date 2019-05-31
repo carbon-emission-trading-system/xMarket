@@ -113,15 +113,15 @@ public class OrderListener {
 		// 将委托单添加至Redis
 		orderService.addOrderToRedis(order);
 
-		// 更新持仓股
-		if (orderVO.getType() == 0) {
+		// 更新可用资金
+		if (orderVO.getType() == 1) {
 			holdPositionService.updateHoldPositionByOrder(order);
-			;
 		}
 		// 更新个人资金
 		userFundService.updateUserFundByOrder(order);
 
-		// 匹配
+		// 丢入撮合系统
+		// 待集成
 		marchService.march(order);
 
 	}
