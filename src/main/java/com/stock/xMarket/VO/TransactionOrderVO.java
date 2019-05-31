@@ -1,12 +1,13 @@
 package com.stock.xMarket.VO;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Time;
 
 public class TransactionOrderVO {
 	
 	
 	private Date date;//成交日期
-	private Date time;//成交时间
+	private Time time;//成交时间
 	private int stockId;
 	private String stockName;
 	private Boolean point;//买入卖出  true=买入
@@ -22,11 +23,11 @@ public class TransactionOrderVO {
 	private double stampTax;//印花税
 	private double otherFee;//其他杂费
 	private double actualAmount;//发生金额
-	private String tradeMarket;//交易市场
+	private int tradeMarket;//交易市场
 	private int revokeAmount;//撤单数量
 	
-	public TransactionOrderVO(Date date, Date time, int stockId, String stockName, Boolean point, double tradePrice,
-			int exchangeAmount,double totalExchangeMoney,int stockBalance,int orderId,int transactionOrderId,double serviceTax, double stampTax, double otherFee, double actualAmount, String tradeMarket,int revokeAmount) {
+	public TransactionOrderVO(Date date, Time time, int stockId, String stockName, Boolean point, double tradePrice,
+			int exchangeAmount,double totalExchangeMoney,int stockBalance,int orderId,int transactionOrderId,double serviceTax, double stampTax, double otherFee, double actualAmount, int tradeMarket,int revokeAmount) {
 		super();
 		this.date = date;
 		this.time = time;
@@ -57,10 +58,10 @@ public class TransactionOrderVO {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public Date getTime() {
+	public Time getTime() {
 		return time;
 	}
-	public void setTime(Date time) {
+	public void setTime(Time time) {
 		this.time = time;
 	}
 	
@@ -168,11 +169,11 @@ public class TransactionOrderVO {
 		this.actualAmount = actualAmount;
 	}
 
-	public String getTradeMarket() {
+	public int getTradeMarket() {
 		return tradeMarket;
 	}
 
-	public void setTradeMarket(String tradeMarket) {
+	public void setTradeMarket(int tradeMarket) {
 		this.tradeMarket = tradeMarket;
 	}
 
