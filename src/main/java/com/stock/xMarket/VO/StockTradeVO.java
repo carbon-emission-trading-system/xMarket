@@ -6,6 +6,7 @@ public class StockTradeVO {
     private double userMoney;//用户资金
     private int tradeMarket;//交易所市场
     private double OrderPrice;//最新成交价
+    private double availableNumber;//可用余额
 
     public int getStockId() {
         return stockId;
@@ -45,5 +46,13 @@ public class StockTradeVO {
 
     public void setOrderPrice(double orderPrice) {
         OrderPrice = orderPrice;
+    }
+
+    public double getAvailableNumber() {
+        return availableNumber;
+    }
+
+    public void setAvailableNumber(double availableNumber) {
+        this.availableNumber = availableNumber;
     }
 }

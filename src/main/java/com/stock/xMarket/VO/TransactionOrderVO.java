@@ -22,11 +22,11 @@ public class TransactionOrderVO {
 	private double stampTax;//印花税
 	private double otherFee;//其他杂费
 	private double actualAmount;//发生金额
-	private String tradeMarket;//交易市场
+	private int tradeMarket;//交易市场
 	private int revokeAmount;//撤单数量
 	
 	public TransactionOrderVO(Date date, Date time, int stockId, String stockName, Boolean point, double tradePrice,
-			int exchangeAmount,double totalExchangeMoney,int stockBalance,int orderId,int transactionOrderId,double serviceTax, double stampTax, double otherFee, double actualAmount, String tradeMarket,int revokeAmount) {
+			int exchangeAmount,double totalExchangeMoney,int stockBalance,int orderId,int transactionOrderId,double serviceTax, double stampTax, double otherFee, double actualAmount, int tradeMarket,int revokeAmount) {
 		super();
 		this.date = date;
 		this.time = time;
@@ -168,11 +168,11 @@ public class TransactionOrderVO {
 		this.actualAmount = actualAmount;
 	}
 
-	public String getTradeMarket() {
+	public int getTradeMarket() {
 		return tradeMarket;
 	}
 
-	public void setTradeMarket(String tradeMarket) {
+	public void setTradeMarket(int tradeMarket) {
 		this.tradeMarket = tradeMarket;
 	}
 

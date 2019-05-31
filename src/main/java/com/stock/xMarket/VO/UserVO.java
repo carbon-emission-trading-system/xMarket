@@ -11,7 +11,7 @@ public class UserVO implements Serializable{
 	private static final long serialVersionUID = 7521391360002308184L;
 
 	
-	private String username;
+	private String userName;
 	
 	private String loginPassword;
 	
@@ -19,22 +19,25 @@ public class UserVO implements Serializable{
 	
 	private String email;
 
-	private long id;
-	
+	private int userId;
 	
 	private String dbflag;
 
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
-	
+	public int getUserId() {
+		return userId;
+	}
 
-	
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
 	public String getLoginPassword() {
 		return loginPassword;
@@ -58,14 +61,6 @@ public class UserVO implements Serializable{
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public String getDbflag() {

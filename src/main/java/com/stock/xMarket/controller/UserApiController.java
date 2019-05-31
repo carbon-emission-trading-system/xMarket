@@ -63,7 +63,7 @@ public class UserApiController extends BaseApiController {
 				cookie.setMaxAge(3600);
 				cookie.setPath("/");
 				response.addCookie(cookie);
-				log.info("id为"+dbUser.getId()+"的用户登录成功");
+				log.info("id为"+dbUser.getUserId()+"的用户登录成功");
 				return success(); // Result.success(); 200, "success"
 			} else {
 				throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"密码错误");
