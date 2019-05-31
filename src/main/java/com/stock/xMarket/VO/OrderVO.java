@@ -44,6 +44,10 @@ public class OrderVO implements Serializable {
 	
 	public OrderVO() {
 	}
+	
+	public OrderVO(int orderId) {
+		this.orderId=orderId;
+	}
 
 	
 	

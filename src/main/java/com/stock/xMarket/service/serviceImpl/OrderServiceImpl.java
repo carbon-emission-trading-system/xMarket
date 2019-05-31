@@ -65,24 +65,18 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<OrderVO> findByUserId(int userId){
 		
-		if(orderRedis.hasKey(String.valueOf(userId))){
-			//从缓存中获取当日委托
-			List<Order> orderList=new ArrayList<Order>();
-			List<OrderVO> orderVOList=new ArrayList<OrderVO>();
-			List<Integer> orderIdList=orderRepository.findOrderId(userId);
-			for(Integer orderId : orderIdList) {
-				
-				orderList.add(orderRedis.get(String.valueOf(orderId)));
-			}
-			BeanUtils.copyProperties(orderVOList, orderList); 
-			return orderVOList;
-		}else {
-			//从DB中获取当日委托列表
-			List<OrderVO> list=orderRepository.findByUserId(userId);
-			//放入缓存
-			//orderRedis.put(String.valueOf(userId), list, 24*60*60);
-			return list;
+		List<OrderVO> orderVOList=new ArrayList<OrderVO>();
+		List<OrderVO> orderIdList=orderRepository.findOrderId(userId);			
+		for(OrderVO orderId : orderIdList) {
+			OrderVO orderVO=new OrderVO();
+			Order order=new Order();
+			order=orderRedis.get(String.valueOf(orderId.getOrderId()));
+			BeanUtils.copyProperties(order,orderVO);
+			orderVO.setStockId(order.getStock().getStockId());
+			orderVO.setStockName(order.getStock().getStockName());
+			orderVOList.add(orderVO);		
 		}
+		return orderVOList;
 		
     }
 
