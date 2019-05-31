@@ -79,8 +79,8 @@ public abstract class BaseRedis<T> {
 	     * 判断散列中是否存在某个key
 	     */
 	 public  boolean hasKey(String key) {
-	    	//return hashOperations.hasKey(key, hashKey);
-		 return redisTemplate.hasKey(key);
+	     return hashOperations.hasKey(getRedisKey(), key);
+		 //return redisTemplate.hasKey(key);
 	 }
 	 
 	 public void put(String key, T domain, long expire){
