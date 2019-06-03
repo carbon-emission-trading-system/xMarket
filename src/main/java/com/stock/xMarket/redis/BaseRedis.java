@@ -1,5 +1,6 @@
 package com.stock.xMarket.redis;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -81,6 +82,13 @@ public abstract class BaseRedis<T> {
 	 public  boolean hasKey(String key) {
 	     return hashOperations.hasKey(getRedisKey(), key);
 		 //return redisTemplate.hasKey(key);
+	 }
+	 
+	 /**
+	     * 获取散列的value集合
+	     */
+	 public List<T> getAll(){
+		 return hashOperations.values(getRedisKey());
 	 }
 	 
 	 public void put(String key, T domain, long expire){
