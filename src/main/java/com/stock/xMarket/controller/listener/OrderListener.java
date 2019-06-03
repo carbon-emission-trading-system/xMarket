@@ -32,6 +32,7 @@ import com.stock.xMarket.service.HoldPositionService;
 import com.stock.xMarket.service.MarchService;
 import com.stock.xMarket.service.OrderService;
 import com.stock.xMarket.service.UserFundService;
+import com.stock.xMarket.util.UUIDUtil;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -45,6 +46,7 @@ import com.stock.xMarket.service.UserFundService;
  */
 @Controller
 public class OrderListener {
+	
 
 	/** The Constant logger. */
 	private static final Logger logger = LoggerFactory.getLogger(OrderListener.class);
@@ -111,6 +113,12 @@ public class OrderListener {
 
 		BeanUtils.copyProperties(orderVO, order);
 
+		
+		
+		//生成id
+		int userId=order.getUser().getUserId();
+		order.setOrderId(UUIDUtil.getGuid(userId));
+		
 		// 将委托单添加至Redis
 		orderService.addOrderToRedis(order);
 
@@ -122,8 +130,7 @@ public class OrderListener {
 		userFundService.updateUserFundByOrder(order);
 
 		// 丢入撮合系统
-		// 待集成
-	//	marchService.march(order);
+		marchService.march(order);
 
 	}
 
