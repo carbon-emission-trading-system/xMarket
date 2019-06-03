@@ -22,6 +22,7 @@ import com.stock.xMarket.repository.TransactionOrderRepository;
 import com.stock.xMarket.service.HoldPositionService;
 import com.stock.xMarket.service.OrderService;
 import com.stock.xMarket.service.TransactionOrderService;
+import com.stock.xMarket.service.UserFundService;
 
 @Service
 @Transactional
@@ -41,6 +42,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 	@Autowired
 	private HoldPositionService holdPositionService;
+	
+	@Autowired
+	UserFundService userFundService;
 	
 	//返回全部历史成交单
 	@Override
@@ -65,6 +69,8 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			orderService.updateOrderBytransactionOrder(revokeOrder);
 			
 			holdPositionService.updateHoldPositionByTransaction(revokeOrder);
+			
+			userFundService.updateUserFundByTransaction(revokeOrder);
 			
 			return;
 		}
@@ -117,6 +123,8 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			//更新持仓
 			holdPositionService.updateHoldPositionByTransaction(sellOrder);
 			
+			//更新个人资金
+			userFundService.updateUserFundByTransaction(sellOrder);
 		}
 
 		//如果买方标识位为false，则将买方成交单放入redis；反之则放入数据库
@@ -155,6 +163,10 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			orderService.updateOrderBytransactionOrder(buyOrder);
 			
 			holdPositionService.updateHoldPositionByTransaction(buyOrder);
+			
+			userFundService.updateUserFundByTransaction(buyOrder);
+			
+			
 		}
 
 

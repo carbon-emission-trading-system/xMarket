@@ -2,6 +2,6 @@ package com.stock.xMarket.service;
 
 public interface SelfSelectStockService {
 
-	void isSelected();
+	boolean isSelected(Integer stockId, Integer userId);
 
 }
