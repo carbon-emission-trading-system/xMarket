@@ -1,3 +1,4 @@
+
 package com.stock.xMarket.service.serviceImpl;
 
 import java.sql.Date;
@@ -28,6 +29,11 @@ public class UserFundServiceImpl implements UserFundService {
 	
 	
   
+	/**
+	 * Update user fund by transaction.
+	 *
+	 * @param transactionOrder the transaction order
+	 */
 	@Override
 	public void updateUserFundByTransaction(TransactionOrder transactionOrder) {;
 		// TODO Auto-generated method stub
@@ -52,6 +58,11 @@ public class UserFundServiceImpl implements UserFundService {
 		
 	}
 
+	/**
+	 * Update user fund by order.
+	 *
+	 * @param order the order
+	 */
 	@Override
 	public void updateUserFundByOrder(Order order) {
 		// TODO Auto-generated method stub
@@ -75,18 +86,16 @@ public class UserFundServiceImpl implements UserFundService {
 			
 		}else {
 			//计算手续费,买的时候更新
-			frozenAmount+=order.getOrderPrice()*order.getOrderAmount()*0.0002887;
+			frozenAmount+=order.getOrderPrice()*order.getOrderAmount()*1.0002887;
 			frozenAmount+=serviceFaxCaculator(order.getOrderPrice()*order.getOrderAmount());
+			
 		}
 		
-		
-		if(order.getType()==1) {
 			double balance=userFund.getBalance()-frozenAmount;
 			frozenAmount+=userFund.getFrozenAmount();
 			userFund.setFrozenAmount(frozenAmount);
 			userFund.setBalance(balance);
 			userFundRepository.saveAndFlush(userFund);
-		}
 	}
 	
 		//用于计算手续费的函数

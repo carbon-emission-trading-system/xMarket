@@ -14,7 +14,7 @@ import com.stock.xMarket.result.Result;
 import com.stock.xMarket.service.TransactionOrderService;
 
 @RestController
-public class TransactionOrderController {
+public class TransactionOrderController extends BaseApiController {
 	@Autowired
     private TransactionOrderService transactionOrderService;
 	final static Logger logger=LoggerFactory.getLogger(TransactionOrderController.class);

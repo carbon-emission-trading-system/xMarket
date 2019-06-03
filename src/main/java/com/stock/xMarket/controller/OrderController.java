@@ -14,11 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.xMarket.VO.OrderVO;
 import com.stock.xMarket.model.Order;
+import com.stock.xMarket.response.CommonReturnType;
 import com.stock.xMarket.result.Result;
 import com.stock.xMarket.service.OrderService;
 
+
+import static com.stock.xMarket.response.CommonReturnType.*;
+
 @RestController
-public class OrderController {
+public class OrderController extends BaseApiController{
 
 	@Autowired
     private OrderService orderService;
@@ -26,7 +30,7 @@ public class OrderController {
 	 
 	//找到用户的所有今日委托单信息
     @RequestMapping(value = "/api/todayOrder/{id}", method = RequestMethod.GET)
-    public Result<List<OrderVO>> findAllTodayOrder(@PathVariable("id") int id) {
+    public CommonReturnType findAllTodayOrder(@PathVariable("id") int id) {
     	
     	logger.info("传进来的用户ownerId："+id);
     	List<Order> list=orderService.findByUserId(id);
@@ -41,7 +45,7 @@ public class OrderController {
     	}
     	
     	logger.info("传出去的结果："+userVOList);
-    	return Result.success(userVOList);
+    	return success(userVOList);
     }
 
 

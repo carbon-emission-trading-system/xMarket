@@ -1,5 +1,6 @@
 package com.stock.xMarket.model;
 
+import java.sql.Date;
 import java.sql.Time;
 
 import javax.persistence.CascadeType;
@@ -27,6 +28,8 @@ public class TimeShare {
 	@JoinColumn(name="stock_id")
 	private Stock stock;
 
+	@Column
+	private Date date;
 
 	
 	@Column

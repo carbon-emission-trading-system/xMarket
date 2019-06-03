@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 public interface StockRepository extends JpaRepository<Stock, Integer> {
 
         Stock findByStockName(String stockName);
+
+		Stock findByStockId(int stockId);
 }
 
 

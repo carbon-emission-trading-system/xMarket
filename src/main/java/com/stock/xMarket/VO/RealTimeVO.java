@@ -24,7 +24,7 @@ public class RealTimeVO implements Serializable{
 	private double conversionHand;
 	private double totalMarketCapitalization;
 	private double staticPERatio;
-	private double dailyLimit;
+	private double dailyLimit;//涨停
 	private double downLimitBoard;
 	private double cityNet;
 	private int volume;

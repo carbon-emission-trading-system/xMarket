@@ -45,9 +45,10 @@ public class TradeController extends BaseApiController {
         Stock stock = stockRepository.findById(stockId).get();
         stockTradeVO.setUserMoney(userFund.getBalance());
         stockTradeVO.setStockId(stockId);
-        stockTradeVO.setOrderPrice(1.78);
+        stockTradeVO.setOrderPrice(1.78);//虚假
         stockTradeVO.setTradeMarket(stock.getTradeMarket());
         stockTradeVO.setStockName(stock.getStockName());
+        stockTradeVO.setOpenPrice(3.3);//虚假
         return stockTradeVO;
     }
 

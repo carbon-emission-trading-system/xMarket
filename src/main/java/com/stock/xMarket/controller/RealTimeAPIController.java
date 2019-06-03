@@ -1,16 +1,26 @@
 package com.stock.xMarket.controller;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+
+import java.sql.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.stock.xMarket.model.TimeShare;
+import com.stock.xMarket.redis.RealTimeRedis;
+import com.stock.xMarket.repository.TimeShareRepository;
+import com.stock.xMarket.response.CommonReturnType;
+import com.stock.xMarket.result.Result;
 import com.stock.xMarket.service.RealTimeService;
+import com.stock.xMarket.service.SelfSelectStockService;
 
+
+import static com.stock.xMarket.response.CommonReturnType.*;
 
 
 public class RealTimeAPIController extends BaseApiController{
@@ -22,15 +32,45 @@ public class RealTimeAPIController extends BaseApiController{
 	@Autowired
 	RealTimeService realTimeService;
 	
+	@Autowired
+	SelfSelectStockService selfSelectStockService;
+	
+	@Autowired
+	RealTimeRedis realTimeRedis;
+	
+	@Autowired
+	TimeShareRepository timeShareRepository;
 	
 	@RequestMapping(value = "/realTimeDataDisplay")
-	public String realTimeDataDisplay(HttpSession session, String validateCode,HttpServletResponse response) {
-		
+	public String realTimeDataDisplay(@RequestParam Integer stockId) {
 		
 		
 		return "首次拿到实时信息";
 		
 	}
+	
+	
+	@RequestMapping(value = "/timeShareDisplay")
+	public CommonReturnType timeShareDisplay(@RequestParam Integer stockId) {
+		
+		Date date=new Date(System.currentTimeMillis());
+		List<TimeShare> timeShareList=timeShareRepository.findByStock_StockIdAndDate(stockId,date);
+		
+		return success(timeShareList);
+		
+	}
+	
+	@RequestMapping(value = "/isSelfSelectStock")
+	public CommonReturnType isSelfSelectStock(@RequestParam Integer stockId,@RequestParam Integer userId) {
+		
+		if(selfSelectStockService.isSelected(stockId,userId))
+			return success(true);
+		else
+			return success(false);
+		
+	}
+	
+	
 	
 	
 }

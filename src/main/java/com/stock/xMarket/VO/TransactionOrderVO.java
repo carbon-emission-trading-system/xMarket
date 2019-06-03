@@ -2,6 +2,7 @@ package com.stock.xMarket.VO;
 
 import java.util.Date;
 
+
 public class TransactionOrderVO {
 	
 	
