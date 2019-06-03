@@ -18,7 +18,7 @@ import com.stock.xMarket.result.Result;
 import com.stock.xMarket.service.OrderService;
 
 @RestController
-public class OrderController {
+public class OrderController extends BaseApiController{
 
 	@Autowired
     private OrderService orderService;

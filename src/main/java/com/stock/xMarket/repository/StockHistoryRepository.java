@@ -5,10 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.stock.xMarket.model.StockHistory;
 
-
+import java.util.List;
 
 
 @Repository
 public interface StockHistoryRepository extends JpaRepository<StockHistory,Integer>{
-
+        List<StockHistory> findAllByStockId(int stockId);
 }

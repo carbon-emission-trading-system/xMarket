@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class HistoryHoldPositionController {
+public class HistoryHoldPositionController extends BaseApiController {
 
 	@Autowired
     private HistoryHoldPositionService historyHoldPositionService;
