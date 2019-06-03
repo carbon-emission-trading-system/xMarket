@@ -2,18 +2,25 @@ package com.stock.xMarket.controller;
 
 
 
+import java.sql.Date;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.stock.xMarket.model.TimeShare;
 import com.stock.xMarket.redis.RealTimeRedis;
 import com.stock.xMarket.repository.TimeShareRepository;
+import com.stock.xMarket.response.CommonReturnType;
 import com.stock.xMarket.result.Result;
 import com.stock.xMarket.service.RealTimeService;
 import com.stock.xMarket.service.SelfSelectStockService;
 
+
+import static com.stock.xMarket.response.CommonReturnType.*;
 
 
 public class RealTimeAPIController extends BaseApiController{
@@ -44,21 +51,22 @@ public class RealTimeAPIController extends BaseApiController{
 	
 	
 	@RequestMapping(value = "/timeShareDisplay")
-	public String timeShareDisplay(@RequestParam Integer stockId) {
+	public CommonReturnType timeShareDisplay(@RequestParam Integer stockId) {
 		
-		//timeShareRepository.findByStock_StockIdAndDate
+		Date date=new Date(System.currentTimeMillis());
+		List<TimeShare> timeShareList=timeShareRepository.findByStock_StockIdAndDate(stockId,date);
 		
-		return "首次拿到实时信息";
+		return success(timeShareList);
 		
 	}
 	
 	@RequestMapping(value = "/isSelfSelectStock")
-	public Result<Boolean> isSelfSelectStock(@RequestParam Integer stockId,@RequestParam Integer userId) {
+	public CommonReturnType isSelfSelectStock(@RequestParam Integer stockId,@RequestParam Integer userId) {
 		
 		if(selfSelectStockService.isSelected(stockId,userId))
-			return Result.success(true);
+			return success(true);
 		else
-			return Result.success(false);
+			return success(false);
 		
 	}
 	
