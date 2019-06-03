@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
 
+import com.alibaba.fastjson.JSON;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.model.Order;
 import com.stock.xMarket.model.TradeOrder;
@@ -64,7 +65,8 @@ public class TradeOrderListener  {
      * @param tradeOrder the trade order
      */
     @RabbitListener(queues = "${tradeOrder.queue.name}")
-    public void tradeOrderListener(@Payload TradeOrder tradeOrder){
+    public void tradeOrderListener(String str){
+    	TradeOrder tradeOrder=JSON.parseObject(str,TradeOrder.class);
         try {
         	logger.info("交易单监听器监听到交易单: {} ",tradeOrder);
         	
