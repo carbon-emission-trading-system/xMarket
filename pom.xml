@@ -76,12 +76,7 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-        <dependency>
-            <groupId>com.xmarket</groupId>
-            <artifactId>xMarketOrder</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
+
 
 
     </dependencies>
