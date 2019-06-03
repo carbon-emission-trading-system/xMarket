@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import com.stock.xMarket.VO.TransactionOrderVO;
 import com.stock.xMarket.repository.TransactionOrderRepository;
+import com.stock.xMarket.service.HoldPositionService;
 import com.stock.xMarket.service.OrderService;
 import com.stock.xMarket.service.TransactionOrderService;
 
@@ -35,7 +36,11 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	private TransactionRedis transactionRedis;
 
 	@Autowired
-	OrderService orderService;
+	private OrderService orderService;
+	
+
+	@Autowired
+	private HoldPositionService holdPositionService;
 	
 	//返回全部历史成交单
 	@Override
@@ -57,7 +62,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			LOGGER.info("委托单号："+revokeOrder.getOrderId()+" 的委托买单已被撤单，成交单存入数据库");
 			transactionOrderRepository.saveAndFlush(revokeOrder);
 			
-			orderService.updateOrderByTradeOrder(revokeOrder);
+			orderService.updateOrderBytransactionOrder(revokeOrder);
+			
+			holdPositionService.updateHoldPositionByTransaction(revokeOrder);
 			
 			return;
 		}
@@ -104,7 +111,11 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			LOGGER.info("委托单号："+sellOrder.getOrderId()+" 的委托卖单完成交易，成交单存入数据库");
 			transactionOrderRepository.saveAndFlush(sellOrder);
 			
-			orderService.updateOrderByTradeOrder(sellOrder);
+			//更新委托单
+			orderService.updateOrderBytransactionOrder(sellOrder);
+			
+			//更新持仓
+			holdPositionService.updateHoldPositionByTransaction(sellOrder);
 			
 		}
 
@@ -140,7 +151,10 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			LOGGER.info("委托单号："+buyOrder.getOrderId()+" 的委托买单完成交易，成交单存入数据库");
 			transactionOrderRepository.saveAndFlush(buyOrder);
 			
-			orderService.updateOrderByTradeOrder(buyOrder);
+			//委托单完成，更新委托单
+			orderService.updateOrderBytransactionOrder(buyOrder);
+			
+			holdPositionService.updateHoldPositionByTransaction(buyOrder);
 		}
 
 

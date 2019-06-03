@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	public void updateOrderByTradeOrder(TransactionOrder transactionOrder) {
+	public void updateOrderBytransactionOrder(TransactionOrder transactionOrder) {
 		// TODO Auto-generated method stub
 		int OrderId=transactionOrder.getOrderId();
 		

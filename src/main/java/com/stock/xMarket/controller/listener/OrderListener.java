@@ -120,14 +120,22 @@ public class OrderListener {
 		order.setOrderId(UUIDUtil.getGuid(userId));
 		
 		// 将委托单添加至Redis
+		try {
 		orderService.addOrderToRedis(order);
-
-		// 更新可用资金
-		if (orderVO.getType() == 1) {
-			holdPositionService.updateHoldPositionByOrder(order);
+		}catch (Exception e) {
+			// TODO: handle exception
+			logger.info("将委托单加入Redis发生异常");
 		}
-		// 更新个人资金
-		userFundService.updateUserFundByOrder(order);
+
+		
+		if (orderVO.getType() == 1) {
+			// 更新股票可用余额
+			holdPositionService.updateHoldPositionByOrder(order);
+		}else {
+			// 更新个人资金
+			userFundService.updateUserFundByOrder(order);
+		}
+	
 
 		// 丢入撮合系统
 		marchService.march(order);

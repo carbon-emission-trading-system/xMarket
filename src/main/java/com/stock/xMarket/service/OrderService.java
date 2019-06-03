@@ -16,6 +16,8 @@ public interface OrderService {
 	
 	void addOrderToRedis(Order order);
 	
-	void updateOrderByTradeOrder(TransactionOrder revokeOrder);
+
+
+	void updateOrderBytransactionOrder(TransactionOrder transactionOrder);
 
 }

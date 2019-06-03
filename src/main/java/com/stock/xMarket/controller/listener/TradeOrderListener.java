@@ -66,7 +66,7 @@ public class TradeOrderListener  {
     @RabbitListener(queues = "${tradeOrder.queue.name}")
     public void tradeOrderListener(@Payload TradeOrder tradeOrder){
         try {
-        	logger.info("交易单监听器监听到消息: {} ",tradeOrder);
+        	logger.info("交易单监听器监听到交易单: {} ",tradeOrder);
         	
         }catch (Exception e){
             logger.error("委托单监听器监听发生异常：{} ",e.fillInStackTrace());
