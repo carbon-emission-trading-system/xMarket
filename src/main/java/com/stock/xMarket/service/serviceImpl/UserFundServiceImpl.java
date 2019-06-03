@@ -91,14 +91,11 @@ public class UserFundServiceImpl implements UserFundService {
 			
 		}
 		
-		
-		if(order.getType()==1) {
 			double balance=userFund.getBalance()-frozenAmount;
 			frozenAmount+=userFund.getFrozenAmount();
 			userFund.setFrozenAmount(frozenAmount);
 			userFund.setBalance(balance);
 			userFundRepository.saveAndFlush(userFund);
-		}
 	}
 	
 		//用于计算手续费的函数
