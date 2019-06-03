@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
 		
 		String userId=String.valueOf(order.getUser().getUserId());
 		
-		ArrayList<Integer> orderIdList= userOrderRedis.get(userId);
+		ArrayList<String> orderIdList= userOrderRedis.get(userId);
 
 		orderIdList.add(order.getOrderId());
 		userOrderRedis.put(userId, orderIdList, -1);
@@ -78,11 +78,11 @@ public class OrderServiceImpl implements OrderService {
 		
 		List<Order> orderList=new ArrayList<>();
 		
-		ArrayList<Integer> orderIdList=userOrderRedis.get(String.valueOf(userId));
+		ArrayList<String> orderIdList=userOrderRedis.get(String.valueOf(userId));
 		
 		
-		for(Integer orderId:orderIdList) {
-			Order order=orderRedis.get(String.valueOf(orderId));
+		for(String orderId:orderIdList) {
+			Order order=orderRedis.get(orderId);
 			orderList.add(order);
 		}
 		
@@ -119,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
 		
 		String userId=String.valueOf(transactionOrder.getOwnerId());
 		
-		ArrayList<Integer> orderIdList= userOrderRedis.get(userId);
+		ArrayList<String> orderIdList= userOrderRedis.get(userId);
 
 		orderIdList.remove(order.getOrderId());
 		userOrderRedis.put(userId, orderIdList, -1);

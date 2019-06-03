@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.stock.xMarket.model.Order;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Integer>{
+public interface OrderRepository extends JpaRepository<Order, String>{
 
 //	@Query(value="select new com.stock.xMarket.VO.OrderVO(o.date,o.localTime,s.stockId as stockId,s.stockName as stockName,o.type,o.orderAmount,o.exchangeAmount,o.exchangeAveragePrice," + 
 //			"o.orderPrice,o.cancelNumber,o.tradeStraregy,o.orderId) "

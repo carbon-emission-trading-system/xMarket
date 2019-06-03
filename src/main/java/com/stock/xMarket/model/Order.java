@@ -27,7 +27,7 @@ public class Order implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="order_id")
-	private int orderId;
+	private String orderId;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="stock_id")
@@ -66,7 +66,10 @@ public class Order implements Serializable{
 
 	public Order(){}
 
-	public Order(int orderId, Stock stock, User user, Time localTime, int type, Date date, int tradeStraregy,
+	
+	
+
+	public Order(String orderId, Stock stock, User user, Time localTime, int type, Date date, int tradeStraregy,
 			int orderAmount, int exchangeAmount, double orderPrice, double exchangeAveragePrice, int cancelNumber) {
 		super();
 		this.orderId = orderId;
@@ -82,14 +85,24 @@ public class Order implements Serializable{
 		this.exchangeAveragePrice = exchangeAveragePrice;
 		this.cancelNumber = cancelNumber;
 	}
+
+
+
 	
-	public int getOrderId() {
+
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(int orderId) {
+
+
+
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
+
+
+
 
 	public Stock getStock() {
 		return stock;

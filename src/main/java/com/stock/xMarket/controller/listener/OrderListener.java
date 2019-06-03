@@ -117,7 +117,7 @@ public class OrderListener {
 		
 		//生成id
 		int userId=order.getUser().getUserId();
-		order.setOrderId(UUIDUtil.getGuid(userId));
+		order.setOrderId(UUIDUtil.getUUID());
 		
 		// 将委托单添加至Redis
 		try {
