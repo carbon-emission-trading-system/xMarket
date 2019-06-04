@@ -41,7 +41,7 @@ public class UserFundServiceImpl implements UserFundService {
 
 		UserFund userFund=userFundRepository.findByUser_UserId(userId);
 		
-		if(transactionOrder.isPoint()) {
+		if(transactionOrder.getType()==0) {
 			
 			Double frozenAmount=userFund.getFrozenAmount()-transactionOrder.getActualAmount()-transactionOrder.getServiceTax();
 			userFund.setFrozenAmount(frozenAmount);
