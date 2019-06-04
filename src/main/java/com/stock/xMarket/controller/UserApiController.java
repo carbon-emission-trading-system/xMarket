@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.xMarket.VO.UserVO;
 import com.stock.xMarket.model.User;
-import com.stock.xMarket.result.Result;
-import com.stock.xMarket.result.ResultCode;
 import com.stock.xMarket.service.UserService;
 import com.stock.xMarket.util.*;
 
@@ -64,7 +62,7 @@ public class UserApiController extends BaseApiController {
 				cookie.setPath("/");
 				response.addCookie(cookie);
 				log.info("id为"+dbUser.getUserId()+"的用户登录成功");
-				return success(); // Result.success(); 200, "success"
+				return CommonReturnType.success(); // Result.success(); 200, "success"
 			} else {
 				throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"密码错误");
 			}

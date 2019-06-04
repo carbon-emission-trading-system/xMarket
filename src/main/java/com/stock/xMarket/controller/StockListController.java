@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.stock.xMarket.response.CommonReturnType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.stock.xMarket.VO.StockListVO;
 import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.RealTime2;
-import com.stock.xMarket.result.Result;
 import com.stock.xMarket.service.StockListService;
 
 @RestController
@@ -29,7 +29,7 @@ public class StockListController {
 	
 	//所有个股信息，展示股票列表
     @RequestMapping(value = "/api/stockList", method = RequestMethod.GET)
-    public Result<List<StockListVO>> findAllRealTime() {
+    public CommonReturnType findAllRealTime() {
 
     	List<RealTime2> realTime2List = realTimeService.findRealTime2();
     	List<RealTime1> realTime1List = realTimeService.findRealTime1();
@@ -40,7 +40,7 @@ public class StockListController {
     	
     }
     
-    public Result<List<StockListVO>> finalResult(List<RealTime1> realTime1List,List<RealTime2> realTime2List,List<StockListVO> realTimeVOList) {
+    public CommonReturnType finalResult(List<RealTime1> realTime1List,List<RealTime2> realTime2List,List<StockListVO> realTimeVOList) {
     	Map<Integer, RealTime2> map = realTime2List.stream().collect(Collectors.toMap(RealTime2::getStockId, a -> a,(k1,k2)->k1));
     	
     	for(RealTime1 rt : realTime1List) {
@@ -71,12 +71,12 @@ public class StockListController {
     	
     	//logger.info("传进来的用户ownerId："+id);
     	//logger.info("传出去的结果："+list);
-    	return Result.success(realTimeVOList);
+    	return CommonReturnType.success(realTimeVOList);
     }
     
     //根据用户id，展示个股信息
     @RequestMapping(value = "/api/selfSelectStockList/{id}", method = RequestMethod.GET)
-    public Result<List<StockListVO>> findAllSelfSelectStock(@PathVariable("id") int id) {
+    public CommonReturnType findAllSelfSelectStock(@PathVariable("id") int id) {
     	
     	List<RealTime1> realTime1List = realTimeService.findSelfSelectStockRealTime1(id);
     	List<RealTime2> realTime2List = realTimeService.findSelfSelectStockRealTime2(id);

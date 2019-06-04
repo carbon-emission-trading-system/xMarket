@@ -2,7 +2,6 @@ package com.stock.xMarket.controller;
 
 import java.util.List;
 
-import com.stock.xMarket.result.Result;
 import com.stock.xMarket.VO.HistoryHoldPositionVO;
 import com.stock.xMarket.response.CommonReturnType;
 import com.stock.xMarket.service.HistoryHoldPositionService;
