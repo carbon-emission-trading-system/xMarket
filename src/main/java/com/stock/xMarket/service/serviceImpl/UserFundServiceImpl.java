@@ -80,7 +80,7 @@ public class UserFundServiceImpl implements UserFundService {
 				double OpenPrice=realTimeRedis.get(String.valueOf(stockId)).getOpenPrice();
 				frozenAmount=OpenPrice*1.20*order.getOrderAmount();
 			}else {
-				double ytdPrice=realTimeRedis.get(String.valueOf(stockId)).getYtdClosePrice();
+				double ytdPrice=realTimeRedis.get(String.valueOf(stockId)).getYesterdayClosePrice();
 				frozenAmount=ytdPrice*1.25*order.getOrderAmount();
 			}
 			

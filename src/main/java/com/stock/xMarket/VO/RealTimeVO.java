@@ -11,168 +11,318 @@ public class RealTimeVO implements Serializable{
 		// TODO Auto-generated constructor stub
 	}
 
-	private int stockID;
-	private double commissionProportion;
-	private double openPrice;
-	private double highestPrice;
-	private double lowestPrice;
-	private double latestPrice;
-	private double upsAndDowns;
-	private double increase;
-	private double outMarket;
-	private double inMarket;
-	private double conversionHand;
-	private double totalMarketCapitalization;
-	private double staticPERatio;
-	private double dailyLimit;//涨停
-	private double downLimitBoard;
-	private double cityNet;
-	private int volume;
-	private double ytdClosePrice;
 	
-	public int getVolume() {
-		return volume;
+	
+	private int stockId;
+	private String stockName;
+	private double lowestPrice;//最低价
+	private double latestPrice;//最新价
+	private double highestPrice; //最高价
+	private double increase; //涨幅
+	private double upsAndDowns;//涨跌
+	//private double dailyLimit;//涨停价
+	//private double downLimit;//跌停价
+	private double openPrice; //今日开盘价
+	private double yesterdayOpenPrice; //昨日开盘价
+	private double yesterdayClosePrice;//昨日收盘价
+	private double commissionProportion;//委比
+	private double tradeAmount; //成交额
+	private int tradeVolumn;//成交量
+	private double  totalMarketCapitalization; //总市值
+	private double peRatio ; //市盈率
+	private double pbRatio; //市净率
+	private int type; //0--深A，1--沪A
+	private double outMarket;//外盘
+	private double inMarket;//内盘
+	private double conversionHand;//换手
+
+	
+	
+
+	public int getStockId() {
+		return stockId;
 	}
 
-	public void setVolume(int volume) {
-		this.volume = volume;
+
+
+
+	public void setStockId(int stockId) {
+		this.stockId = stockId;
 	}
 
-	public int getStockID() {
-		return stockID;
+
+
+
+	public String getStockName() {
+		return stockName;
 	}
-	public void setStockID(int stockID) {
-		this.stockID = stockID;
+
+
+
+
+	public void setStockName(String stockName) {
+		this.stockName = stockName;
 	}
+
+
+
+
+	public double getLowestPrice() {
+		return lowestPrice;
+	}
+
+
+
+
+	public void setLowestPrice(double lowestPrice) {
+		this.lowestPrice = lowestPrice;
+	}
+
+
+
+
+	public double getLatestPrice() {
+		return latestPrice;
+	}
+
+
+
+
+	public void setLatestPrice(double latestPrice) {
+		this.latestPrice = latestPrice;
+	}
+
+
+
+
+	public double getHighestPrice() {
+		return highestPrice;
+	}
+
+
+
+
+	public void setHighestPrice(double highestPrice) {
+		this.highestPrice = highestPrice;
+	}
+
+
+
+
+	public double getIncrease() {
+		return increase;
+	}
+
+
+
+
+	public void setIncrease(double increase) {
+		this.increase = increase;
+	}
+
+
+
+
+	public double getUpsAndDowns() {
+		return upsAndDowns;
+	}
+
+
+
+
+	public void setUpsAndDowns(double upsAndDowns) {
+		this.upsAndDowns = upsAndDowns;
+	}
+
+
+
+
+	public double getOpenPrice() {
+		return openPrice;
+	}
+
+
+
+
+	public void setOpenPrice(double openPrice) {
+		this.openPrice = openPrice;
+	}
+
+
+
+
+	public double getYesterdayOpenPrice() {
+		return yesterdayOpenPrice;
+	}
+
+
+
+
+	public void setYesterdayOpenPrice(double yesterdayOpenPrice) {
+		this.yesterdayOpenPrice = yesterdayOpenPrice;
+	}
+
+
+
+
+	public double getYesterdayClosePrice() {
+		return yesterdayClosePrice;
+	}
+
+
+
+
+	public void setYesterdayClosePrice(double yesterdayClosePrice) {
+		this.yesterdayClosePrice = yesterdayClosePrice;
+	}
+
+
+
 
 	public double getCommissionProportion() {
 		return commissionProportion;
 	}
+
+
+
+
 	public void setCommissionProportion(double commissionProportion) {
 		this.commissionProportion = commissionProportion;
 	}
-	public double getOpenPrice() {
-		return openPrice;
+
+
+
+
+	public double getTradeAmount() {
+		return tradeAmount;
 	}
-	public void setOpenPrice(double openPrice) {
-		this.openPrice = openPrice;
+
+
+
+
+	public void setTradeAmount(double tradeAmount) {
+		this.tradeAmount = tradeAmount;
 	}
-	public double getHighestPrice() {
-		return highestPrice;
+
+
+
+
+	public int getTradeVolumn() {
+		return tradeVolumn;
 	}
-	public void setHighestPrice(double highestPrice) {
-		this.highestPrice = highestPrice;
+
+
+
+
+	public void setTradeVolumn(int tradeVolumn) {
+		this.tradeVolumn = tradeVolumn;
 	}
-	public double getLowestPrice() {
-		return lowestPrice;
-	}
-	public void setLowestPrice(double lowestPrice) {
-		this.lowestPrice = lowestPrice;
-	}
-	public double getLatestPrice() {
-		return latestPrice;
-	}
-	public void setLatestPrice(double latestPrice) {
-		this.latestPrice = latestPrice;
-	}
-	public double getUpsAndDowns() {
-		return upsAndDowns;
-	}
-	public void setUpsAndDowns(double upsAndDowns) {
-		this.upsAndDowns = upsAndDowns;
-	}
-	public double getIncrease() {
-		return increase;
-	}
-	public void setIncrease(double increase) {
-		this.increase = increase;
-	}
-	public double getOutMarket() {
-		return outMarket;
-	}
-	public void setOutMarket(double outMarket) {
-		this.outMarket = outMarket;
-	}
-	public double getInMarket() {
-		return inMarket;
-	}
-	public void setInMarket(double inMarket) {
-		this.inMarket = inMarket;
-	}
-	public double getConversionHand() {
-		return conversionHand;
-	}
-	public void setConversionHand(double conversionHand) {
-		this.conversionHand = conversionHand;
-	}
+
+
+
+
 	public double getTotalMarketCapitalization() {
 		return totalMarketCapitalization;
 	}
+
+
+
+
 	public void setTotalMarketCapitalization(double totalMarketCapitalization) {
 		this.totalMarketCapitalization = totalMarketCapitalization;
 	}
-	public double getStaticPERatio() {
-		return staticPERatio;
-	}
-	public void setStaticPERatio(double staticPERatio) {
-		this.staticPERatio = staticPERatio;
-	}
-	public double getDailyLimit() {
-		return dailyLimit;
-	}
-	public void setDailyLimit(double dailyLimit) {
-		this.dailyLimit = dailyLimit;
-	}
-	public double getDownLimitBoard() {
-		return downLimitBoard;
-	}
-	public void setDownLimitBoard(double downLimitBoard) {
-		this.downLimitBoard = downLimitBoard;
-	}
-	public double getCityNet() {
-		return cityNet;
-	}
-	public void setCityNet(double cityNet) {
-		this.cityNet = cityNet;
+
+
+
+
+	public double getPeRatio() {
+		return peRatio;
 	}
 
-	public double getYtdClosePrice() {
-		return ytdClosePrice;
+
+
+
+	public void setPeRatio(double peRatio) {
+		this.peRatio = peRatio;
 	}
 
-	public void setYtdClosePrice(double ytdClosePrice) {
-		this.ytdClosePrice = ytdClosePrice;
+
+
+
+	public double getPbRatio() {
+		return pbRatio;
 	}
 
-	public RealTimeVO(int stockID, double commissionProportion, double openPrice, double highestPrice,
-			double lowestPrice, double latestPrice, double upsAndDowns, double increase, double outMarket,
-			double inMarket, double conversionHand, double totalMarketCapitalization, double staticPERatio,
-			double dailyLimit, double downLimitBoard, double cityNet, int volume, double ytdClosePrice) {
-		super();
-		this.stockID = stockID;
-		this.commissionProportion = commissionProportion;
-		this.openPrice = openPrice;
-		this.highestPrice = highestPrice;
-		this.lowestPrice = lowestPrice;
-		this.latestPrice = latestPrice;
-		this.upsAndDowns = upsAndDowns;
-		this.increase = increase;
+
+
+
+	public void setPbRatio(double pbRatio) {
+		this.pbRatio = pbRatio;
+	}
+
+
+
+
+	public int getType() {
+		return type;
+	}
+
+
+
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+
+
+
+	public double getOutMarket() {
+		return outMarket;
+	}
+
+
+
+
+	public void setOutMarket(double outMarket) {
 		this.outMarket = outMarket;
-		this.inMarket = inMarket;
-		this.conversionHand = conversionHand;
-		this.totalMarketCapitalization = totalMarketCapitalization;
-		this.staticPERatio = staticPERatio;
-		this.dailyLimit = dailyLimit;
-		this.downLimitBoard = downLimitBoard;
-		this.cityNet = cityNet;
-		this.volume = volume;
-		this.ytdClosePrice = ytdClosePrice;
 	}
+
+
+
+
+	public double getInMarket() {
+		return inMarket;
+	}
+
+
+
+
+	public void setInMarket(double inMarket) {
+		this.inMarket = inMarket;
+	}
+
+
+
+
+	public double getConversionHand() {
+		return conversionHand;
+	}
+
+
+
+
+	public void setConversionHand(double conversionHand) {
+		this.conversionHand = conversionHand;
+	}
+
+
+
 
 	public RealTimeVO(int stockId) {
 		// TODO Auto-generated constructor stub
 		
-		this.stockID = stockID;
+		this.stockId = stockId;
 	}
 
 

@@ -73,7 +73,7 @@ public class SystemServiceImpl implements SystemService {
 			String key=String.valueOf(stock.getStockId());
 			RealTimeVO realTimeVO=new RealTimeVO(stock.getStockId());
 			double ytdClosePrice=realTimeRedis.get(key).getLatestPrice();
-			realTimeVO.setYtdClosePrice(ytdClosePrice);
+			realTimeVO.setYesterdayClosePrice(ytdClosePrice);
 			realTimeRedis.put(key, realTimeVO, -1);
 			
 			

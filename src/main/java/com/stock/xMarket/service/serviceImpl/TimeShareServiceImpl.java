@@ -58,7 +58,7 @@ public class TimeShareServiceImpl implements TimeShareService {
 		realTimeList = JSON.parseArray(realTimeListString, RealTimeVO.class);	
 		// TODO Auto-generated method stub
 		for(RealTimeVO realTime:realTimeList) {
-			int stockID=realTime.getStockID();
+			int stockID=realTime.getStockId();
 			TimeShareVO timeShare =new TimeShareVO();
 			BeanUtils.copyProperties(realTime, timeShare);
 			timeShareList.add(timeShare);
