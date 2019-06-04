@@ -37,8 +37,8 @@ public class StockInformationController extends BaseApiController{
     //使用了JSON工具的复制方法
     public List<KLineDataVO> createDayKLineDataVOList(List<StockHistory> stockHistoriesList) throws BusinessException {
         if (CollectionUtils.isEmpty(stockHistoriesList)) {
-            logger.error("没有查询到此股票的历史信息");
-            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标股票信息不存在");
+            logger.error("K线图数据获取失败，没有查询到此股票的历史信息");
+            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"K线图数据获取失败，没有查询到此股票的历史信息");
         }
         return JSON.parseArray(JSON.toJSONString(stockHistoriesList), KLineDataVO.class);
     }

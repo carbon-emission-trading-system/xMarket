@@ -1,12 +1,12 @@
 package com.stock.xMarket.controller;
 
 import com.stock.xMarket.VO.StockTradeVO;
-import com.stock.xMarket.VO.UserVO;
+import com.stock.xMarket.error.BusinessException;
+import com.stock.xMarket.error.EmBusinessError;
 import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.UserFund;
 import com.stock.xMarket.redis.RealTime1Redis;
-import com.stock.xMarket.redis.RealTimeRedis;
 import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.UserFundRepository;
 import com.stock.xMarket.response.CommonReturnType;
@@ -33,21 +33,31 @@ public class TradeController extends BaseApiController {
     final static Logger logger=LoggerFactory.getLogger(TradeController.class);
 
     @RequestMapping(value = "/api/QueryStockInformation", method = RequestMethod.GET)
-    public CommonReturnType QueryStockInformation(@RequestParam(name = "stockId")int stockId, @RequestParam(name = "userId")int userId){
+    public CommonReturnType QueryStockInformation(@RequestParam(name = "stockId")int stockId, @RequestParam(name = "userId")int userId) throws BusinessException {
         logger.info("后端接收到查询请求"+"查询股票"+stockId+"查询用户"+userId);
-        return CommonReturnType.success(createStockTradeVO(stockId,userId));
+        RealTime1 realTime1 = realTime1Redis.get(String.valueOf(stockId));
+        if (realTime1 == null){
+            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标股票的实时信息不存在！");
+        }
+        UserFund userFund = userFundRepository.findByUser_UserId(userId);
+        if (userFund == null){
+            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"执行交易的用户不存在！");
+        }
+        Stock stock = stockRepository.findById(stockId).get();
+        if (stock == null){
+            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标股票不存在！");
+        }
+
+        return CommonReturnType.success(createStockTradeVO(userFund,realTime1,stock));
     }
 
 
 
     //创建StockTradeVO的方法
-    public StockTradeVO createStockTradeVO(int stockId,int userId){
+    public StockTradeVO createStockTradeVO(UserFund userFund,RealTime1 realTime1,Stock stock) {
         StockTradeVO stockTradeVO = new StockTradeVO();
-        RealTime1 realTime1 = realTime1Redis.get(String.valueOf(stockId));
-        UserFund userFund = userFundRepository.findByUser_UserId(userId);
-        Stock stock = stockRepository.findById(stockId).get();
         stockTradeVO.setUserMoney(userFund.getBalance());
-        stockTradeVO.setStockId(stockId);
+        stockTradeVO.setStockId(realTime1.getStockId());
         stockTradeVO.setOrderPrice(realTime1.getLastTradePrice());
         stockTradeVO.setTradeMarket(stock.getTradeMarket());
         stockTradeVO.setStockName(stock.getStockName());
