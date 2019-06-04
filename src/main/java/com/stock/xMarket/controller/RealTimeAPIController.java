@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.stock.xMarket.model.SelfSelectStock;
 import com.stock.xMarket.model.TimeShare;
 import com.stock.xMarket.redis.RealTimeRedis;
 import com.stock.xMarket.repository.TimeShareRepository;
@@ -69,7 +70,14 @@ public class RealTimeAPIController extends BaseApiController{
 		
 	}
 	
-	
+	//用户添加自选股
+		@RequestMapping(value = "/api/addSelfSelectStock")
+		public void addSelfSelectStockToDb(@RequestParam(value = "userId") int userId,@RequestParam(value = "stockId") int stockId) {
+			SelfSelectStock sss = new SelfSelectStock();
+			sss.setUserId(userId);
+			sss.setStockId(stockId);
+			selfSelectStockService.addSelfSelectStockToDb(sss);
+		}
 	
 	
 }
