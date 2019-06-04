@@ -122,7 +122,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标持仓信息不存在！");
 		}
 		
-		int availableNumber=holdPositon.getAvailableNumber()-order.getExchangeAmount();
+		int availableNumber=holdPositon.getAvailableNumber()-order.getOrderAmount();
 		
 		holdPositon.setAvailableNumber(availableNumber);
 		

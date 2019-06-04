@@ -32,3 +32,4 @@ HELP.md
 *.log
 SystemLog.log/spring.log
 *.log
+*.log
