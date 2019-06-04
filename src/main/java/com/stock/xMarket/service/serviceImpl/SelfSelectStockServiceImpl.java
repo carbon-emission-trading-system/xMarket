@@ -22,7 +22,7 @@ public class SelfSelectStockServiceImpl implements SelfSelectStockService {
 		// TODO Auto-generated method stub
 
 
-		SelfSelectStock stock=selfSelectStockRepoditory.findByUser_UserIdAndStock_StockId();
+		SelfSelectStock stock=selfSelectStockRepoditory.findByUserIdAndStockId(userId,stockId);
 		if(stock==null) 
 			return false;
 		else

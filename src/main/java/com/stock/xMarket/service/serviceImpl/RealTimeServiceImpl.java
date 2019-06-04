@@ -25,7 +25,6 @@ import com.stock.xMarket.model.RealTime2;
 import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.redis.RealTime2Redis;
 import com.stock.xMarket.redis.RealTimeRedis;
-import com.stock.xMarket.result.Result;
 import com.stock.xMarket.service.RealTimeService;
 
 import org.springframework.core.env.Environment;
