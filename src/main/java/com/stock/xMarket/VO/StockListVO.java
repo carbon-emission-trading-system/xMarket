@@ -17,7 +17,7 @@ public class StockListVO implements Serializable {
 	private double lowerPrice; //最低价
 	private double openPrice; //今日开盘价
 	private double yesterdayOpenPrice; //昨日开盘价
-	private double tradeAmount; //成交额
+	private double tradeAmount; //总成交额
 	private double  totalMarketCapitalization; //总市值
 	private double peRatio ; //市盈率
 	private double pbRatio; //市净率
