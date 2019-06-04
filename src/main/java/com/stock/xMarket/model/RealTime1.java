@@ -15,21 +15,21 @@ public class RealTime1 implements Serializable {
 	private double openPrice; //今日开盘价
 	private double highestPrice; //最高价
 	private double lowerPrice; //最低价
-	private int tradeVolumn;//成交量
+	private int volume;//成交量
 	private double tradeAmount; //成交额
 	private List<Gear> buyOneToFive;//买一买五
 	private List<Gear> sellOneToFive;//卖一卖五
 	
 	
 	public RealTime1(int stockId, double lastTradePrice, double openPrice, double highestPrice, double lowerPrice,
-			int tradeVolumn, double tradeAmount, List<Gear> buyOneToFive, List<Gear> sellOneToFive) {
+			int volume, double tradeAmount, List<Gear> buyOneToFive, List<Gear> sellOneToFive) {
 		super();
 		this.stockId = stockId;
 		this.lastTradePrice = lastTradePrice;
 		this.openPrice = openPrice;
 		this.highestPrice = highestPrice;
 		this.lowerPrice = lowerPrice;
-		this.tradeVolumn = tradeVolumn;
+		this.volume = volume;
 		this.tradeAmount = tradeAmount;
 		this.buyOneToFive = buyOneToFive;
 		this.sellOneToFive = sellOneToFive;
@@ -70,11 +70,11 @@ public class RealTime1 implements Serializable {
 	public void setLowerPrice(double lowerPrice) {
 		this.lowerPrice = lowerPrice;
 	}
-	public int getTradeVolumn() {
-		return tradeVolumn;
+	public int getVolume() {
+		return volume;
 	}
-	public void setTradeVolumn(int tradeVolumn) {
-		this.tradeVolumn = tradeVolumn;
+	public void setVolume(int volume) {
+		this.volume = volume;
 	}
 	public List<Gear> getBuyOneToFive() {
 		return buyOneToFive;
