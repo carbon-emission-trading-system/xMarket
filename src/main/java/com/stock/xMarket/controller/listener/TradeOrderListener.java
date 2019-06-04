@@ -66,6 +66,7 @@ public class TradeOrderListener  {
      */
     @RabbitListener(queues = "${tradeOrder.queue.name}")
     public void tradeOrderListener(String str){
+    	
     	TradeOrder tradeOrder=JSON.parseObject(str,TradeOrder.class);
         try {
         	logger.info("交易单监听器监听到交易单: {} ",tradeOrder);
