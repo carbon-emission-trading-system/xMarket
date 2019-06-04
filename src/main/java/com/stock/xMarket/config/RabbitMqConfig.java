@@ -126,7 +126,21 @@ public class RabbitMqConfig {
 	        return BindingBuilder.bind(cancelOrderQueue()).to(userOrderExchange()).with(env.getProperty("cancelOrder.routing.key.name"));
 	    }
 	    
+	    //匹配
+	    @Bean
+	    public TopicExchange marchExchange(){
+	        return new TopicExchange(env.getProperty("march.exchange.name"),true,false);
+	    }
 	    
+	    @Bean(name = "marchQueue")
+	    public Queue marchQueue(){
+	        return new Queue(env.getProperty("march.queue.name"),true);
+	    }
+
+	    @Bean
+	    public Binding marchBinding(){
+	        return BindingBuilder.bind(marchQueue()).to(marchExchange()).with(env.getProperty("march.routing.key.name"));
+	    }
 
 	  //实时消息
 	    @Bean

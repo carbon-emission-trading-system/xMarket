@@ -26,7 +26,7 @@ public class HistoryHoldPositionController extends BaseApiController {
 	final static Logger logger=LoggerFactory.getLogger(HistoryHoldPositionController.class);
 	 
 	//找到用户的所有历史持仓信息
-    @RequestMapping(value = "/api/historyHoldPositionInfo/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/historyHoldPositionInfo/{id}", method = RequestMethod.GET)
     public CommonReturnType findAllHisHolPosInfo(@PathVariable("id") int id) {
     	
     	logger.info("传进来的用户id："+id);

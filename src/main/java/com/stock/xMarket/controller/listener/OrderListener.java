@@ -15,6 +15,7 @@ import java.sql.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -74,7 +75,10 @@ public class OrderListener {
 	/** The march service. */
 	@Autowired
 	MarchService marchService;
-
+	
+	@Autowired
+	RabbitTemplate rabbitTemplate;
+	
 	/**
 	 * Consume order.
 	 *
@@ -93,7 +97,8 @@ public class OrderListener {
 		Order order = new Order();
 
 		try {
-			User user = userRepository.findById(orderVO.getUserId()).get();
+			int id=orderVO.getUserId();
+			User user = userRepository.findByUserId(id);
 			order.setUser(user);
 		} catch (IllegalArgumentException e) {
 			// TODO: handle exception
@@ -101,7 +106,6 @@ public class OrderListener {
 		}
 
 		try {
-			System.out.println("kaishiduqvgupiao");
 			Stock stock = stockRepository.findByStockId(orderVO.getStockId());
 			order.setStock(stock);
 		} catch (IllegalArgumentException e) {
@@ -116,8 +120,12 @@ public class OrderListener {
 		
 		
 		//生成id
-		int userId=order.getUser().getUserId();
-		order.setOrderId(UUIDUtil.getUUID());
+		int orderId=(int) (System.currentTimeMillis()/1000);
+		order.setOrderId(String.valueOf(orderId));
+		orderVO.setOrderId(orderId);
+		
+		// 丢入撮合系统
+		rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
 		
 		// 将委托单添加至Redis
 		try {
@@ -137,8 +145,7 @@ public class OrderListener {
 		}
 	
 
-		// 丢入撮合系统
-		marchService.march(order);
+		
 
 	}
 
