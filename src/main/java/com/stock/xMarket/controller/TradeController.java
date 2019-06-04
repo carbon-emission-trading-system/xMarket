@@ -32,7 +32,7 @@ public class TradeController extends BaseApiController {
 
     final static Logger logger=LoggerFactory.getLogger(TradeController.class);
 
-    @RequestMapping(value = "/api/QueryStockInformation", method = RequestMethod.GET)
+    @RequestMapping(value = "/QueryStockInformation", method = RequestMethod.POST)
     public CommonReturnType QueryStockInformation(@RequestParam(name = "stockId")int stockId, @RequestParam(name = "userId")int userId) throws BusinessException {
         logger.info("后端接收到查询请求"+"查询股票"+stockId+"查询用户"+userId);
         RealTime1 realTime1 = realTime1Redis.get(String.valueOf(stockId));
