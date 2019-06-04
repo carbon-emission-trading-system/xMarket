@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.stock.xMarket.VO.OrderVO;
 import com.stock.xMarket.model.Order;
 import com.stock.xMarket.response.CommonReturnType;
+import com.stock.xMarket.result.Result;
 import com.stock.xMarket.service.OrderService;
 
 
@@ -37,7 +38,7 @@ public class OrderController extends BaseApiController{
     	
     	for(Order order : list) {
     		OrderVO orderVO=new OrderVO();
-    		BeanUtils.copyProperties(orderVO,order);
+    		BeanUtils.copyProperties(order, orderVO);
     		orderVO.setStockId(order.getStock().getStockId());
 			orderVO.setStockName(order.getStock().getStockName());
     		userVOList.add(orderVO);
