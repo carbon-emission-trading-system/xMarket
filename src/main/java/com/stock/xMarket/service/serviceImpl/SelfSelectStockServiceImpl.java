@@ -39,4 +39,18 @@ public class SelfSelectStockServiceImpl implements SelfSelectStockService {
 		selfSelectStockRepository.saveAndFlush(sss);
 	}
 	
+	//找到用户某只自选股
+	@Override
+	public SelfSelectStock findByUserIdAndStockId(int userId,int stockId) {
+		// TODO Auto-generated method stub
+		return selfSelectStockRepository.findByUserIdAndStockId(userId, stockId);
+	}
+		
+	//根据用户的userId和stockId删除用户的某只自选股
+	@Override
+	public void deleteSelfSelectStockFromDb(SelfSelectStock sss) {
+		// TODO Auto-generated method stub
+		selfSelectStockRepository.delete(sss);
+	}
+	
 }

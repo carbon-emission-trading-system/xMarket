@@ -8,4 +8,10 @@ public interface SelfSelectStockService {
 
 	//用户添加自选股
 	void addSelfSelectStockToDb(SelfSelectStock sss);
+	
+	//根据用户的userId和stockId找到用户的某只自选股
+	SelfSelectStock findByUserIdAndStockId(int userId,int stockId);
+		
+	//删除用户的某只自选股
+	void deleteSelfSelectStockFromDb(SelfSelectStock sss);
 }
