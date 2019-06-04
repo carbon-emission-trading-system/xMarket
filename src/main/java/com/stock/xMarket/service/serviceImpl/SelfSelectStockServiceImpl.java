@@ -15,14 +15,14 @@ public class SelfSelectStockServiceImpl implements SelfSelectStockService {
 
 	
 	@Autowired
-	SelfSelectStockRepository selfSelectStockRepoditory;
+	SelfSelectStockRepository selfSelectStockRepository;
 	
 	@Override
 	public boolean isSelected(Integer stockId, Integer userId) {
 		// TODO Auto-generated method stub
 
 
-		SelfSelectStock stock=selfSelectStockRepoditory.findByUserIdAndStockId(userId,stockId);
+		SelfSelectStock stock=selfSelectStockRepository.findByUserIdAndStockId(userId,stockId);
 		if(stock==null) 
 			return false;
 		else
@@ -31,6 +31,26 @@ public class SelfSelectStockServiceImpl implements SelfSelectStockService {
 		
 		
 		
+	}
+	
+	//用户添加自选股
+	@Override
+	public void addSelfSelectStockToDb(SelfSelectStock sss) {
+		selfSelectStockRepository.saveAndFlush(sss);
+	}
+	
+	//找到用户某只自选股
+	@Override
+	public SelfSelectStock findByUserIdAndStockId(int userId,int stockId) {
+		// TODO Auto-generated method stub
+		return selfSelectStockRepository.findByUserIdAndStockId(userId, stockId);
+	}
+		
+	//根据用户的userId和stockId删除用户的某只自选股
+	@Override
+	public void deleteSelfSelectStockFromDb(SelfSelectStock sss) {
+		// TODO Auto-generated method stub
+		selfSelectStockRepository.delete(sss);
 	}
 	
 }

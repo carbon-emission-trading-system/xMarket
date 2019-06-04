@@ -55,12 +55,12 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			double costPrice;
 			//根据成交单是买还是卖，更新信息
 			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 开始更新持仓信息");
-			if(transactionOrder.isPoint()) {
+			if(transactionOrder.getType()==1) {
 				//计算新的持仓数量和可用数量
 				positionNumber = holdPositon.getPositionNumber() - transactionOrder.getExchangeAmount();
 				int availableNumber = holdPositon.getAvailableNumber() - transactionOrder.getExchangeAmount();
 				//计算成本价
-				costPrice = (holdPositon.getCostPrice()*holdPositon.getPositionNumber()-transactionOrder.getActualAmount());//positionNumber
+				costPrice = (holdPositon.getCostPrice()*holdPositon.getPositionNumber()-transactionOrder.getActualAmount())/positionNumber;//positionNumber
 				if(positionNumber<0||availableNumber<0){
 					throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"成交单出现错误！");
 				}
@@ -68,7 +68,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			}else {
 				//计算新的持仓数量和成本价
 				positionNumber = holdPositon.getPositionNumber() + transactionOrder.getExchangeAmount();
-				costPrice = (holdPositon.getCostPrice()*holdPositon.getPositionNumber()+transactionOrder.getActualAmount());//positionNumber
+				costPrice = (holdPositon.getCostPrice()*holdPositon.getPositionNumber()+transactionOrder.getActualAmount())/positionNumber;//positionNumber
 			}
 			holdPositon.setPositionNumber(positionNumber);
 			holdPositon.setCostPrice(costPrice);
