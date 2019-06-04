@@ -59,7 +59,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	public void addTransactionOrder(TradeOrder tradeOrder) throws BusinessException {
 
 		//先判断是否为撤单
-		if(tradeOrder.getBuyOrderId() == 0 || tradeOrder.getSellId() == 0){
+		if(tradeOrder.getBuyOrderId() == 0 || tradeOrder.getSellOrderId() == 0){
 			//创建撤单成交单
 			TransactionOrder revokeOrder = createRevokeOrder(tradeOrder);
 			//存入数据库

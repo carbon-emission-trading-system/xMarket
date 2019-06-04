@@ -55,7 +55,9 @@ public class OrderServiceImpl implements OrderService {
 		
 		String userId=String.valueOf(order.getUser().getUserId());
 		
-		ArrayList<String> orderIdList= userOrderRedis.get(userId);
+		ArrayList<String> orderIdList= new ArrayList<>();
+		if(userOrderRedis.get(userId)!=null)
+			orderIdList=userOrderRedis.get(userId);
 
 		orderIdList.add(order.getOrderId());
 		userOrderRedis.put(userId, orderIdList, -1);
@@ -108,9 +110,9 @@ public class OrderServiceImpl implements OrderService {
 	public void updateOrderBytransactionOrder(TransactionOrder transactionOrder) {
 		// TODO Auto-generated method stub
 		int OrderId=transactionOrder.getOrderId();
-		
-		Order order=orderRedis.get(String.valueOf(OrderId));
-		
+		Order order=new Order();
+		order=orderRedis.get(String.valueOf(OrderId));
+		order=new Order();
 		orderRedis.remove(String.valueOf(OrderId));
 		
 		BeanUtils.copyProperties(transactionOrder, order);
