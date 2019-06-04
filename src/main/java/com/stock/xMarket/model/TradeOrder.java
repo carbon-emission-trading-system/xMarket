@@ -34,8 +34,8 @@ public class TradeOrder {
 		this.tradePrice = tradePrice;
 		this.exchangeAmount = exchangeAmount;
 		this.tradeType = tradeType;
-		this.sellId = sellId;
-		this.buyId = buyId;
+		this.sellerId = sellId;
+		this.buyerId = buyId;
 	}
 	
 	public TradeOrder() {
@@ -71,10 +71,10 @@ public class TradeOrder {
 	private double totalExchangeMoney;
 
 	@Transient
-	private int sellId;
+	private int sellerId;
 
 	@Transient
-	private int buyId;
+	private int buyerId;
 
 	@Column(name="trade_market")
 	private int tradeMarket;//交易市场   market
@@ -179,20 +179,22 @@ public class TradeOrder {
 		return totalExchangeMoney;
 	}
 
-	public int getSellId() {
-		return sellId;
+	
+
+	public int getSellerId() {
+		return sellerId;
 	}
 
-	public void setSellId(int sellId) {
-		this.sellId = sellId;
+	public void setSellerId(int sellerId) {
+		this.sellerId = sellerId;
 	}
 
-	public int getBuyId() {
-		return buyId;
+	public int getBuyerId() {
+		return buyerId;
 	}
 
-	public void setBuyId(int buyId) {
-		this.buyId = buyId;
+	public void setBuyerId(int buyerId) {
+		this.buyerId = buyerId;
 	}
 
 	public void setTotalExchangeMoney(double totalExchangeMoney) {

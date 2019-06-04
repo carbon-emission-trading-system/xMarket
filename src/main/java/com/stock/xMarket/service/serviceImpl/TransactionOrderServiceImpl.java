@@ -183,7 +183,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		//插入部分属性：买卖标识符、委托单id、拥有者id
 		transactionOrder.setPoint(false);
 		transactionOrder.setOrderId(tradeOrder.getSellOrderId());
-		transactionOrder.setOwnerId(tradeOrder.getSellId());
+		transactionOrder.setOwnerId(tradeOrder.getSellerId());
 
 		return transactionOrder;
 	}
@@ -197,7 +197,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		//插入部分属性：买卖标识符、委托单id、拥有者id
 		transactionOrder.setPoint(true);
 		transactionOrder.setOrderId(tradeOrder.getBuyOrderId());
-		transactionOrder.setOwnerId(tradeOrder.getBuyId());
+		transactionOrder.setOwnerId(tradeOrder.getBuyerId());
 
 		return transactionOrder;
 	}

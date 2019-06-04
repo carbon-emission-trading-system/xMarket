@@ -3,6 +3,7 @@ package com.stock.xMarket.service.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
@@ -110,9 +111,9 @@ public class OrderServiceImpl implements OrderService {
 	public void updateOrderBytransactionOrder(TransactionOrder transactionOrder) {
 		// TODO Auto-generated method stub
 		int OrderId=transactionOrder.getOrderId();
-		Order order=new Order();
-		order=orderRedis.get(String.valueOf(OrderId));
-		order=new Order();
+		Order order=orderRedis.get(String.valueOf(OrderId));
+		if(order==null)
+			order=new Order();
 		orderRedis.remove(String.valueOf(OrderId));
 		
 		BeanUtils.copyProperties(transactionOrder, order);
@@ -122,8 +123,16 @@ public class OrderServiceImpl implements OrderService {
 		String userId=String.valueOf(transactionOrder.getOwnerId());
 		
 		ArrayList<String> orderIdList= userOrderRedis.get(userId);
+		
+		if(orderIdList==null)
+			orderIdList=new ArrayList<>();
 
+		try {
 		orderIdList.remove(order.getOrderId());
+		}catch (NoSuchElementException e) {
+			// TODO: handle exception
+			System.out.println("Redis异常");
+		}
 		userOrderRedis.put(userId, orderIdList, -1);
 		
 		
