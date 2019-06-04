@@ -15,7 +15,6 @@ import com.stock.xMarket.model.TimeShare;
 import com.stock.xMarket.redis.RealTimeRedis;
 import com.stock.xMarket.repository.TimeShareRepository;
 import com.stock.xMarket.response.CommonReturnType;
-import com.stock.xMarket.result.Result;
 import com.stock.xMarket.service.RealTimeService;
 import com.stock.xMarket.service.SelfSelectStockService;
 
