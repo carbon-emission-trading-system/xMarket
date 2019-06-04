@@ -5,12 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.boot.wjq.VO.StockListVO;
-import org.boot.wjq.model.RealTime2;
-import org.boot.wjq.model.RealTime1;
-import org.boot.wjq.model.SelfSelectStock;
-import org.boot.wjq.result.Result;
-import org.boot.wjq.service.StockListService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.stock.xMarket.VO.StockListVO;
+import com.stock.xMarket.model.RealTime1;
+import com.stock.xMarket.model.RealTime2;
+import com.stock.xMarket.result.Result;
+import com.stock.xMarket.service.StockListService;
 
 @RestController
 public class StockListController {

@@ -16,7 +16,7 @@ public class SelfSelectStockServiceImpl implements SelfSelectStockService {
 	
 	@Autowired
 	SelfSelectStockRepository selfSelectStockRepoditory;
-
+	
 	@Override
 	public boolean isSelected(Integer stockId, Integer userId) {
 		// TODO Auto-generated method stub
