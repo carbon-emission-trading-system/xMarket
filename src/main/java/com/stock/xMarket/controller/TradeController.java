@@ -2,8 +2,10 @@ package com.stock.xMarket.controller;
 
 import com.stock.xMarket.VO.StockTradeVO;
 import com.stock.xMarket.VO.UserVO;
+import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.UserFund;
+import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.redis.RealTimeRedis;
 import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.UserFundRepository;
@@ -19,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TradeController extends BaseApiController {
 
-   // @Autowired
-   // private RealTimeRedis realTimeRedis;
+    @Autowired
+    private RealTime1Redis realTime1Redis;
 
     @Autowired
     private UserFundRepository userFundRepository;
@@ -41,14 +43,15 @@ public class TradeController extends BaseApiController {
     //创建StockTradeVO的方法
     public StockTradeVO createStockTradeVO(int stockId,int userId){
         StockTradeVO stockTradeVO = new StockTradeVO();
+        RealTime1 realTime1 = realTime1Redis.get(String.valueOf(stockId));
         UserFund userFund = userFundRepository.findByUser_UserId(userId);
         Stock stock = stockRepository.findById(stockId).get();
         stockTradeVO.setUserMoney(userFund.getBalance());
         stockTradeVO.setStockId(stockId);
-        stockTradeVO.setOrderPrice(1.78);//虚假
+        stockTradeVO.setOrderPrice(realTime1.getLastTradePrice());
         stockTradeVO.setTradeMarket(stock.getTradeMarket());
         stockTradeVO.setStockName(stock.getStockName());
-        stockTradeVO.setOpenPrice(3.3);//虚假
+        stockTradeVO.setOpenPrice(realTime1.getOpenPrice());
         return stockTradeVO;
     }
 
