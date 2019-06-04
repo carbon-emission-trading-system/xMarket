@@ -27,3 +27,8 @@ HELP.md
 
 ### VS Code ###
 .vscode/
+*.log
+*.log
+*.log
+SystemLog.log/spring.log
+*.log
