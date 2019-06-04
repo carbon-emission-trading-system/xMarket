@@ -64,6 +64,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			TransactionOrder revokeOrder = createRevokeOrder(tradeOrder);
 			//存入数据库
 			LOGGER.info("委托单号："+revokeOrder.getOrderId()+" 的委托买单已被撤单，成交单存入数据库");
+			
 			transactionOrderRepository.saveAndFlush(revokeOrder);
 			
 			orderService.updateOrderBytransactionOrder(revokeOrder);

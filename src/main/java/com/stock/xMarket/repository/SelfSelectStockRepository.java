@@ -11,4 +11,5 @@ import com.stock.xMarket.model.SelfSelectStock;
 public interface SelfSelectStockRepository extends JpaRepository<SelfSelectStock,Integer> {
 	
 	List<SelfSelectStock> findByUserId(int userId);
+	SelfSelectStock findByUser_UserIdAndStock_StockId();
 }
