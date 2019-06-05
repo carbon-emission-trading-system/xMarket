@@ -78,14 +78,22 @@ public class RealTimeAPIController extends BaseApiController{
 		
 	}
 	
+	//界面中某只个股点进去 展示个股的实时信息
+	@RequestMapping(value = "/api/realTimeInfo")
+	public CommonReturnType findRealTime(@RequestParam(value = "stockId") int stockId) {
+		
+		return success(realTimeService.findRealTime(stockId));
+	}
+	
+	
 	//用户添加自选股
-		@RequestMapping(value = "/api/addSelfSelectStock")
-		public void addSelfSelectStockToDb(@RequestParam(value = "userId") int userId,@RequestParam(value = "stockId") int stockId) {
-			SelfSelectStock sss = new SelfSelectStock();
-			sss.setUserId(userId);
-			sss.setStockId(stockId);
-			selfSelectStockService.addSelfSelectStockToDb(sss);
-		}
+	@RequestMapping(value = "/api/addSelfSelectStock")
+	public void addSelfSelectStockToDb(@RequestParam(value = "userId") int userId,@RequestParam(value = "stockId") int stockId) {
+		SelfSelectStock sss = new SelfSelectStock();
+		sss.setUserId(userId);
+		sss.setStockId(stockId);
+		selfSelectStockService.addSelfSelectStockToDb(sss);
+	}
 		
 	//用户删除自选股
 	@RequestMapping(value = "/api/deleteSelfSelectStock")
