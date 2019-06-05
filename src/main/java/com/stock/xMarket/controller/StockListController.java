@@ -42,7 +42,7 @@ public class StockListController {
 		stockListVO.setHighestPrice(20);
 		stockListVO.setIncrease(1.9);
 		stockListVO.setLastTradePrice(19.8);
-		stockListVO.setLowerPrice(19);
+		stockListVO.setLowestPrice(19);
 		stockListVO.setOpenPrice(19.5);
 		stockListVO.setPbRatio(5.5);
 		stockListVO.setPeRatio(5.5);

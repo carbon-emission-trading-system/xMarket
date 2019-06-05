@@ -14,7 +14,7 @@ public class StockListVO implements Serializable {
 	private double lastTradePrice; //最新成交价
 	private double increase; //涨幅
 	private double highestPrice; //最高价
-	private double lowerPrice; //最低价
+	private double lowestPrice; //最低价
 	private double openPrice; //今日开盘价
 	private double yesterdayOpenPrice; //昨日开盘价
 	private double tradeAmount; //总成交额
@@ -26,7 +26,7 @@ public class StockListVO implements Serializable {
 	
 	
 	public StockListVO(int stockId, String stockName, double lastTradePrice, double increase, double highestPrice,
-			double lowerPrice, double openPrice, double yesterdayOpenPrice, double tradeAmount,
+			double lowestPrice, double openPrice, double yesterdayOpenPrice, double tradeAmount,
 			double totalMarketCapitalization, double peRatio, double pbRatio, int tradeMarket) {
 		super();
 		this.stockId = stockId;
@@ -34,7 +34,7 @@ public class StockListVO implements Serializable {
 		this.lastTradePrice = lastTradePrice;
 		this.increase = increase;
 		this.highestPrice = highestPrice;
-		this.lowerPrice = lowerPrice;
+		this.lowestPrice = lowestPrice;
 		this.openPrice = openPrice;
 		this.yesterdayOpenPrice = yesterdayOpenPrice;
 		this.tradeAmount = tradeAmount;
@@ -77,11 +77,11 @@ public class StockListVO implements Serializable {
 	public void setHighestPrice(double highestPrice) {
 		this.highestPrice = highestPrice;
 	}
-	public double getLowerPrice() {
-		return lowerPrice;
+	public double getLowestPrice() {
+		return lowestPrice;
 	}
-	public void setLowerPrice(double lowerPrice) {
-		this.lowerPrice = lowerPrice;
+	public void setLowestPrice(double lowestPrice) {
+		this.lowestPrice = lowestPrice;
 	}
 	public double getOpenPrice() {
 		return openPrice;
