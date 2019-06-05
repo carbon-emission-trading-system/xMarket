@@ -21,7 +21,7 @@ public class TradeOrder {
 	
 	public TradeOrder(int tradeOrderId, int stockId, int buyOrderId, int sellOrderId,boolean buyPoint, boolean sellPoint,
 			 Time time, Date date, double tradePrice, int exchangeAmount, boolean tradeType,
-			  int buyId,int sellId) {
+			  int buyerId,int sellerId) {
 		super();
 		this.tradeOrderId = tradeOrderId;
 		this.stockId = stockId;
@@ -34,8 +34,8 @@ public class TradeOrder {
 		this.tradePrice = tradePrice;
 		this.exchangeAmount = exchangeAmount;
 		this.tradeType = tradeType;
-		this.sellerId = sellId;
-		this.buyerId = buyId;
+		this.sellerId = sellerId;
+		this.buyerId = buyerId;
 	}
 	
 	public TradeOrder() {

@@ -10,7 +10,7 @@ public class TransactionOrderVO {
 	private Date time;//成交时间
 	private int stockId;
 	private String stockName;
-	private Boolean point;//买入卖出  true=买入
+	private int type;//买入卖出  true=买入
 	private double tradePrice;//成交价
 	private int exchangeAmount;////成交数量
 	private double totalExchangeMoney;//成交金额
@@ -26,20 +26,30 @@ public class TransactionOrderVO {
 	private int tradeMarket;//交易市场
 	private int revokeAmount;//撤单数量
 	
-	public TransactionOrderVO(Date date, Date time, int stockId, String stockName, Boolean point, double tradePrice,
-			int exchangeAmount,double totalExchangeMoney,int stockBalance,int orderId,int transactionOrderId,double serviceTax, double stampTax, double otherFee, double actualAmount, int tradeMarket,int revokeAmount) {
+
+
+	public TransactionOrderVO() {
+		
+	}
+	
+	
+	
+	public TransactionOrderVO(Date date, Date time, int stockId, String stockName, int type, double tradePrice,
+			int exchangeAmount, double totalExchangeMoney, int stockBalance, int orderId, int transactionOrderId,
+			double serviceTax, double stampTax, double otherFee, double actualAmount, int tradeMarket,
+			int revokeAmount) {
 		super();
 		this.date = date;
 		this.time = time;
 		this.stockId = stockId;
 		this.stockName = stockName;
-		this.point = point;
+		this.type = type;
 		this.tradePrice = tradePrice;
 		this.exchangeAmount = exchangeAmount;
-		this.totalExchangeMoney=totalExchangeMoney;//成交金额
-		this.stockBalance=stockBalance;
-		this.orderId=orderId;
-		this.transactionOrderId=transactionOrderId;
+		this.totalExchangeMoney = totalExchangeMoney;
+		this.stockBalance = stockBalance;
+		this.orderId = orderId;
+		this.transactionOrderId = transactionOrderId;
 		this.serviceTax = serviceTax;
 		this.stampTax = stampTax;
 		this.otherFee = otherFee;
@@ -48,10 +58,8 @@ public class TransactionOrderVO {
 		this.revokeAmount = revokeAmount;
 	}
 
-	public TransactionOrderVO() {
-		
-	}
-	
+
+
 	public Date getDate() {
 		return date;
 	}
@@ -81,12 +89,14 @@ public class TransactionOrderVO {
 		this.stockName = stockName;
 	}
 
-	public Boolean getPoint() {
-		return point;
+	
+
+	public int getType() {
+		return type;
 	}
 
-	public void setPoint(Boolean point) {
-		this.point = point;
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	public double getTradePrice() {

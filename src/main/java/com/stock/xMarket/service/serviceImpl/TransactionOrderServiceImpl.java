@@ -181,7 +181,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		BeanUtils.copyProperties(tradeOrder,transactionOrder);
 
 		//插入部分属性：买卖标识符、委托单id、拥有者id
-		transactionOrder.setPoint(false);
+		transactionOrder.setType(1);
 		transactionOrder.setOrderId(tradeOrder.getSellOrderId());
 		transactionOrder.setOwnerId(tradeOrder.getSellerId());
 
@@ -195,7 +195,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		BeanUtils.copyProperties(tradeOrder,transactionOrder);
 
 		//插入部分属性：买卖标识符、委托单id、拥有者id
-		transactionOrder.setPoint(true);
+		transactionOrder.setType(0);
 		transactionOrder.setOrderId(tradeOrder.getBuyOrderId());
 		transactionOrder.setOwnerId(tradeOrder.getBuyerId());
 

@@ -29,17 +29,9 @@ public class TransactionOrder implements Serializable{
 	
 	@Column(name="stock_name")
 	private String stockName;
-	
-	public String getStockName() {
-		return stockName;
-	}
 
-	public void setStockName(String stockName) {
-		this.stockName = stockName;
-	}
-
-	@Column(name="point")
-	private boolean point;//买卖标识,true是买   sellId
+	@Column(name="type")
+	private int type;//买卖标识
 	
 	@Column(name="order_id")
 	private int orderId;//委托单id  sellOrderId
@@ -86,6 +78,15 @@ public class TransactionOrder implements Serializable{
 	@Transient
 	private double totalExchangeMoney;// exchangeFee
 
+	
+	public String getStockName() {
+		return stockName;
+	}
+
+	public void setStockName(String stockName) {
+		this.stockName = stockName;
+	}
+	
 	public double getTotalExchangeMoney() {
 		return totalExchangeMoney;
 	}
@@ -110,12 +111,13 @@ public class TransactionOrder implements Serializable{
 		this.stockId = stockId;
 	}
 
-	public boolean isPoint() {
-		return point;
+	
+	public int getType() {
+		return type;
 	}
 
-	public void setPoint (boolean point) {
-		this.point = point;
+	public void setType(int type) {
+		this.type = type;
 	}
 
 	public int getOrderId() {
