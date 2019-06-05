@@ -3,7 +3,7 @@ package com.stock.xMarket.VO;
 public class StockTradeVO {
     private int stockId;//股票代码
     private String stockName;//股票名称
-    private double userMoney;//用户资金
+    private double balance;//用户资金
     private int tradeMarket;//交易所市场
     private double OrderPrice;//最新成交价
     private double availableNumber;//可用余额
@@ -25,12 +25,12 @@ public class StockTradeVO {
         this.stockName = stockName;
     }
 
-    public double getUserMoney() {
-        return userMoney;
+    public double getBalance() {
+        return balance;
     }
 
-    public void setUserMoney(double userMoney) {
-        this.userMoney = userMoney;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public int getTradeMarket() {
