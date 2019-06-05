@@ -74,7 +74,7 @@ public class StockListController {
     	return CommonReturnType.success(realTimeVOList);
     }
     
-    //根据用户id，展示个股信息
+    //根据用户id，展示用户的所有自选股信息
     @RequestMapping(value = "/api/selfSelectStockList/{id}", method = RequestMethod.GET)
     public CommonReturnType findAllSelfSelectStock(@PathVariable("id") int id) {
     	
