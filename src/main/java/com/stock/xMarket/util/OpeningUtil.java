@@ -81,10 +81,10 @@ public class OpeningUtil {
            int minutes = cal.get(Calendar.MINUTE);
            if (hour >= 0 && hour < 10) {
                if (hour == 9) {
-                   if (minutes >= 25)// 9:25-10:00
+                   if (minutes >= 25)// 9:30-10:00
                        s = false; 
                    else
-                       // 9:00-9:25
+                       // 9:00-9:30
                        s = true;
                } else {// 0:00-9:00
                    s = true;

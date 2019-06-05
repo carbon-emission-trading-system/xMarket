@@ -1,7 +1,9 @@
 package com.stock.xMarket.VO;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Time;
+
 
 public class OrderVO implements Serializable {
 
@@ -10,7 +12,7 @@ public class OrderVO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Date date;//委托日期
-	private Date localTime;//委托时间
+	private Time localTime;//委托时间
     private int stockId;//股票代码
     private int userId;
 	private String stockName;//股票简称
@@ -24,7 +26,7 @@ public class OrderVO implements Serializable {
 	private int orderId;//合同编号
 
 	
-	public OrderVO(Date date, Date localTime, int stockId, String stockName, int type, int orderAmount,int exchangeAmount, double exchangeAveragePrice, double orderPrice, int cancelNumber, int tradeStraregy,int orderId) {
+	public OrderVO(Date date, Time localTime, int stockId, String stockName, int type, int orderAmount,int exchangeAmount, double exchangeAveragePrice, double orderPrice, int cancelNumber, int tradeStraregy,int orderId) {
 		super();
 		this.date = date;
 		this.localTime = localTime;
@@ -74,11 +76,11 @@ public class OrderVO implements Serializable {
 		this.date = date;
 	}
 
-	public Date getLocalTime() {
+	public Time getLocalTime() {
 		return localTime;
 	}
 
-	public void setLocalTime(Date localTime) {
+	public void setLocalTime(Time localTime) {
 		this.localTime = localTime;
 	}
 

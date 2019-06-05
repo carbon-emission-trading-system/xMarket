@@ -1,5 +1,7 @@
 package com.stock.xMarket.controller;
 
+
+import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,8 +62,14 @@ public class OrderController extends BaseApiController{
 		
 
 		orderVO.setLocalTime(new Time(System.currentTimeMillis()));
+		orderVO.setDate(new Date(System.currentTimeMillis()));
 		
 		Order order = new Order();
+		
+		//生成id
+		int orderId=(int) (System.currentTimeMillis()/1000);
+		order.setOrderId(String.valueOf(orderId));
+		orderVO.setOrderId(orderId);
 
 		BeanUtils.copyProperties(orderVO, order);
 

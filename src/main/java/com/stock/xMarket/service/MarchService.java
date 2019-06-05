@@ -35,8 +35,8 @@ public class MarchService {
 	
 	public void march(Order order) {
 		List<TradeOrder> tradeOrderList = new ArrayList<>();
-		tradeOrderList.add(new TradeOrder(1,600000,100,200,true,false,order.getLocalTime(),order.getDate(),10.50,300,true,11,20));
-		tradeOrderList.add(new TradeOrder(2,600000,300,200,true,true,order.getLocalTime(),order.getDate(),10.50,200,true,30,11)); 
+//		tradeOrderList.add(new TradeOrder(1,600000,100,200,true,false,order.getLocalTime(),order.getDate(),10.50,300,true,11,20));
+//		tradeOrderList.add(new TradeOrder(2,600000,300,200,true,true,order.getLocalTime(),order.getDate(),10.50,200,true,30,11)); 
 		//sendTradeOrder(tradeOrderList);
 
 	}
