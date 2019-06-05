@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService{
     private String from;
     
 	@Autowired
-	public UserRepository userRpository;
+	public UserRepository userRepository;
 	
 	@Autowired
 	public UserRedis userRedis;
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User regist(User user) {
 		// TODO Auto-generated method stub
-		return userRpository.saveAndFlush(user);
+		return userRepository.saveAndFlush(user);
 	}
 
 	@Override
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService{
 		UserVO userVO = new UserVO();
 		User user = userRedis.get("username");
 		if(user == null){
-			user = userRpository.findByUserName(username);
+			user = userRepository.findByUserName(username);
 			if(user != null){
 				userRedis.put(user.getUserName(), user, -1);
 			}else{
@@ -92,6 +92,21 @@ public class UserServiceImpl implements UserService{
         message.setFrom(from);
         mailSender.send(message);
 		LOGGER.info("邮件发送成功");
+	}
+
+
+
+	@Override
+	public Boolean isMailExists(String mailAdress) {
+		// TODO Auto-generated method stub
+		
+		User user=userRepository.findByMail(mailAdress);
+		
+		if(user!=null) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 
 	

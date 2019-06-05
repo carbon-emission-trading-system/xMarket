@@ -15,4 +15,9 @@ public interface UserService {
 	public Object getUserFromRedisByToken(String token);
 	
 	public void sendMail(String mailAddress, String message);
+
+	public Boolean isMailExists(String mailAdress);
+
+	
+	
 }
