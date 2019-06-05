@@ -18,6 +18,8 @@ public interface UserService {
 
 	public Boolean isMailExists(String mailAdress);
 
+	public Boolean isUserExists(String mailAdress);
+
 	
 	
 }

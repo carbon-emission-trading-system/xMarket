@@ -127,16 +127,32 @@ public class UserApiController extends BaseApiController {
 		return CommonReturnType.success();
 	}
 
-	@RequestMapping("/determineIfmailExists")
+	@RequestMapping("/determineIfMailExists")
 	public CommonReturnType determineIfMailExists(@RequestParam(value = "mailAdress") String mailAdress, HttpServletRequest request) throws BusinessException {
 
 	
 		Boolean isExists=userService.isMailExists(mailAdress);
 		
 		if(isExists) {
-			return CommonReturnType.success();
-		}else {
+
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"该邮箱已注册！");
+		}else {
+
+			return CommonReturnType.success();
+		}
+	}
+	
+	@RequestMapping("/determineIfUserNameExists")
+	public CommonReturnType determineIfUserNameExists(@RequestParam(value = "userName") String userName, HttpServletRequest request) throws BusinessException {
+
+	
+		Boolean isExists=userService.isUserExists(userName);
+		
+		if(isExists) {
+
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"该邮箱已注册！");
+		}else {
+			return CommonReturnType.success();
 		}
 	}
 	

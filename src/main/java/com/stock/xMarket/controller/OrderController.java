@@ -1,5 +1,6 @@
 package com.stock.xMarket.controller;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +18,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.stock.xMarket.VO.OrderVO;
+import com.stock.xMarket.error.BusinessException;
+import com.stock.xMarket.error.EmBusinessError;
 import com.stock.xMarket.model.Order;
+import com.stock.xMarket.model.Stock;
+import com.stock.xMarket.model.User;
+import com.stock.xMarket.repository.StockRepository;
+import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.response.CommonReturnType;
 import com.stock.xMarket.service.OrderService;
-
+import com.stock.xMarket.util.OpeningUtil;
 
 import static com.stock.xMarket.response.CommonReturnType.*;
 
@@ -34,16 +42,54 @@ public class OrderController extends BaseApiController{
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
 	
+
+	/** The user repository. */
+	@Autowired
+	UserRepository userRepository;
+	
+
+	/** The stock repository. */
+	@Autowired
+	private StockRepository stockRepository;
+	
 	final static Logger logger=LoggerFactory.getLogger(OrderController.class);
 	 
 	
 	@RequestMapping(value = "/buyOrSale")
-	public CommonReturnType buyOrSale(@ModelAttribute(value = "SentstockTrading")OrderVO orderVO,HttpSession session, String validateCode,HttpServletResponse response){
+	public CommonReturnType buyOrSale(@ModelAttribute(value = "SentstockTrading")OrderVO orderVO,HttpSession session, String validateCode,HttpServletResponse response) throws BusinessException{
 		
+
+		orderVO.setLocalTime(new Time(System.currentTimeMillis()));
 		
+		Order order = new Order();
+
+		BeanUtils.copyProperties(orderVO, order);
+
+		try {
+			int id=orderVO.getUserId();
+			User user = userRepository.findByUserId(id);
+			order.setUser(user);
+		} catch (IllegalArgumentException e) {
+			// TODO: handle exception
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标用户不存在！");
+		}
+
+		try {
+			Stock stock = stockRepository.findByStockId(orderVO.getStockId());
+			order.setStock(stock);
+		} catch (IllegalArgumentException e) {
+			// TODO: handle exception
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标股票不存在！");
+		}
+
 		
-//		marchService.produceOrder();
-//		orderService.saveOrder();
+		if(OpeningUtil.isSet(order.getLocalTime())) {
+			rabbitTemplate.convertAndSend("marchExchange", "allmarchRoutingKey", JSON.toJSONString(orderVO));
+		}else {
+			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
+		}
+
+		
 		return success();
 
 	}
