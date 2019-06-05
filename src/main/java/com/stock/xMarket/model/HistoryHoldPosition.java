@@ -12,7 +12,7 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name="historyholdposition")
+@Table(name="history_hold_position")
 public class HistoryHoldPosition implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

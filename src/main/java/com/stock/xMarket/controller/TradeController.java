@@ -32,7 +32,7 @@ public class TradeController extends BaseApiController {
 
     final static Logger logger=LoggerFactory.getLogger(TradeController.class);
 
-    @RequestMapping(value = "/QueryStockInformation", method = RequestMethod.POST)
+    @RequestMapping(value = "/QueryStockInformation", method = RequestMethod.GET)
     public CommonReturnType QueryStockInformation(@RequestParam(name = "stockId")int stockId, @RequestParam(name = "userId")int userId) throws BusinessException {
         logger.info("后端接收到查询请求"+"查询股票"+stockId+"查询用户"+userId);
         RealTime1 realTime1 = realTime1Redis.get(String.valueOf(stockId));
@@ -49,6 +49,15 @@ public class TradeController extends BaseApiController {
         }
 
         return CommonReturnType.success(createStockTradeVO(userFund,realTime1,stock));
+//        StockTradeVO stockTradeVO = new StockTradeVO();
+//        stockTradeVO.setAvailableNumber(10000);
+//        stockTradeVO.setOpenPrice(100);
+//        stockTradeVO.setStockName("浦发银行");
+//        stockTradeVO.setTradeMarket(1);
+//        stockTradeVO.setOrderPrice(99);
+//        stockTradeVO.setStockId(600000);
+//        stockTradeVO.setBalance(100000);
+//        return CommonReturnType.success(stockTradeVO);
     }
 
 
@@ -56,7 +65,7 @@ public class TradeController extends BaseApiController {
     //创建StockTradeVO的方法
     public StockTradeVO createStockTradeVO(UserFund userFund,RealTime1 realTime1,Stock stock) {
         StockTradeVO stockTradeVO = new StockTradeVO();
-        stockTradeVO.setUserMoney(userFund.getBalance());
+        stockTradeVO.setBalance(userFund.getBalance());
         stockTradeVO.setStockId(realTime1.getStockId());
         stockTradeVO.setOrderPrice(realTime1.getLastTradePrice());
         stockTradeVO.setTradeMarket(stock.getTradeMarket());
