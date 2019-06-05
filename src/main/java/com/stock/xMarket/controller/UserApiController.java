@@ -45,9 +45,9 @@ public class UserApiController extends BaseApiController {
 		//验证码
 		String sessionCode = (String) session.getAttribute("code");
 		log.info("id为"+user.getUserId()+"的用户输入验证码："+validateCode+"   正确验证码："+sessionCode);
-		if(!StringUtils.equalsIgnoreCase(validateCode, sessionCode)){
-			throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"验证码错误");
-		}
+//		if(!StringUtils.equalsIgnoreCase(validateCode, sessionCode)){
+//			throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"验证码错误");
+//		}
 
 		UserVO dbUser = userService.getUser(user.getUserName());
 
@@ -127,4 +127,17 @@ public class UserApiController extends BaseApiController {
 		return CommonReturnType.success();
 	}
 
+	@RequestMapping("/determineIfmailExists")
+	public CommonReturnType determineIfMailExists(@RequestParam(value = "mailAdress") String mailAdress, HttpServletRequest request) throws BusinessException {
+
+	
+		Boolean isExists=userService.isMailExists(mailAdress);
+		
+		if(isExists) {
+			return CommonReturnType.success();
+		}else {
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"该邮箱已注册！");
+		}
+	}
+	
 }

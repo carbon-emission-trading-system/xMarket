@@ -30,13 +30,32 @@ public class StockListController {
 	//所有个股信息，展示股票列表
     @RequestMapping(value = "/api/stockList", method = RequestMethod.GET)
     public CommonReturnType findAllRealTime() {
-
-    	List<RealTime2> realTime2List = realTimeService.findRealTime2();
-    	List<RealTime1> realTime1List = realTimeService.findRealTime1();
-    	//DecimalFormat df=new DecimalFormat("0.0000");//设置保留位数
-    	List<StockListVO> realTimeVOList = new ArrayList<StockListVO>();
-    	
-    	return finalResult(realTime1List,realTime2List,realTimeVOList);
+//
+//    	List<RealTime2> realTime2List = realTimeService.findRealTime2();
+//    	List<RealTime1> realTime1List = realTimeService.findRealTime1();
+//    	//DecimalFormat df=new DecimalFormat("0.0000");//设置保留位数
+//    	List<StockListVO> realTimeVOList = new ArrayList<StockListVO>();
+//    	
+//    	return finalResult(realTime1List,realTime2List,realTimeVOList);
+		List<StockListVO> stockListVOList = new ArrayList<>();
+		StockListVO stockListVO = new StockListVO();
+		stockListVO.setHighestPrice(20);
+		stockListVO.setIncrease(1.9);
+		stockListVO.setLastTradePrice(19.8);
+		stockListVO.setLowerPrice(19);
+		stockListVO.setOpenPrice(19.5);
+		stockListVO.setPbRatio(5.5);
+		stockListVO.setPeRatio(5.5);
+		stockListVO.setStockId(100000);
+		stockListVO.setStockName("张浩股份");
+		stockListVO.setTotalMarketCapitalization(5.5);
+		stockListVO.settradeAmount(9.9);
+		stockListVO.setType(1);
+		stockListVO.setYesterdayOpenPrice(19.7);
+		stockListVOList.add(stockListVO);
+		stockListVO.setStockName("王hs股份");
+		stockListVOList.add(stockListVO);
+		return CommonReturnType.success(stockListVOList);
     	
     }
     
