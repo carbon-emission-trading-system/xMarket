@@ -89,9 +89,10 @@ public class RealTimeAPIController extends BaseApiController{
 		
 	//用户删除自选股
 	@RequestMapping(value = "/api/deleteSelfSelectStock")
-	public void deleteSelfSelectStock(@RequestParam(value = "userId") int userId,@RequestParam(value = "stockId") int stockId) {
+	public CommonReturnType deleteSelfSelectStock(@RequestParam(value = "userId") int userId,@RequestParam(value = "stockId") int stockId) {
 		SelfSelectStock sss = selfSelectStockService.findByUserIdAndStockId(userId,stockId);
 		selfSelectStockService.deleteSelfSelectStockFromDb(sss);
+		return success();
 	}
 	
 }
