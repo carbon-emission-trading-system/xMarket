@@ -16,6 +16,11 @@ import javax.validation.constraints.NotBlank;
 @Table(name="user_fund")
 public class UserFund implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public UserFund(){}
 	
 
