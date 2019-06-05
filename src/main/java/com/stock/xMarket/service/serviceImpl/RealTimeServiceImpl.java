@@ -116,7 +116,7 @@ public class RealTimeServiceImpl implements RealTimeService {
     		realTimeVO.setTotalMarketCapitalization(totalMarketCapitalization);
     		realTimeVO.setPeRatio(peRatio);
     		realTimeVO.setPbRatio(pbRatio);
-    		realTimeVO.setType(map.get(rt.getStockId()).getType());
+    		realTimeVO.setTradeMarket(map.get(rt.getStockId()).getTradeMarket());
     		
     		realTimeVOList.add(realTimeVO);
     	}

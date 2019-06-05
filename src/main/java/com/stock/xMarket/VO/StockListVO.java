@@ -21,13 +21,13 @@ public class StockListVO implements Serializable {
 	private double  totalMarketCapitalization; //总市值
 	private double peRatio ; //市盈率
 	private double pbRatio; //市净率
-	private int type; //0--深A，1--沪A
+	private int tradeMarket; //0--深A，1--沪A
 	
 	
 	
 	public StockListVO(int stockId, String stockName, double lastTradePrice, double increase, double highestPrice,
 			double lowerPrice, double openPrice, double yesterdayOpenPrice, double tradeAmount,
-			double totalMarketCapitalization, double peRatio, double pbRatio, int type) {
+			double totalMarketCapitalization, double peRatio, double pbRatio, int tradeMarket) {
 		super();
 		this.stockId = stockId;
 		this.stockName = stockName;
@@ -41,7 +41,7 @@ public class StockListVO implements Serializable {
 		this.totalMarketCapitalization = totalMarketCapitalization;
 		this.peRatio = peRatio;
 		this.pbRatio = pbRatio;
-		this.type = type;
+		this.tradeMarket = tradeMarket;
 	}
 	
 	public StockListVO() {	
@@ -119,11 +119,11 @@ public class StockListVO implements Serializable {
 	public void setPbRatio(double pbRatio) {
 		this.pbRatio = pbRatio;
 	}
-	public int getType() {
-		return type;
+	public int getTradeMarket() {
+		return tradeMarket;
 	}
-	public void setType(int type) {
-		this.type = type;
+	public void setTradeMarket(int tradeMarket) {
+		this.tradeMarket = tradeMarket;
 	}
 	
 }

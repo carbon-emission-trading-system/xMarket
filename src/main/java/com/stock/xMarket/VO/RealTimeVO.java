@@ -31,7 +31,7 @@ public class RealTimeVO implements Serializable{
 	private double  totalMarketCapitalization; //总市值
 	private double peRatio ; //市盈率
 	private double pbRatio; //市净率
-	private int type; //0--深A，1--沪A
+	private int tradeMarket; //0--深A，1--沪A
 	private double outMarket;//外盘
 	private double inMarket;//内盘
 	private double conversionHand;//换手
@@ -263,15 +263,15 @@ public class RealTimeVO implements Serializable{
 
 
 
-	public int getType() {
-		return type;
+	public int getTradeMarket() {
+		return tradeMarket;
 	}
 
 
 
 
-	public void setType(int type) {
-		this.type = type;
+	public void setTradeMarket(int tradeMarket) {
+		this.tradeMarket = tradeMarket;
 	}
 
 
