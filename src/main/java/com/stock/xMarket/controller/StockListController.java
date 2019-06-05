@@ -42,7 +42,7 @@ public class StockListController {
 		stockListVO.setHighestPrice(20);
 		stockListVO.setIncrease(1.9);
 		stockListVO.setLastTradePrice(19.8);
-		stockListVO.setLowerPrice(19);
+		stockListVO.setLowestPrice(19);
 		stockListVO.setOpenPrice(19.5);
 		stockListVO.setPbRatio(5.5);
 		stockListVO.setPeRatio(5.5);
@@ -50,7 +50,7 @@ public class StockListController {
 		stockListVO.setStockName("张浩股份");
 		stockListVO.setTotalMarketCapitalization(5.5);
 		stockListVO.settradeAmount(9.9);
-		stockListVO.setType(1);
+		stockListVO.setTradeMarket(1);
 		stockListVO.setYesterdayOpenPrice(19.7);
 		stockListVOList.add(stockListVO);
 		stockListVO.setStockName("王hs股份");
