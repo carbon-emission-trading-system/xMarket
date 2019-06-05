@@ -35,11 +35,11 @@ public class Stock implements Serializable{
 	private String stockName;
 	
 	@Column(name="share_capital")
-	private String shareCapital;
+	private long shareCapital;
 	
 
 	@Column(name="earnings_per_share")
-	private String earningsPerShare;
+	private double earningsPerShare;
 
 	@Column(name="trade_market")
 	private int tradeMarket;//交易市场   market
@@ -64,19 +64,19 @@ public class Stock implements Serializable{
 		this.stockName = stockName;
 	}
 
-	public String getShareCapital() {
+	public long getShareCapital() {
 		return shareCapital;
 	}
 
-	public void setShareCapital(String shareCapital) {
+	public void setShareCapital(long shareCapital) {
 		this.shareCapital = shareCapital;
 	}
 
-	public String getEarningsPerShare() {
+	public double getEarningsPerShare() {
 		return earningsPerShare;
 	}
 
-	public void setEarningsPerShare(String earningsPerShare) {
+	public void setEarningsPerShare(double earningsPerShare) {
 		this.earningsPerShare = earningsPerShare;
 	}
 
