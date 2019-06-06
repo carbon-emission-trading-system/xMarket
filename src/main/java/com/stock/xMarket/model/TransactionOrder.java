@@ -18,6 +18,11 @@ import org.springframework.data.annotation.Transient;
 public class TransactionOrder implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
+	
+	
+	
+	
+	
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -231,4 +236,11 @@ public class TransactionOrder implements Serializable{
 	public void setTradeMarket(int tradeMarket) {
 		this.tradeMarket = tradeMarket;
 	}
+
+	public int getTradeMarket() {
+		return tradeMarket;
+	}
+	
+	
+	
 }

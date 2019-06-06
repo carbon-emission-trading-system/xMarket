@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
 import com.stock.xMarket.VO.TransactionOrderVO;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.model.TransactionOrder;
@@ -39,7 +40,7 @@ public class TransactionOrderController extends BaseApiController {
     	logger.info("传进来的用户ownerId："+userId);
     	List<TransactionOrder> list=transactionOrderService.findByOwnerIdAndDate(userId);
     	//List<TransactionOrderVO> VOlist=transactionOrderService.findByOwnerId(userId);
-    	logger.info("传出去的结果："+list);
+    	logger.info("传出去的结果："+JSON.toJSONString(list));
     	return CommonReturnType.success(list);
     }
 
