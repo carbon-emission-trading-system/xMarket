@@ -16,6 +16,7 @@ import com.stock.xMarket.model.HoldPosition;
 import com.stock.xMarket.model.TransactionOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +39,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 
 	@Autowired
 	private TransactionOrderRepository transactionOrderRepository;
+	
 
 	//更新持仓信息
 	@Override

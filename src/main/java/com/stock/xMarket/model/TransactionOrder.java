@@ -31,7 +31,7 @@ public class TransactionOrder implements Serializable{
 	private String stockName;
 
 	@Column(name="type")
-	private int type;//买卖标识
+	private int type;//买卖标识  1是卖
 	
 	@Column(name="order_id")
 	private int orderId;//委托单id  sellOrderId

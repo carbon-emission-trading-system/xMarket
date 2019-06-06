@@ -21,14 +21,14 @@ import com.stock.xMarket.model.RealTime2;
 import com.stock.xMarket.service.StockListService;
 
 @RestController
-public class StockListController {
+public class StockListController extends BaseApiController {
 
 	@Autowired
     private StockListService realTimeService;
 	final static Logger logger=LoggerFactory.getLogger(OrderController.class);
 
 	//所有个股信息，展示股票列表
-    @RequestMapping(value = "/api/stockList", method = RequestMethod.GET)
+    @RequestMapping(value = "/stockList", method = RequestMethod.GET)
     public CommonReturnType findAllRealTime() {
 //
 //    	List<RealTime2> realTime2List = realTimeService.findRealTime2();
