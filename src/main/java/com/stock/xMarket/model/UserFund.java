@@ -27,6 +27,16 @@ public class UserFund implements Serializable{
 	
 
 	
+	public UserFund(User user) {
+		super();
+		this.user = user;
+		this.balance = 1000000;
+	}
+
+
+
+
+
 	@Id
 	@Column
 	private int id;

@@ -36,8 +36,8 @@ public class Order implements Serializable{
 	@JoinColumn(name="user_id")
 	private User user;
 
-	@Column(name="local_time")
-	private Time localTime;
+	@Column(name="time")
+	private Time time;
 	
 	@Column(name="type")
 	private int type;//买入卖出
@@ -68,13 +68,13 @@ public class Order implements Serializable{
 	
 	
 
-	public Order(String orderId, Stock stock, User user, Time localTime, int type, Date date, int tradeStraregy,
+	public Order(String orderId, Stock stock, User user, Time time, int type, Date date, int tradeStraregy,
 			int orderAmount, int exchangeAmount, double orderPrice, double exchangeAveragePrice, int cancelNumber) {
 		super();
 		this.orderId = orderId;
 		this.stock = stock;
 		this.user = user;
-		this.localTime = localTime;
+		this.time = time;
 		this.type = type;
 		this.date = date;
 		this.tradeStraregy = tradeStraregy;
@@ -119,13 +119,21 @@ public class Order implements Serializable{
 		this.user = user;
 	}
 
-	public Time getLocalTime() {
-		return localTime;
+	
+
+	public Time getTime() {
+		return time;
 	}
 
-	public void setLocalTime(Time localTime) {
-		this.localTime = localTime;
+
+
+
+	public void setTime(Time time) {
+		this.time = time;
 	}
+
+
+
 
 	public int getType() {
 		return type;
