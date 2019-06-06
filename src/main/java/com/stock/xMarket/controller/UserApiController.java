@@ -25,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.xMarket.VO.UserVO;
 import com.stock.xMarket.model.User;
+import com.stock.xMarket.model.UserFund;
+import com.stock.xMarket.repository.UserFundRepository;
+import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.service.UserService;
 import com.stock.xMarket.util.*;
 
@@ -39,6 +42,9 @@ public class UserApiController extends BaseApiController {
 	@Autowired
 	public UserService userService;
 
+	@Autowired
+	public UserFundRepository userFundRepository;
+	
 	@RequestMapping(value = "/login")
 	public CommonReturnType login(@ModelAttribute(value = "user")User user, HttpSession session, String validateCode, HttpServletResponse response) throws BusinessException {
 	
@@ -105,6 +111,8 @@ public class UserApiController extends BaseApiController {
 		userService.regist(user);
 //		log.info(user.getTransactionPassword());
 		log.info("用户注册成功,用户名为："+user.getUserName());
+		UserFund userFund=new UserFund(user);
+		userFundRepository.saveAndFlush(userFund);
 		return CommonReturnType.success();
 
 	}
