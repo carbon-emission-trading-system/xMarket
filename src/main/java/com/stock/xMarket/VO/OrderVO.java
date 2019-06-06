@@ -12,7 +12,7 @@ public class OrderVO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Date date;//委托日期
-	private Time localTime;//委托时间
+	private Time time;//委托时间
     private int stockId;//股票代码
     private int userId;
 	private String stockName;//股票简称
@@ -26,10 +26,10 @@ public class OrderVO implements Serializable {
 	private int orderId;//合同编号
 
 	
-	public OrderVO(Date date, Time localTime, int stockId, String stockName, int type, int orderAmount,int exchangeAmount, double exchangeAveragePrice, double orderPrice, int cancelNumber, int tradeStraregy,int orderId) {
+	public OrderVO(Date date, Time time, int stockId, String stockName, int type, int orderAmount,int exchangeAmount, double exchangeAveragePrice, double orderPrice, int cancelNumber, int tradeStraregy,int orderId) {
 		super();
 		this.date = date;
-		this.localTime = localTime;
+		this.time = time;
 		this.stockId = stockId;
 		this.stockName = stockName;
 		this.type = type;
@@ -76,13 +76,19 @@ public class OrderVO implements Serializable {
 		this.date = date;
 	}
 
-	public Time getLocalTime() {
-		return localTime;
+	
+
+	public Time getTime() {
+		return time;
 	}
 
-	public void setLocalTime(Time localTime) {
-		this.localTime = localTime;
+
+
+	public void setTime(Time time) {
+		this.time = time;
 	}
+
+
 
 	public int getStockId() {
 		return stockId;

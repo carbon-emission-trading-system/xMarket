@@ -143,7 +143,7 @@ public class UserApiController extends BaseApiController {
 		
 		if(isExists) {
 
-			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"该邮箱已注册！");
+			throw new BusinessException(EmBusinessError.EMAIL_EXIST_ERROR);
 		}else {
 
 			return CommonReturnType.success();
@@ -158,7 +158,7 @@ public class UserApiController extends BaseApiController {
 		
 		if(isExists) {
 
-			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"该邮箱已注册！");
+			throw new BusinessException(EmBusinessError.USERNAME_EXIST_ERROR);
 		}else {
 			return CommonReturnType.success();
 		}

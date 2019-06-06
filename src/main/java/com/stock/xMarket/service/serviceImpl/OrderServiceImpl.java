@@ -16,6 +16,7 @@ import com.stock.xMarket.model.Order;
 import com.stock.xMarket.model.TradeOrder;
 import com.stock.xMarket.model.TransactionOrder;
 import com.stock.xMarket.redis.OrderRedis;
+import com.stock.xMarket.redis.TransactionRedis;
 import com.stock.xMarket.redis.UserOrderRedis;
 import com.stock.xMarket.repository.OrderRepository;
 import com.stock.xMarket.service.OrderService;
@@ -39,6 +40,8 @@ public class OrderServiceImpl implements OrderService {
 	@Autowired
 	private UserOrderRedis userOrderRedis;
 	
+	@Autowired
+	TransactionRedis transactionRedis;
 	
 
 	/**
@@ -86,6 +89,8 @@ public class OrderServiceImpl implements OrderService {
 		
 		for(String orderId:orderIdList) {
 			Order order=orderRedis.get(orderId);
+			TransactionOrder transactionOrder=transactionRedis.get(orderId);
+			BeanUtils.copyProperties(transactionOrder, order);
 			orderList.add(order);
 		}
 		
@@ -117,6 +122,8 @@ public class OrderServiceImpl implements OrderService {
 		orderRedis.remove(String.valueOf(OrderId));
 		
 		BeanUtils.copyProperties(transactionOrder, order);
+		
+		order.setExchangeAveragePrice(transactionOrder.getTradePrice());
 		
 		addOrderToDb(order);
 		

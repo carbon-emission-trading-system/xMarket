@@ -73,7 +73,7 @@ public class OrderController extends BaseApiController{
 	public CommonReturnType buyOrSale(@ModelAttribute(value = "SentstockTrading")OrderVO orderVO,HttpSession session, String validateCode,HttpServletResponse response) throws BusinessException{
 		
 
-		orderVO.setLocalTime(new Time(System.currentTimeMillis()));
+		orderVO.setTime(new Time(System.currentTimeMillis()));
 		orderVO.setDate(new Date(System.currentTimeMillis()));
 		
 		Order order = new Order();
