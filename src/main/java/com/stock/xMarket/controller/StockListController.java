@@ -96,6 +96,16 @@ public class StockListController extends BaseApiController {
 
     //根据用户id，展示用户的所有自选股信息
     @RequestMapping(value = "/selfSelectStockList", method = RequestMethod.GET)
+/*
+    public CommonReturnType findAllSelfSelectStock(@RequestParam("userId") int userId) {
+
+    	List<RealTime1> realTime1List = realTimeService.findSelfSelectStockRealTime1(userId);
+    	List<RealTime2> realTime2List = realTimeService.findSelfSelectStockRealTime2(userId);
+    	List<StockListVO> stockListVOList = new ArrayList<StockListVO>();
+
+    	return finalResult(realTime1List,realTime2List,stockListVOList);
+    }
+    */
     public CommonReturnType findAllSelfSelectStock(@RequestParam("userId") int id) {
   	
 //    	List<RealTime1> realTime1List = realTimeService.findSelfSelectStockRealTime1(id);
@@ -122,6 +132,7 @@ public class StockListController extends BaseApiController {
 		stockListVO.setStockName("王hs股份");
 		stockListVOList.add(stockListVO);
 		return CommonReturnType.success(stockListVOList);
+
     }
 
 

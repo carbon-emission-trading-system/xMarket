@@ -91,6 +91,7 @@ public class RealTimeAPIController extends BaseApiController{
 	//用户添加自选股
 	@RequestMapping(value = "/addSelfSelectStock",method = RequestMethod.POST)
 	public CommonReturnType addSelfSelectStockToDb(@RequestParam(value = "userId") int userId,@RequestParam(value = "stockId") int stockId) {
+
 		SelfSelectStock sss = new SelfSelectStock();
 		sss.setUserId(userId);
 		sss.setStockId(stockId);
