@@ -62,7 +62,7 @@ public class UserApiController extends BaseApiController {
 				cookie.setPath("/");
 				response.addCookie(cookie);
 				log.info("id为"+dbUser.getUserId()+"的用户登录成功");
-				return CommonReturnType.success(); // Result.success(); 200, "success"
+				return CommonReturnType.success(dbUser.getUserId()); // Result.success(); 200, "success"
 			} else {
 				throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"密码错误");
 			}

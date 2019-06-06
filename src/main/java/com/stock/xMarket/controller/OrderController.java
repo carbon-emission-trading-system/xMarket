@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
@@ -30,7 +31,9 @@ import com.stock.xMarket.model.User;
 import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.response.CommonReturnType;
+import com.stock.xMarket.service.HoldPositionService;
 import com.stock.xMarket.service.OrderService;
+import com.stock.xMarket.service.UserFundService;
 import com.stock.xMarket.util.OpeningUtil;
 
 import static com.stock.xMarket.response.CommonReturnType.*;
@@ -54,6 +57,15 @@ public class OrderController extends BaseApiController{
 	@Autowired
 	private StockRepository stockRepository;
 	
+	/** The hold position service. */
+	@Autowired
+	HoldPositionService holdPositionService;
+
+	/** The user fund service. */
+	@Autowired
+	UserFundService userFundService;
+
+	
 	final static Logger logger=LoggerFactory.getLogger(OrderController.class);
 	 
 	
@@ -71,6 +83,8 @@ public class OrderController extends BaseApiController{
 		order.setOrderId(String.valueOf(orderId));
 		orderVO.setOrderId(orderId);
 
+		
+		
 		BeanUtils.copyProperties(orderVO, order);
 
 		try {
@@ -91,12 +105,31 @@ public class OrderController extends BaseApiController{
 		}
 
 		
-		if(OpeningUtil.isSet(order.getLocalTime())) {
-			rabbitTemplate.convertAndSend("marchExchange", "allmarchRoutingKey", JSON.toJSONString(orderVO));
+		if(OpeningUtil.isSet(order.getTime())) {
+			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
 		}else {
 			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
 		}
 
+		
+		// 将委托单添加至Redis
+				try {
+				orderService.addOrderToRedis(order);
+				}catch (Exception e) {
+					// TODO: handle exception
+					logger.info("将委托单加入Redis发生异常");
+				}
+
+				
+				if (orderVO.getType() == 1) {
+					// 更新股票可用余额
+					holdPositionService.updateHoldPositionByOrder(order);
+				}else {
+					// 更新个人资金
+					userFundService.updateUserFundByOrder(order);
+				}
+		
+		
 		
 		return success();
 
@@ -107,8 +140,8 @@ public class OrderController extends BaseApiController{
 	
 	
 	//找到用户的所有今日委托单信息
-    @RequestMapping(value = "/api/todayOrder/{id}", method = RequestMethod.GET)
-    public CommonReturnType findAllTodayOrder(@PathVariable("id") int id) {
+    @RequestMapping(value = "/todayOrder", method = RequestMethod.GET)
+    public CommonReturnType findAllTodayOrder(@RequestParam("userId") int id) {
     	
     	logger.info("传进来的用户ownerId："+id);
     	List<Order> list=orderService.findByUserId(id);
