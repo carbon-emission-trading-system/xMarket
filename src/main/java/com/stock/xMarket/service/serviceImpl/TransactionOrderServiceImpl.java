@@ -1,5 +1,6 @@
 package com.stock.xMarket.service.serviceImpl;
 
+import java.sql.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -251,5 +252,15 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 
 		return revokeOrder;
+	}
+
+
+	@Override
+	public List<TransactionOrder> findByOwnerIdAndDate(int userId) throws BusinessException {
+		// TODO Auto-generated method stub
+		
+		Date date=new Date(System.currentTimeMillis());
+		return transactionOrderRepository.findByOwnerIdAndDate(userId, date);
+		
 	}
 }

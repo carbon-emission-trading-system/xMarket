@@ -5,6 +5,7 @@ import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.User;
+import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.repository.HoldPositionRepository;
 import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.TransactionOrderRepository;

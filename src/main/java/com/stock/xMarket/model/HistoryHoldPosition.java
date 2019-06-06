@@ -43,8 +43,11 @@ public class HistoryHoldPosition implements Serializable {
 	@Column(name="total_profit_and_loss")
 	private double totalProfitAndLoss;//总盈亏
 	
-	@Column(name="total_purchase_amount")
-	private double totalPurchaseAmount;//总买入金额
+	//@Column(name="total_purchase_amount")
+	//private double totalPurchaseAmount;//总买入金额
+	
+	@Column(name="profit_and_loss_ratio")
+	private double profitAndLossRatio;//盈亏比例
 	
 	public int getHistoryHoldPositionId() {
 		return historyHoldPositionId;
@@ -101,12 +104,16 @@ public class HistoryHoldPosition implements Serializable {
 	public void setTotalProfitAndLoss(double totalProfitAndLoss) {
 		this.totalProfitAndLoss = totalProfitAndLoss;
 	}
+	public double getProfitAndLossRatio() {
+		return profitAndLossRatio;
+	}
+	public void setProfitAndLossRatio(double profitAndLossRatio) {
+		this.profitAndLossRatio = profitAndLossRatio;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
-	public double getTotalPurchaseAmount() {
-		return totalPurchaseAmount;
-	}
-	public void setTotalPurchaseAmount(double totalPurchaseAmount) {
-		this.totalPurchaseAmount = totalPurchaseAmount;
-	}
+	
 	
 }

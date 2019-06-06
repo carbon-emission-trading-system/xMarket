@@ -1,5 +1,6 @@
 package com.stock.xMarket.repository;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,8 @@ public interface TransactionOrderRepository extends JpaRepository<TransactionOrd
 			+ "t.stockBalance,t.orderId,t.transactionOrderId,t.serviceTax,t.stampTax,t.otherFee,t.actualAmount,t.tradeMarket,t.revokeAmount)"
 			+ " from TransactionOrder t")
 	List<TransactionOrderVO> findByOwnerId(Integer ownerId);
+
+	List<TransactionOrder> findByOwnerIdAndDate(int userId,Date date);
 
 	
 }

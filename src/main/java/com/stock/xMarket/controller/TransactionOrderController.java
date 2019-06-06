@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.xMarket.VO.TransactionOrderVO;
+import com.stock.xMarket.error.BusinessException;
+import com.stock.xMarket.model.TransactionOrder;
 import com.stock.xMarket.service.TransactionOrderService;
 
 @RestController
@@ -26,6 +28,17 @@ public class TransactionOrderController extends BaseApiController {
     	
     	logger.info("传进来的用户ownerId："+userId);
     	List<TransactionOrderVO> list=transactionOrderService.findByOwnerId(userId);
+    	logger.info("传出去的结果："+list);
+    	return CommonReturnType.success(list);
+    }
+    
+	//找到用户的所有当日成交单信息
+    @RequestMapping(value = "/todayExchange", method = RequestMethod.GET)
+    public CommonReturnType todayExchange(@RequestParam("userId") int userId) throws BusinessException {
+    	
+    	logger.info("传进来的用户ownerId："+userId);
+    	List<TransactionOrder> list=transactionOrderService.findByOwnerIdAndDate(userId);
+    	//List<TransactionOrderVO> VOlist=transactionOrderService.findByOwnerId(userId);
     	logger.info("传出去的结果："+list);
     	return CommonReturnType.success(list);
     }

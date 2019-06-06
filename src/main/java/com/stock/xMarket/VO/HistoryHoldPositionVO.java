@@ -10,10 +10,11 @@ public class HistoryHoldPositionVO {
 	private Date clearPositionDate;
 	private int stockHoldDay;
 	private double totalProfitAndLoss;
-	private double totalPurchaseAmount;
+	//private double totalPurchaseAmount;
+	private double profitAndLossRatio;
 	
 	public HistoryHoldPositionVO(int stockId, String stockName, Date buildPositionDate, Date clearPositionDate,
-			int stockHoldDay, double totalProfitAndLoss, double totalPurchaseAmount) {
+			int stockHoldDay, double totalProfitAndLoss, double profitAndLossRatio) {
 		super();
 		this.stockId = stockId;
 		this.stockName = stockName;
@@ -21,7 +22,7 @@ public class HistoryHoldPositionVO {
 		this.clearPositionDate = clearPositionDate;
 		this.stockHoldDay = stockHoldDay;
 		this.totalProfitAndLoss = totalProfitAndLoss;
-		this.totalPurchaseAmount = totalPurchaseAmount;
+		this.profitAndLossRatio = profitAndLossRatio;
 	}
 	
 	public HistoryHoldPositionVO() {
@@ -63,12 +64,15 @@ public class HistoryHoldPositionVO {
 	public void setTotalProfitAndLoss(double totalProfitAndLoss) {
 		this.totalProfitAndLoss = totalProfitAndLoss;
 	}
-	public double getTotalPurchaseAmount() {
-		return totalPurchaseAmount;
+
+	public double getProfitAndLossRatio() {
+		return profitAndLossRatio;
 	}
-	public void setTotalPurchaseAmount(double totalPurchaseAmount) {
-		this.totalPurchaseAmount = totalPurchaseAmount;
+
+	public void setProfitAndLossRatio(double profitAndLossRatio) {
+		this.profitAndLossRatio = profitAndLossRatio;
 	}
+	
 	
 	
 }
