@@ -113,7 +113,7 @@ public class OrderListener {
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标股票不存在！");
 		}
 
-		order.setLocalTime(new Time(System.currentTimeMillis()));
+		order.setTime(new Time(System.currentTimeMillis()));
 
 		BeanUtils.copyProperties(orderVO, order);
 

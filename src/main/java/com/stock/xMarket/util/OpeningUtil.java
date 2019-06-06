@@ -72,5 +72,34 @@ public class OpeningUtil {
        }
        return s;
    }
-	
+   public static boolean isSet(Time time) {
+       boolean s=false;
+       try {
+           Calendar cal = Calendar.getInstance();
+           cal.setTime(time);
+           int hour = cal.get(Calendar.HOUR_OF_DAY);
+           int minutes = cal.get(Calendar.MINUTE);
+           if (hour >= 0 && hour < 10) {
+               if (hour == 9) {
+                   if (minutes >= 25)// 9:30-10:00
+                       s = false; 
+                   else
+                       // 9:00-9:30
+                       s = true;
+               } else {// 0:00-9:00
+                   s = true;
+               }
+           } else if(hour==14) {
+        	   if(minutes>=57) {
+        		   s = true;
+        	   }
+           }else if (hour >= 15 && hour <= 24) {// 15:00-24:00
+               s = true;
+           }
+       } catch (Exception e) {
+           e.printStackTrace();
+           return s;
+       }
+       return s;
+   }
 }

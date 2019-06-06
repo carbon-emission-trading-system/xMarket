@@ -100,13 +100,27 @@ public class UserServiceImpl implements UserService{
 	public Boolean isMailExists(String mailAdress) {
 		// TODO Auto-generated method stub
 		
-		User user=userRepository.findByMail(mailAdress);
+		User user=userRepository.findByEmail(mailAdress);
 		
 		if(user!=null) {
-			return false;
-		}else {
 			return true;
+		}else {
+			return false;
 		}
+	}
+
+	@Override
+	public Boolean isUserExists(String userName) {
+		// TODO Auto-generated method stub
+		User user=userRepository.findByUserName(userName);
+		
+		if(user!=null) {
+			return true;
+		}else {
+			return false;
+		}
+		
+		
 	}
 
 	

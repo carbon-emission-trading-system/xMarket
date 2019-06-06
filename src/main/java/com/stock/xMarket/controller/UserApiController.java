@@ -25,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.xMarket.VO.UserVO;
 import com.stock.xMarket.model.User;
+import com.stock.xMarket.model.UserFund;
+import com.stock.xMarket.repository.UserFundRepository;
+import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.service.UserService;
 import com.stock.xMarket.util.*;
 
@@ -39,6 +42,9 @@ public class UserApiController extends BaseApiController {
 	@Autowired
 	public UserService userService;
 
+	@Autowired
+	public UserFundRepository userFundRepository;
+	
 	@RequestMapping(value = "/login")
 	public CommonReturnType login(@ModelAttribute(value = "user")User user, HttpSession session, String validateCode, HttpServletResponse response) throws BusinessException {
 	
@@ -62,7 +68,7 @@ public class UserApiController extends BaseApiController {
 				cookie.setPath("/");
 				response.addCookie(cookie);
 				log.info("id为"+dbUser.getUserId()+"的用户登录成功");
-				return CommonReturnType.success(); // Result.success(); 200, "success"
+				return CommonReturnType.success(dbUser.getUserId()); // Result.success(); 200, "success"
 			} else {
 				throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"密码错误");
 			}
@@ -105,6 +111,8 @@ public class UserApiController extends BaseApiController {
 		userService.regist(user);
 //		log.info(user.getTransactionPassword());
 		log.info("用户注册成功,用户名为："+user.getUserName());
+		UserFund userFund=new UserFund(user);
+		userFundRepository.saveAndFlush(userFund);
 		return CommonReturnType.success();
 
 	}
@@ -127,16 +135,32 @@ public class UserApiController extends BaseApiController {
 		return CommonReturnType.success();
 	}
 
-	@RequestMapping("/determineIfmailExists")
+	@RequestMapping("/determineIfMailExists")
 	public CommonReturnType determineIfMailExists(@RequestParam(value = "mailAdress") String mailAdress, HttpServletRequest request) throws BusinessException {
 
 	
 		Boolean isExists=userService.isMailExists(mailAdress);
 		
 		if(isExists) {
-			return CommonReturnType.success();
-		}else {
+
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"该邮箱已注册！");
+		}else {
+
+			return CommonReturnType.success();
+		}
+	}
+	
+	@RequestMapping("/determineIfUserNameExists")
+	public CommonReturnType determineIfUserNameExists(@RequestParam(value = "userName") String userName, HttpServletRequest request) throws BusinessException {
+
+	
+		Boolean isExists=userService.isUserExists(userName);
+		
+		if(isExists) {
+
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"该邮箱已注册！");
+		}else {
+			return CommonReturnType.success();
 		}
 	}
 	

@@ -69,7 +69,7 @@ public class UserFundServiceImpl implements UserFundService {
 		
 		int userId = order.getUser().getUserId();
 		int stockId = order.getStock().getStockId();
-		Time time = order.getLocalTime();
+		Time time = order.getTime();
 		
 		UserFund userFund=userFundRepository.findByUser_UserId(userId);
 		

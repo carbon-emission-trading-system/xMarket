@@ -1,5 +1,7 @@
 package com.stock.xMarket.VO;
 
+import java.sql.Date;
+
 public class KLineDataVO {
     private String date;//日期
     private double openPrice;//开盘价
@@ -8,7 +10,23 @@ public class KLineDataVO {
     private double lowestPrice;//最低价
     private double volume;//成交量
 
-    public String getDate() {
+    
+    
+    public KLineDataVO() {
+	}
+
+	public KLineDataVO(String  date, double openPrice, double closePrice, double highestPrice, double lowestPrice,
+			double volume) {
+		super();
+		this.date = date;
+		this.openPrice = openPrice;
+		this.closePrice = closePrice;
+		this.highestPrice = highestPrice;
+		this.lowestPrice = lowestPrice;
+		this.volume = volume;
+	}
+
+	public String getDate() {
         return date;
     }
 
