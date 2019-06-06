@@ -40,8 +40,6 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	@Autowired
 	private TransactionOrderRepository transactionOrderRepository;
 	
-	
-	
 
 	//更新持仓信息
 	@Override
