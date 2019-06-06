@@ -124,6 +124,7 @@ public class OrderServiceImpl implements OrderService {
 		BeanUtils.copyProperties(transactionOrder, order);
 		
 		order.setExchangeAveragePrice(transactionOrder.getTradePrice());
+		order.setOrderId(transactionOrder.getOrderId()+"");
 		
 		addOrderToDb(order);
 		
