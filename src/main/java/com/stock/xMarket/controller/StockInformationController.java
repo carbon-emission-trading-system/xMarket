@@ -1,6 +1,8 @@
 package com.stock.xMarket.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.stock.xMarket.VO.KLineDataVO;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
@@ -18,7 +20,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -30,7 +37,7 @@ public class StockInformationController extends BaseApiController{
     private StockHistoryRepository stockHistoryRepository;
 
     @RequestMapping(value = "/KlineDiagramDisplay", method = RequestMethod.GET)
-    public CommonReturnType KlineDiagramDisplay(@RequestParam(name = "stockId")int stockId) throws BusinessException {
+    public CommonReturnType KlineDiagramDisplay(@RequestParam(name = "stockId")int stockId) throws BusinessException, ParseException {
         logger.info("后端接收到建立K线图请求"+" 股票："+stockId);
 //        return CommonReturnType.success(createDayKLineDataVOList(stockHistoryRepository.findAllByStockId(stockId)));
         List<KLineDataVO> kLineDataVOList = new ArrayList<>();
@@ -56,7 +63,8 @@ public class StockInformationController extends BaseApiController{
             logger.error("K线图数据获取失败，没有查询到此股票的历史信息");
             throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"K线图数据获取失败，没有查询到此股票的历史信息");
         }
-        return JSON.parseArray(JSON.toJSONString(stockHistoriesList), KLineDataVO.class);
+        JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd";
+        return JSON.parseArray(JSON.toJSONString(stockHistoriesList,SerializerFeature.WriteDateUseDateFormat), KLineDataVO.class);
     }
 
 
