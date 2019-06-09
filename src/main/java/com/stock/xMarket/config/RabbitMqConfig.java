@@ -131,7 +131,7 @@ public class RabbitMqConfig {
 	    public TopicExchange marchExchange(){
 	        return new TopicExchange(env.getProperty("march.exchange.name"),true,false);
 	    }
-	    
+	    //连续竞价
 	    @Bean(name = "marchQueue")
 	    public Queue marchQueue(){
 	        return new Queue(env.getProperty("march.queue.name"),true);
@@ -139,7 +139,18 @@ public class RabbitMqConfig {
 
 	    @Bean
 	    public Binding marchBinding(){
-	        return BindingBuilder.bind(marchQueue()).to(marchExchange()).with(env.getProperty("march.routing.key.name"));
+	        return BindingBuilder.bind(allMarchQueue()).to(marchExchange()).with(env.getProperty("march.routing.key.name"));
+	    }
+	    
+	    //集合竞价
+	    @Bean(name = "allMarchQueue")
+	    public Queue allMarchQueue(){
+	        return new Queue(env.getProperty("allMarch.queue.name"),true);
+	    }
+
+	    @Bean
+	    public Binding allMarchBinding(){
+	        return BindingBuilder.bind(marchQueue()).to(marchExchange()).with(env.getProperty("allMarch.routing.key.name"));
 	    }
 
 	  //实时消息
