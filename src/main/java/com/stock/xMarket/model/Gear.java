@@ -1,7 +1,11 @@
 package com.stock.xMarket.model;
 
-public class Gear {
+import java.io.Serializable;
 
+public class Gear implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
 	private Double price;
     private int quantity;
     

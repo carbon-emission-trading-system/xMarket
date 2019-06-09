@@ -1,6 +1,8 @@
 package com.stock.xMarket.service;
 
-import com.stock.xMarket.VO.OrderVO;
+import java.util.List;
+
+import com.stock.xMarket.VO.HoldPositionVO;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.model.Order;
 import com.stock.xMarket.model.TransactionOrder;
@@ -12,4 +14,6 @@ public interface HoldPositionService {
 	void updateHoldPositionByTransaction(TransactionOrder transactionOrder) throws BusinessException;
 
 	void updateHoldPositionByOrder(Order order) throws BusinessException;
+	//根据用户id找到用户持仓股票
+	List<HoldPositionVO> findHoldPosition(int userId);
 }

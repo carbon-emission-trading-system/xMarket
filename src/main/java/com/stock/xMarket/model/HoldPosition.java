@@ -1,5 +1,6 @@
 package com.stock.xMarket.model;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import javax.persistence.CascadeType;
@@ -16,12 +17,14 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="hold_position")
-public class HoldPosition {
+public class HoldPosition implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column
-	private int hold_position_id;
+	@Column(name="hold_position_id")
+	private int holdPositionId;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="stock_id")
@@ -31,28 +34,22 @@ public class HoldPosition {
 	@JoinColumn(name="user_id")
 	private User user;
 	
-	@Column
+	@Column(name="cost_price")
 	private double costPrice;
 	
-	@Column
+	@Column(name="position_number")
 	private int positionNumber;
 	
-	@Column
+	@Column(name="available_number")
 	private int availableNumber;
 	
 	@Transient
 	private int frozenNumber;
 	
-	@Column
+	@Column(name="opening_time")
 	private Date openingTime;
 
-	public int getHold_position_id() {
-		return hold_position_id;
-	}
-
-	public void setHold_position_id(int hold_position_id) {
-		this.hold_position_id = hold_position_id;
-	}
+	
 
 	public Stock getStock() {
 		return stock;
@@ -100,6 +97,25 @@ public class HoldPosition {
 
 	public void setOpeningTime(Date openingTime) {
 		this.openingTime = openingTime;
+	}
+
+	@Override
+	public String toString() {
+		return "HoldPosition [hold_position_id=" + holdPositionId + ", stock=" + stock + ", user=" + user
+				+ ", costPrice=" + costPrice + ", positionNumber=" + positionNumber + ", availableNumber="
+				+ availableNumber + ", frozenNumber=" + frozenNumber + ", openingTime=" + openingTime + "]";
+	}
+
+	public int getFrozenNumber() {
+		return frozenNumber;
+	}
+
+	public void setFrozenNumber(int frozenNumber) {
+		this.frozenNumber = frozenNumber;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	

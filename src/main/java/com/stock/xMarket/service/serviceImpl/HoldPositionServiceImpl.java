@@ -12,14 +12,18 @@ import com.stock.xMarket.repository.TransactionOrderRepository;
 import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.service.HoldPositionService;
 import com.stock.xMarket.model.Order;
-import com.stock.xMarket.VO.OrderVO;
+import com.stock.xMarket.VO.HoldPositionVO;
 import com.stock.xMarket.model.HoldPosition;
 import com.stock.xMarket.model.TransactionOrder;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -30,7 +34,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	private static Logger LOGGER = LoggerFactory.getLogger(TransactionOrderServiceImpl.class);
 
 	@Autowired
-	private HoldPositionRepository holdPositonRepository;
+	private HoldPositionRepository holdPositionRepository;
 
 	@Autowired
 	private UserRepository userRepository;
@@ -41,6 +45,8 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	@Autowired
 	private TransactionOrderRepository transactionOrderRepository;
 	
+	@Autowired
+	private RealTime1Redis realTime1Redis;
 
 	//更新持仓信息
 	@Override
@@ -51,7 +57,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		int stockId=transactionOrder.getStockId();
 
 		//从数据库读取对应数据
-		HoldPosition holdPositon = holdPositonRepository.findByUser_UserIdAndStock_StockId(userId,stockId);
+		HoldPosition holdPositon = holdPositionRepository.findByUser_UserIdAndStock_StockId(userId,stockId);
 		if(holdPositon!=null){
 			//计算新的持仓信息
 			int positionNumber;
@@ -77,7 +83,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			holdPositon.setCostPrice(costPrice);
 			transactionOrder.setStockBalance(positionNumber);
 			//将新的数据存入数据库
-			holdPositonRepository.saveAndFlush(holdPositon);
+			holdPositionRepository.saveAndFlush(holdPositon);
 			transactionOrderRepository.saveAndFlush(transactionOrder);
 			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 持仓信息更新完毕");
 		}else{
@@ -100,7 +106,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			holdPositon.setAvailableNumber(0);
 
 			//存入数据库
-			holdPositonRepository.saveAndFlush(holdPositon);
+			holdPositionRepository.saveAndFlush(holdPositon);
 			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 建仓完毕");
 		}
 
@@ -119,7 +125,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 
 		LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 开始更新股票可用余额");
 		
-		HoldPosition holdPositon=holdPositonRepository.findByUser_UserIdAndStock_StockId(userId,stockId);
+		HoldPosition holdPositon=holdPositionRepository.findByUser_UserIdAndStock_StockId(userId,stockId);
 		
 		if(holdPositon == null){
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标持仓信息不存在！");
@@ -129,14 +135,48 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		
 		holdPositon.setAvailableNumber(availableNumber);
 		
-		holdPositonRepository.saveAndFlush(holdPositon);
+		holdPositionRepository.saveAndFlush(holdPositon);
 
 		LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 股票可用余额更新完毕");
 	}
 	
 
-
-
+	//根据用户id，查看他所有持仓股票
+	@Override
+	public List<HoldPositionVO> findHoldPosition(int userId) {
+		List<HoldPosition> list = new ArrayList<>();
+		list = holdPositionRepository.findByUser_UserId(userId);
+		//判断当前用户是否有持仓股
+		if(list!=null) {
+			//当用户有持仓股时
+			List<HoldPositionVO> holdPositionVOList = new ArrayList<>();
+			for(HoldPosition h : list) {
+				HoldPositionVO holdPositionVO = new HoldPositionVO();
+				int stockId = h.getStock().getStockId();
+				double costPrice = h.getCostPrice();//成本价
+				int positionNumber = h.getPositionNumber(); 
+				double presentPrice = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice();//现价--也就是市价
+				//总盈亏 = 成本价  * 股票余额 - 现价 *股票余额 = （成本价-现价）* 股票余额
+				double totalProfitAndLoss = (costPrice-presentPrice)*positionNumber;
+				BeanUtils.copyProperties(h, holdPositionVO);
+				holdPositionVO.setStockId(stockId);
+				holdPositionVO.setStockName(h.getStock().getStockName());
+				holdPositionVO.setPresentPrice(presentPrice);
+				holdPositionVO.setActualAmount(h.getPositionNumber());
+				holdPositionVO.setTotalProfitAndLoss(totalProfitAndLoss);
+				//盈亏比例=（ 市价 - 成本价）/成本价
+				holdPositionVO.setProfitAndLossRatio( (presentPrice-costPrice)/costPrice );
+			    //市值 = 市价*股票余额
+				holdPositionVO.setMarketValue( presentPrice * positionNumber );
+				//仓位占比 = 市值/总资产-----市值=现价*股票余额
+				//holdPositionVO.setPositionRatio( presentPrice * positionNumber );////////////////有问题		
+				holdPositionVOList.add(holdPositionVO);
+			}
+			return holdPositionVOList;
+		}else {
+			return null;
+		}
+	}
 	
 	
 }
