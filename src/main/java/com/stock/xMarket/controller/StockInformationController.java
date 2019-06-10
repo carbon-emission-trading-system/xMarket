@@ -39,21 +39,21 @@ public class StockInformationController extends BaseApiController{
     @RequestMapping(value = "/KlineDiagramDisplay", method = RequestMethod.GET)
     public CommonReturnType KlineDiagramDisplay(@RequestParam(name = "stockId")int stockId) throws BusinessException, ParseException {
         logger.info("后端接收到建立K线图请求"+" 股票："+stockId);
-//        return CommonReturnType.success(createDayKLineDataVOList(stockHistoryRepository.findAllByStockId(stockId)));
-        List<KLineDataVO> kLineDataVOList = new ArrayList<>();
-        KLineDataVO kLineDataVO1 = new KLineDataVO("2019-08-01",40,41,42,39.8,90000);
-        kLineDataVOList.add(kLineDataVO1);
-        KLineDataVO kLineDataVO2 = new KLineDataVO("2019-08-02",41,43,43.2,40.9,90000);
-        kLineDataVOList.add(kLineDataVO2);
-        KLineDataVO kLineDataVO3 = new KLineDataVO("2019-08-03",38,36,38.2,35.9,90000);
-        kLineDataVOList.add(kLineDataVO3);
-        KLineDataVO kLineDataVO4 = new KLineDataVO("2019-08-04",41,43,43.2,40.9,90000);
-        kLineDataVOList.add(kLineDataVO4);
-        KLineDataVO kLineDataVO5 = new KLineDataVO("2019-08-05",50,49,54,47,90000);
-        kLineDataVOList.add(kLineDataVO5);
-        KLineDataVO kLineDataVO6 = new KLineDataVO("2019-08-08",48,51,52.1,46,90000);
-        kLineDataVOList.add(kLineDataVO6);
-        return CommonReturnType.success(kLineDataVOList);
+        return CommonReturnType.success(createDayKLineDataVOList(stockHistoryRepository.findAllByStockId(stockId)));
+//        List<KLineDataVO> kLineDataVOList = new ArrayList<>();
+//        KLineDataVO kLineDataVO1 = new KLineDataVO("2019-08-01",40,41,42,39.8,90000);
+//        kLineDataVOList.add(kLineDataVO1);
+//        KLineDataVO kLineDataVO2 = new KLineDataVO("2019-08-02",41,43,43.2,40.9,90000);
+//        kLineDataVOList.add(kLineDataVO2);
+//        KLineDataVO kLineDataVO3 = new KLineDataVO("2019-08-03",38,36,38.2,35.9,90000);
+//        kLineDataVOList.add(kLineDataVO3);
+//        KLineDataVO kLineDataVO4 = new KLineDataVO("2019-08-04",41,43,43.2,40.9,90000);
+//        kLineDataVOList.add(kLineDataVO4);
+//        KLineDataVO kLineDataVO5 = new KLineDataVO("2019-08-05",50,49,54,47,90000);
+//        kLineDataVOList.add(kLineDataVO5);
+//        KLineDataVO kLineDataVO6 = new KLineDataVO("2019-08-08",48,51,52.1,46,90000);
+//        kLineDataVOList.add(kLineDataVO6);
+//        return CommonReturnType.success(kLineDataVOList);
     }
 
     //用于复制stockHistory列表信息至KLineDataVO列表的函数
