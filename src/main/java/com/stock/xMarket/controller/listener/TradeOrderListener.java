@@ -64,7 +64,7 @@ public class TradeOrderListener  {
      *
      * @param tradeOrder the trade order
      */
-    @RabbitListener(queues = "${tradeOrder.queue.name}")
+    @RabbitListener(queues = "tradeOrderQueue")
     public void tradeOrderListener(String str){
     	
     	TradeOrder tradeOrder=JSON.parseObject(str,TradeOrder.class);

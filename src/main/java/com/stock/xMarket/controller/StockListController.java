@@ -106,7 +106,7 @@ public class StockListController extends BaseApiController {
     		throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"realTime1List为空");
 		}
     	List<RealTime2> realTime2List = realTimeService.findSelfSelectStockRealTime2(id);
-		if(realTime1List == null){
+		if(realTime2List == null){
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"realTime2List为空");
 		}
     	List<StockListVO> stockListVOList = new ArrayList<StockListVO>();

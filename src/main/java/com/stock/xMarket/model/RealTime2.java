@@ -17,7 +17,8 @@ public class RealTime2 implements Serializable {
 	private double bookValue; //每股净资
 	private int tradeMarket; //0--深A，1--沪A
 	
-	
+	public RealTime2() {
+	}
 	public RealTime2(int stockId, String stockName, double earningsPerShare, double yesterdayOpenPrice,
 			double yesterdayClosePrice, long totalShareCapital, double bookValue, int tradeMarket) {
 		super();
