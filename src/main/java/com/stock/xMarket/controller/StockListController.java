@@ -96,42 +96,32 @@ public class StockListController extends BaseApiController {
 
     //根据用户id，展示用户的所有自选股信息
     @RequestMapping(value = "/selfSelectStockList", method = RequestMethod.GET)
-/*
-    public CommonReturnType findAllSelfSelectStock(@RequestParam("userId") int userId) {
-
-    	List<RealTime1> realTime1List = realTimeService.findSelfSelectStockRealTime1(userId);
-    	List<RealTime2> realTime2List = realTimeService.findSelfSelectStockRealTime2(userId);
+    public CommonReturnType findAllSelfSelectStock(@RequestParam("userId") int id) {
+  	
+    	List<RealTime1> realTime1List = realTimeService.findSelfSelectStockRealTime1(id);
+    	List<RealTime2> realTime2List = realTimeService.findSelfSelectStockRealTime2(id);
     	List<StockListVO> stockListVOList = new ArrayList<StockListVO>();
 
     	return finalResult(realTime1List,realTime2List,stockListVOList);
-    }
-    */
-    public CommonReturnType findAllSelfSelectStock(@RequestParam("userId") int id) {
-  	
-//    	List<RealTime1> realTime1List = realTimeService.findSelfSelectStockRealTime1(id);
-//    	List<RealTime2> realTime2List = realTimeService.findSelfSelectStockRealTime2(id);
-//    	List<StockListVO> stockListVOList = new ArrayList<StockListVO>();
-//
-//    	return finalResult(realTime1List,realTime2List,stockListVOList);
-		List<StockListVO> stockListVOList = new ArrayList<>();
-		StockListVO stockListVO = new StockListVO();
-		stockListVO.setHighestPrice(20);
-		stockListVO.setIncrease(1.9);
-		stockListVO.setLastTradePrice(19.8);
-		stockListVO.setLowestPrice(19);
-		stockListVO.setOpenPrice(19.5);
-		stockListVO.setPbRatio(5.5);
-		stockListVO.setPeRatio(5.5);
-		stockListVO.setStockId(100000);
-		stockListVO.setStockName("张浩股份");
-		stockListVO.setTotalMarketCapitalization(5.5);
-		stockListVO.settradeAmount(9.9);
-		stockListVO.setTradeMarket(1);
-		stockListVO.setYesterdayOpenPrice(19.7);
-		stockListVOList.add(stockListVO);
-		stockListVO.setStockName("王hs股份");
-		stockListVOList.add(stockListVO);
-		return CommonReturnType.success(stockListVOList);
+//		List<StockListVO> stockListVOList = new ArrayList<>();
+//		StockListVO stockListVO = new StockListVO();
+//		stockListVO.setHighestPrice(20);
+//		stockListVO.setIncrease(1.9);
+//		stockListVO.setLastTradePrice(19.8);
+//		stockListVO.setLowestPrice(19);
+//		stockListVO.setOpenPrice(19.5);
+//		stockListVO.setPbRatio(5.5);
+//		stockListVO.setPeRatio(5.5);
+//		stockListVO.setStockId(100000);
+//		stockListVO.setStockName("张浩股份");
+//		stockListVO.setTotalMarketCapitalization(5.5);
+//		stockListVO.settradeAmount(9.9);
+//		stockListVO.setTradeMarket(1);
+//		stockListVO.setYesterdayOpenPrice(19.7);
+//		stockListVOList.add(stockListVO);
+//		stockListVO.setStockName("王hs股份");
+//		stockListVOList.add(stockListVO);
+//		return CommonReturnType.success(stockListVOList);
 
     }
 

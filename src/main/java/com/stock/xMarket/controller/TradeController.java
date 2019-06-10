@@ -35,29 +35,29 @@ public class TradeController extends BaseApiController {
     @RequestMapping(value = "/QueryStockInformation", method = RequestMethod.GET)
     public CommonReturnType QueryStockInformation(@RequestParam(name = "stockId")int stockId, @RequestParam(name = "userId")int userId) throws BusinessException {
         logger.info("后端接收到查询请求"+"查询股票"+stockId+"查询用户"+userId);
-//        RealTime1 realTime1 = realTime1Redis.get(String.valueOf(stockId));
-//        if (realTime1 == null){
-//            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标股票的实时信息不存在！");
-//        }
-//        UserFund userFund = userFundRepository.findByUser_UserId(userId);
-//        if (userFund == null){
-//            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"执行交易的用户不存在！");
-//        }
-//        Stock stock = stockRepository.findById(stockId).get();
-//        if (stock == null){
-//            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标股票不存在！");
-//        }
-//
-//        return CommonReturnType.success(createStockTradeVO(userFund,realTime1,stock));
-        StockTradeVO stockTradeVO = new StockTradeVO();
-        stockTradeVO.setAvailableNumber(10000);
-        stockTradeVO.setOpenPrice(100);
-        stockTradeVO.setStockName("浦发银行");
-        stockTradeVO.setTradeMarket(1);
-        stockTradeVO.setOrderPrice(99);
-        stockTradeVO.setStockId(600000);
-        stockTradeVO.setBalance(100000);
-        return CommonReturnType.success(stockTradeVO);
+        RealTime1 realTime1 = realTime1Redis.get(String.valueOf(stockId));
+        if (realTime1 == null){
+            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标股票的实时信息不存在！");
+        }
+        UserFund userFund = userFundRepository.findByUser_UserId(userId);
+        if (userFund == null){
+            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"执行交易的用户不存在！");
+        }
+        Stock stock = stockRepository.findById(stockId).get();
+        if (stock == null){
+            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标股票不存在！");
+        }
+
+        return CommonReturnType.success(createStockTradeVO(userFund,realTime1,stock));
+//        StockTradeVO stockTradeVO = new StockTradeVO();
+//        stockTradeVO.setAvailableNumber(10000);
+//        stockTradeVO.setOpenPrice(100);
+//        stockTradeVO.setStockName("浦发银行");
+//        stockTradeVO.setTradeMarket(1);
+//        stockTradeVO.setOrderPrice(99);
+//        stockTradeVO.setStockId(600000);
+//        stockTradeVO.setBalance(100000);
+//        return CommonReturnType.success(stockTradeVO);
     }
 
 
