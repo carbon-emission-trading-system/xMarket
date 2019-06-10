@@ -30,6 +30,10 @@ public class RealTime2 implements Serializable {
 		this.bookValue = bookValue;
 		this.tradeMarket = tradeMarket;
 	}
+	public RealTime2(int stockId) {
+		// TODO Auto-generated constructor stub
+		this.stockId = stockId;
+	}
 	public int getStockId() {
 		return stockId;
 	}

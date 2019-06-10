@@ -24,7 +24,6 @@ import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.RealTime2;
 import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.redis.RealTime2Redis;
-import com.stock.xMarket.redis.RealTimeRedis;
 import com.stock.xMarket.service.RealTimeService;
 
 import org.springframework.core.env.Environment;
@@ -91,7 +90,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 	
 	
 	
-	
+	@Override
     public List<RealTimeVO> finalRealTime(List<RealTime1> realTime1List,List<RealTime2> realTime2List) {
     	Map<Integer, RealTime2> map = realTime2List.stream().collect(Collectors.toMap(RealTime2::getStockId, a -> a,(k1,k2)->k1));
     	List<RealTimeVO> realTimeVOList=new ArrayList<>();

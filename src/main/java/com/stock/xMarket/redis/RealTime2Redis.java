@@ -8,7 +8,7 @@ import com.stock.xMarket.model.RealTime2;
 @Repository
 public class RealTime2Redis extends BaseRedis<RealTime2>{
 
-	private static final String REDIS_KEY = "com.stock.xMarket.redis.RealTimerRedis";
+	private static final String REDIS_KEY = "com.stock.xMarket.redis.RealTime2Redis";
 	
 	@Override
 	protected String getRedisKey() {

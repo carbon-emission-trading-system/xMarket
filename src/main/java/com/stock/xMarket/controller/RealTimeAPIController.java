@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.xMarket.model.SelfSelectStock;
 import com.stock.xMarket.model.TimeShare;
-import com.stock.xMarket.redis.RealTimeRedis;
 import com.stock.xMarket.repository.TimeShareRepository;
 import com.stock.xMarket.response.CommonReturnType;
 import com.stock.xMarket.service.RealTimeService;
@@ -37,8 +36,7 @@ public class RealTimeAPIController extends BaseApiController{
 	@Autowired
 	SelfSelectStockService selfSelectStockService;
 	
-	@Autowired
-	RealTimeRedis realTimeRedis;
+
 	
 	@Autowired
 	TimeShareRepository timeShareRepository;

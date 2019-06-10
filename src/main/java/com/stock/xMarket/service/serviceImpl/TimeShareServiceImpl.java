@@ -17,19 +17,25 @@ import com.alibaba.fastjson.JSON;
 import com.stock.xMarket.VO.RealTimeVO;
 import com.stock.xMarket.VO.TimeShareVO;
 import com.stock.xMarket.config.RabbitMqConfig;
+import com.stock.xMarket.model.RealTime1;
+import com.stock.xMarket.model.RealTime2;
 import com.stock.xMarket.model.TimeShare;
-import com.stock.xMarket.redis.RealTimeRedis;
+import com.stock.xMarket.redis.RealTime1Redis;
+import com.stock.xMarket.redis.RealTime2Redis;
 import com.stock.xMarket.repository.TimeShareRepository;
 import com.stock.xMarket.repository.UserRepository;
+import com.stock.xMarket.service.RealTimeService;
 import com.stock.xMarket.service.TimeShareService;
 
 @Service
 //@Transactional
 public class TimeShareServiceImpl implements TimeShareService {
 	
-	
 	@Autowired
-	private RealTimeRedis realTimeRedis;
+	private RealTime2Redis realTime2Redis;
+
+	@Autowired
+	private RealTime1Redis realTime1Redis;
 	
 	@Autowired
 	AmqpAdmin amqpAdmin;
@@ -39,6 +45,9 @@ public class TimeShareServiceImpl implements TimeShareService {
 	
 	@Autowired
 	RabbitTemplate rabbitTemplate;
+	
+	@Autowired
+	private RealTimeService realTimeService;
 	
 	@Autowired
 	public TimeShareRepository timeShareRepository;
@@ -53,9 +62,14 @@ public class TimeShareServiceImpl implements TimeShareService {
 		
 		
 		List<TimeShareVO> timeShareList = new ArrayList<>();
-		List<RealTimeVO> realTimeList = new ArrayList<RealTimeVO>();
-		String realTimeListString = (String) realTimeRedis.getString(ALL_REALTIME_REDIS);
-		realTimeList = JSON.parseArray(realTimeListString, RealTimeVO.class);	
+		List<RealTime1> list1 = new ArrayList<>();
+		list1 = realTime1Redis.getAll();
+
+		List<RealTime2> list2 = new ArrayList<>();
+		list2 = realTime2Redis.getAll();
+
+		
+		List<RealTimeVO> realTimeList = realTimeService.finalRealTime(list1, list2);
 		// TODO Auto-generated method stub
 		for(RealTimeVO realTime:realTimeList) {
 			int stockID=realTime.getStockId();

@@ -12,7 +12,8 @@ import org.springframework.stereotype.Service;
 import com.stock.xMarket.model.Order;
 import com.stock.xMarket.model.TransactionOrder;
 import com.stock.xMarket.model.UserFund;
-import com.stock.xMarket.redis.RealTimeRedis;
+import com.stock.xMarket.redis.RealTime1Redis;
+import com.stock.xMarket.redis.RealTime2Redis;
 import com.stock.xMarket.repository.UserFundRepository;
 import com.stock.xMarket.service.UserFundService;
 import com.stock.xMarket.util.OpeningUtil;
@@ -24,9 +25,12 @@ public class UserFundServiceImpl implements UserFundService {
 	@Autowired
 	private UserFundRepository userFundRepository;
 
+
 	@Autowired
-	private RealTimeRedis realTimeRedis;
-	
+	private RealTime2Redis realTime2Redis;
+
+	@Autowired
+	private RealTime1Redis realTime1Redis;
 	
   
 	/**
@@ -77,10 +81,10 @@ public class UserFundServiceImpl implements UserFundService {
 		
 		if(order.getTradeStraregy()>0) {
 			if(OpeningUtil.isOpening(time)) {
-				double OpenPrice=realTimeRedis.get(String.valueOf(stockId)).getOpenPrice();
+				double OpenPrice=realTime1Redis.get(String.valueOf(stockId)).getOpenPrice();
 				frozenAmount=OpenPrice*1.20*order.getOrderAmount();
 			}else {
-				double ytdPrice=realTimeRedis.get(String.valueOf(stockId)).getYesterdayClosePrice();
+				double ytdPrice=realTime2Redis.get(String.valueOf(stockId)).getYesterdayClosePrice();
 				frozenAmount=ytdPrice*1.25*order.getOrderAmount();
 			}
 			
