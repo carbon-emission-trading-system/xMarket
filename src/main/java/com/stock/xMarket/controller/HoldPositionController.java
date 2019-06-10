@@ -19,7 +19,8 @@ public class HoldPositionController extends BaseApiController{
 	@Autowired
 	private HoldPositionService holdPositionService;
 	
-	@RequestMapping(value = "/holdPosition", method = RequestMethod.GET)
+	//向前端返回用户的持仓股票
+	@RequestMapping(value = "/presentHoldPositionInfo", method = RequestMethod.GET)
 	public CommonReturnType findHoldPosition(@RequestParam("userId") int userId) {//
 		
 		List<HoldPositionVO> list = holdPositionService.findHoldPosition(userId);
@@ -29,6 +30,13 @@ public class HoldPositionController extends BaseApiController{
 		return CommonReturnType.success( );
 		
 		
+	}
+	
+	//像前端返回用户的资产信息
+	@RequestMapping(value = "/getFunds", method = RequestMethod.GET)
+	public CommonReturnType getFunds(@RequestParam("userId") int userId) {//
+	
+		return CommonReturnType.success(holdPositionService.getFunds(userId));
 	}
 
 	    	

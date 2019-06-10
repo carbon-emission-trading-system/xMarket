@@ -8,7 +8,6 @@ public class HoldPositionVO implements Serializable {
 	
 	private int stockId;
 	private String stockName;
-  //private double increase; //本日涨幅 = (现价-上一个交易日收盘价）/上一个交易日收盘价*100% 
 	private double presentPrice; //现价 就是市价
 	private double costPrice; //成本价---- 
 	private int actualAmount; //实际数量  = 股票余额（positionNumber） 
