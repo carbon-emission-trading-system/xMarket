@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.xMarket.VO.StockListVO;
+import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.RealTime2;
 import com.stock.xMarket.service.StockListService;
@@ -32,31 +33,31 @@ public class StockListController extends BaseApiController {
     @RequestMapping(value = "/stockList", method = RequestMethod.GET)
     public CommonReturnType findAllRealTime() {
 //
-//    	List<RealTime2> realTime2List = realTimeService.findRealTime2();
-//    	List<RealTime1> realTime1List = realTimeService.findRealTime1();
-//    	//DecimalFormat df=new DecimalFormat("0.0000");//设置保留位数
-//    	List<StockListVO> realTimeVOList = new ArrayList<StockListVO>();
-//
-//    	return finalResult(realTime1List,realTime2List,realTimeVOList);
-		List<StockListVO> stockListVOList = new ArrayList<>();
-		StockListVO stockListVO = new StockListVO();
-		stockListVO.setHighestPrice(20);
-		stockListVO.setIncrease(1.9);
-		stockListVO.setLastTradePrice(19.8);
-		stockListVO.setLowestPrice(19);
-		stockListVO.setOpenPrice(19.5);
-		stockListVO.setPbRatio(5.5);
-		stockListVO.setPeRatio(5.5);
-		stockListVO.setStockId(100000);
-		stockListVO.setStockName("张浩股份");
-		stockListVO.setTotalMarketCapitalization(5.5);
-		stockListVO.settradeAmount(9.9);
-		stockListVO.setTradeMarket(1);
-		stockListVO.setYesterdayOpenPrice(19.7);
-		stockListVOList.add(stockListVO);
-		stockListVO.setStockName("王hs股份");
-		stockListVOList.add(stockListVO);
-		return CommonReturnType.success(stockListVOList);
+    	List<RealTime2> realTime2List = realTimeService.findRealTime2();
+    	List<RealTime1> realTime1List = realTimeService.findRealTime1();
+//    	DecimalFormat df=new DecimalFormat("0.0000");//设置保留位数
+    	List<StockListVO> realTimeVOList = new ArrayList<StockListVO>();
+    	return finalResult(realTime1List,realTime2List,realTimeVOList);
+    	
+//		List<StockListVO> stockListVOList = new ArrayList<>();
+//		StockListVO stockListVO = new StockListVO();
+//		stockListVO.setHighestPrice(20);
+//		stockListVO.setIncrease(1.9);
+//		stockListVO.setLastTradePrice(19.8);
+//		stockListVO.setLowestPrice(19);
+//		stockListVO.setOpenPrice(19.5);
+//		stockListVO.setPbRatio(5.5);
+//		stockListVO.setPeRatio(5.5);
+//		stockListVO.setStockId(100000);
+//		stockListVO.setStockName("张浩股份");
+//		stockListVO.setTotalMarketCapitalization(5.5);
+//		stockListVO.settradeAmount(9.9);
+//		stockListVO.setTradeMarket(1);
+//		stockListVO.setYesterdayOpenPrice(19.7);
+//		stockListVOList.add(stockListVO);
+//		stockListVO.setStockName("王hs股份");
+//		stockListVOList.add(stockListVO);
+//		return CommonReturnType.success(stockListVOList);
 
     }
 
@@ -96,7 +97,7 @@ public class StockListController extends BaseApiController {
 
     //根据用户id，展示用户的所有自选股信息
     @RequestMapping(value = "/selfSelectStockList", method = RequestMethod.GET)
-    public CommonReturnType findAllSelfSelectStock(@RequestParam("userId") int id) {
+    public CommonReturnType findAllSelfSelectStock(@RequestParam("userId") int id) throws BusinessException {
   	
     	List<RealTime1> realTime1List = realTimeService.findSelfSelectStockRealTime1(id);
     	List<RealTime2> realTime2List = realTimeService.findSelfSelectStockRealTime2(id);
