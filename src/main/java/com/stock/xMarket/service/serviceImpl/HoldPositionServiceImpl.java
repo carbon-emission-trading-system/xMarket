@@ -156,8 +156,9 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	public List<HoldPositionVO> findHoldPosition(int userId) {
 		List<HoldPosition> list = new ArrayList<>();
 		list = holdPositionRepository.findByUser_UserId(userId);
-		//用户余额
-		double balance = userFundRepository.findByUser_UserId(userId).getBalance();
+		UserFund userFund = userFundRepository.findByUser_UserId(userId);
+		//用户资金余额 = 冻结资金 + 可用资金
+		double amountBalance = userFund.getFrozenAmount() + userFund.getBalance();
 		//用户持仓股票市值和
 		double totalMarketValue =0;
 		//判断当前用户是否有持仓股
@@ -170,7 +171,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				totalMarketValue = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice() * h.getPositionNumber();
 			}
 			//计算用户总资产
-			totalFunds = balance + totalMarketValue;
+			totalFunds = amountBalance + totalMarketValue;
 			
 			for(HoldPosition h : list) {
 				HoldPositionVO holdPositionVO = new HoldPositionVO();
@@ -214,10 +215,10 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		
 		userFundVO.setTotalFunds(totalFunds);//总资产
 		userFundVO.setHoldPosProAndLos(holdPosProAndLos);//持仓盈亏
-		userFundVO.setAvailableFunds(userFund.getBalance()-userFund.getFrozenAmount());//可用资金
+		userFundVO.setBalance(userFund.getBalance());;//可用资金
 		userFundVO.setTotalMarketValue(totalMarketValue);//总市值
 		//userFundVO.setTodayProAndLos();//当日盈亏
-		userFundVO.setFreezFunds(userFund.getFrozenAmount());//冻结资金
+		userFundVO.setFrozenAmount(userFund.getFrozenAmount());//冻结资金
 		return userFundVO;
 	}
 	
