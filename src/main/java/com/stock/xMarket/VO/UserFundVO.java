@@ -3,10 +3,10 @@ package com.stock.xMarket.VO;
 public class UserFundVO {
     private double totalFunds;
     private double holdPosProAndLos;
-    private double availableFunds;
+    private double balance;
     private double totalMarketValue;
     private double todayProAndLos;
-    private double freezFunds;
+    private double frozenAmount;
 
     public double getTotalFunds() {
         return totalFunds;
@@ -24,12 +24,12 @@ public class UserFundVO {
         this.holdPosProAndLos = holdPosProAndLos;
     }
 
-    public double getAvailableFunds() {
-        return availableFunds;
+    public double getBalance() {
+        return balance;
     }
 
-    public void setAvailableFunds(double availableFunds) {
-        this.availableFunds = availableFunds;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public double getTotalMarketValue() {
@@ -48,11 +48,11 @@ public class UserFundVO {
         this.todayProAndLos = todayProAndLos;
     }
 
-    public double getFreezFunds() {
-        return freezFunds;
+    public double getFrozenAmount() {
+        return frozenAmount;
     }
 
-    public void setFreezFunds(double freezFunds) {
-        this.freezFunds = freezFunds;
+    public void setFrozenAmount(double frozenAmount) {
+        this.frozenAmount = frozenAmount;
     }
 }
