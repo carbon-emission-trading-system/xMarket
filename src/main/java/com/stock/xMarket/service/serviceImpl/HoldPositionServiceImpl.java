@@ -5,6 +5,7 @@ import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.User;
+import com.stock.xMarket.model.UserFund;
 import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.repository.HoldPositionRepository;
 import com.stock.xMarket.repository.StockRepository;
@@ -14,6 +15,7 @@ import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.service.HoldPositionService;
 import com.stock.xMarket.model.Order;
 import com.stock.xMarket.VO.HoldPositionVO;
+import com.stock.xMarket.VO.UserFundVO;
 import com.stock.xMarket.model.HoldPosition;
 import com.stock.xMarket.model.TransactionOrder;
 
@@ -51,6 +53,10 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	
 	@Autowired
 	private UserFundRepository userFundRepository;
+	
+	private double totalFunds = 0;
+	private double holdPosProAndLos = 0;
+	private double totalMarketValue = 0;
 
 	//更新持仓信息
 	@Override
@@ -150,8 +156,9 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	public List<HoldPositionVO> findHoldPosition(int userId) {
 		List<HoldPosition> list = new ArrayList<>();
 		list = holdPositionRepository.findByUser_UserId(userId);
-		//用户余额
-		double balance = userFundRepository.findByUser_UserId(userId).getBalance();
+		UserFund userFund = userFundRepository.findByUser_UserId(userId);
+		//用户资金余额 = 冻结资金 + 可用资金
+		double amountBalance = userFund.getFrozenAmount() + userFund.getBalance();
 		//用户持仓股票市值和
 		double totalMarketValue =0;
 		//判断当前用户是否有持仓股
@@ -164,7 +171,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				totalMarketValue = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice() * h.getPositionNumber();
 			}
 			//计算用户总资产
-			double userTotalFund = balance + totalMarketValue;
+			totalFunds = amountBalance + totalMarketValue;
 			
 			for(HoldPosition h : list) {
 				HoldPositionVO holdPositionVO = new HoldPositionVO();
@@ -174,6 +181,8 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				double presentPrice = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice();//现价--也就是市价
 				//总盈亏 = 成本价  * 股票余额 - 现价 *股票余额 = （成本价-现价）* 股票余额
 				double totalProfitAndLoss = (costPrice-presentPrice)*positionNumber;
+				//市值 = 现价*股票余额
+				double marketValue = presentPrice * positionNumber;
 				BeanUtils.copyProperties(h, holdPositionVO);
 				holdPositionVO.setStockId(stockId);
 				holdPositionVO.setStockName(h.getStock().getStockName());
@@ -183,15 +192,34 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				//盈亏比例=（ 市价 - 成本价）/成本价
 				holdPositionVO.setProfitAndLossRatio( (presentPrice-costPrice)/costPrice );
 			    //市值 = 市价*股票余额
-				holdPositionVO.setMarketValue( presentPrice * positionNumber );
-				//仓位占比 = 市值/总资产-----市值=现价*股票余额
-				holdPositionVO.setPositionRatio( presentPrice * positionNumber / userTotalFund );		
+				holdPositionVO.setMarketValue( marketValue );
+				//仓位占比 = 市值/总资产
+				holdPositionVO.setPositionRatio( marketValue / totalFunds );		
 				holdPositionVOList.add(holdPositionVO);
+				
+				
+				holdPosProAndLos += totalProfitAndLoss;//为计算用户资产信息中的持仓盈亏做服务
+				totalMarketValue += marketValue;//为计算用户资产信息中的总市值做服务
 			}
 			return holdPositionVOList;
 		}else {
 			return null;
 		}
+	}
+	
+	//根据用户id，计算用户资产信息
+	@Override
+	public UserFundVO getFunds(int userId) {
+		UserFundVO userFundVO = new UserFundVO();
+		UserFund userFund = userFundRepository.findByUser_UserId(userId);
+		
+		userFundVO.setTotalFunds(totalFunds);//总资产
+		userFundVO.setHoldPosProAndLos(holdPosProAndLos);//持仓盈亏
+		userFundVO.setBalance(userFund.getBalance());;//可用资金
+		userFundVO.setTotalMarketValue(totalMarketValue);//总市值
+		//userFundVO.setTodayProAndLos();//当日盈亏
+		userFundVO.setFrozenAmount(userFund.getFrozenAmount());//冻结资金
+		return userFundVO;
 	}
 	
 	
