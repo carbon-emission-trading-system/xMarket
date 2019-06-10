@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.stock.xMarket.error.BusinessException;
+import com.stock.xMarket.error.EmBusinessError;
 import com.stock.xMarket.response.CommonReturnType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,10 +98,16 @@ public class StockListController extends BaseApiController {
 
     //根据用户id，展示用户的所有自选股信息
     @RequestMapping(value = "/selfSelectStockList", method = RequestMethod.GET)
-    public CommonReturnType findAllSelfSelectStock(@RequestParam("userId") int id) {
+    public CommonReturnType findAllSelfSelectStock(@RequestParam("userId") int id) throws BusinessException {
   	
     	List<RealTime1> realTime1List = realTimeService.findSelfSelectStockRealTime1(id);
+    	if(realTime1List == null){
+    		throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"realTime1List为空");
+		}
     	List<RealTime2> realTime2List = realTimeService.findSelfSelectStockRealTime2(id);
+		if(realTime1List == null){
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"realTime2List为空");
+		}
     	List<StockListVO> stockListVOList = new ArrayList<StockListVO>();
 
     	return finalResult(realTime1List,realTime2List,stockListVOList);
