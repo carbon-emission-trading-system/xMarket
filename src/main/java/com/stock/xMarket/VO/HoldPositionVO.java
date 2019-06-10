@@ -17,7 +17,7 @@ public class HoldPositionVO implements Serializable {
 	private double totalProfitAndLoss; //总盈亏 = 成本价 * 股票余额 - 市值
 	private double profitAndLossRatio; //盈亏比例=（ 市价 - 成本价）/成本价
 	private double marketValue; //市值 = 市价*股票余额 
-	//private double positionRatio; //仓位占比 = 市值/总资产
+	private double positionRatio; //仓位占比 = 市值/总资产
 	
 	
 	public int getStockId() {
@@ -68,13 +68,13 @@ public class HoldPositionVO implements Serializable {
 	public void setMarketValue(double marketValue) {
 		this.marketValue = marketValue;
 	}
-	/*public double getPositionRatio() {
+	public double getPositionRatio() {
 		return positionRatio;
 	}
 	public void setPositionRatio(double positionRatio) {
 		this.positionRatio = positionRatio;
 	}
-	*/
+	
 	
 	
 }

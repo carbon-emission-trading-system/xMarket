@@ -9,6 +9,7 @@ import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.repository.HoldPositionRepository;
 import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.TransactionOrderRepository;
+import com.stock.xMarket.repository.UserFundRepository;
 import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.service.HoldPositionService;
 import com.stock.xMarket.model.Order;
@@ -47,6 +48,9 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	
 	@Autowired
 	private RealTime1Redis realTime1Redis;
+	
+	@Autowired
+	private UserFundRepository userFundRepository;
 
 	//更新持仓信息
 	@Override
@@ -146,10 +150,22 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	public List<HoldPositionVO> findHoldPosition(int userId) {
 		List<HoldPosition> list = new ArrayList<>();
 		list = holdPositionRepository.findByUser_UserId(userId);
+		//用户余额
+		double balance = userFundRepository.findByUser_UserId(userId).getBalance();
+		//用户持仓股票市值和
+		double totalMarketValue =0;
 		//判断当前用户是否有持仓股
 		if(list!=null) {
 			//当用户有持仓股时
 			List<HoldPositionVO> holdPositionVOList = new ArrayList<>();
+			//持仓股票总市值
+			for(HoldPosition h : list) {
+				int stockId = h.getStock().getStockId();
+				totalMarketValue = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice() * h.getPositionNumber();
+			}
+			//计算用户总资产
+			double userTotalFund = balance + totalMarketValue;
+			
 			for(HoldPosition h : list) {
 				HoldPositionVO holdPositionVO = new HoldPositionVO();
 				int stockId = h.getStock().getStockId();
@@ -169,7 +185,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			    //市值 = 市价*股票余额
 				holdPositionVO.setMarketValue( presentPrice * positionNumber );
 				//仓位占比 = 市值/总资产-----市值=现价*股票余额
-				//holdPositionVO.setPositionRatio( presentPrice * positionNumber );////////////////有问题		
+				holdPositionVO.setPositionRatio( presentPrice * positionNumber / userTotalFund );		
 				holdPositionVOList.add(holdPositionVO);
 			}
 			return holdPositionVOList;
