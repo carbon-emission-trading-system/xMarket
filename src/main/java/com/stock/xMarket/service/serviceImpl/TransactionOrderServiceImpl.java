@@ -11,6 +11,7 @@ import com.stock.xMarket.model.TradeOrder;
 import com.stock.xMarket.model.TransactionOrder;
 import com.stock.xMarket.redis.TransactionRedis;
 
+import com.stock.xMarket.repository.StockRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -32,7 +33,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	private static Logger LOGGER = LoggerFactory.getLogger(TransactionOrderServiceImpl.class);
 
 	@Autowired
-    private TransactionOrderRepository transactionOrderRepository ;
+    private TransactionOrderRepository transactionOrderRepository;
 
 	@Autowired
 	private TransactionRedis transactionRedis;
@@ -46,7 +47,10 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	
 	@Autowired
 	UserFundService userFundService;
-	
+
+	@Autowired
+	private StockRepository stockRepository;
+
 	//返回全部历史成交单
 	@Override
 	public List<TransactionOrderVO> findByOwnerId(int ownerId){
@@ -182,6 +186,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		BeanUtils.copyProperties(tradeOrder,transactionOrder);
 
 		//插入部分属性：买卖标识符、委托单id、拥有者id
+		transactionOrder.setStockName(stockRepository.findByStockId(tradeOrder.getStockId()).getStockName());
 		transactionOrder.setType(1);
 		transactionOrder.setOrderId(tradeOrder.getSellOrderId());
 		transactionOrder.setOwnerId(tradeOrder.getSellerId());
@@ -196,6 +201,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		BeanUtils.copyProperties(tradeOrder,transactionOrder);
 
 		//插入部分属性：买卖标识符、委托单id、拥有者id
+		transactionOrder.setStockName(stockRepository.findByStockId(tradeOrder.getStockId()).getStockName());
 		transactionOrder.setType(0);
 		transactionOrder.setOrderId(tradeOrder.getBuyOrderId());
 		transactionOrder.setOwnerId(tradeOrder.getBuyerId());
