@@ -197,14 +197,13 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				holdPositionVO.setStockId(stockId);
 				holdPositionVO.setStockName(h.getStock().getStockName());
 				holdPositionVO.setPresentPrice(keepDecimal(presentPrice));
-				holdPositionVO.setActualAmount(h.getPositionNumber());
 				holdPositionVO.setTotalProfitAndLoss(keepDecimal(totalProfitAndLoss));
 				//盈亏比例=（ 市价 - 成本价）/成本价
-				holdPositionVO.setProfitAndLossRatio(keepDecimal( (presentPrice-costPrice)/costPrice*100 ));//单位应是%
+				holdPositionVO.setProfitAndLossRatio(keepDecimal( (presentPrice-costPrice)/costPrice*100 )); //单位应是%
 			    //市值 = 市价*股票余额
 				holdPositionVO.setMarketValue(keepDecimal(marketValue));
 				//仓位占比 = 市值/总资产
-				holdPositionVO.setPositionRatio(keepDecimal( marketValue / totalFunds * 100));//单位应是%		
+				holdPositionVO.setPositionRatio(keepDecimal( marketValue / totalFunds * 100)); //单位应是%		
 				holdPositionVOList.add(holdPositionVO);
 				
 				

@@ -10,7 +10,9 @@ public class HoldPositionVO implements Serializable {
 	private String stockName;
 	private double presentPrice; //现价 就是市价
 	private double costPrice; //成本价---- 
-	private int actualAmount; //实际数量  = 股票余额（positionNumber） 
+	private int positionNumber; // 股票余额（positionNumber） 
+	private int availableNumber; //可用余额
+	private int frozenNumber; //冻结数量
 	//备选，公式太复杂啦！
 	//private double todayProfitAndLoss; //当日盈亏 = 
 	private double totalProfitAndLoss; //总盈亏 = 成本价 * 股票余额 - 市值
@@ -43,11 +45,11 @@ public class HoldPositionVO implements Serializable {
 	public void setCostPrice(double costPrice) {
 		this.costPrice = costPrice;
 	}
-	public int getActualAmount() {
-		return actualAmount;
+	public int getPositionNumber() {
+		return positionNumber;
 	}
-	public void setActualAmount(int actualAmount) {
-		this.actualAmount = actualAmount;
+	public void setPositionNumber(int positionNumber) {
+		this.positionNumber = positionNumber;
 	}
 	public double getTotalProfitAndLoss() {
 		return totalProfitAndLoss;
@@ -73,7 +75,21 @@ public class HoldPositionVO implements Serializable {
 	public void setPositionRatio(double positionRatio) {
 		this.positionRatio = positionRatio;
 	}
-	
+	public int getAvailableNumber() {
+		return availableNumber;
+	}
+	public void setAvailableNumber(int availableNumber) {
+		this.availableNumber = availableNumber;
+	}
+	public int getFrozenNumber() {
+		return frozenNumber;
+	}
+	public void setFrozenNumber(int frozenNumber) {
+		this.frozenNumber = frozenNumber;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	
 	
 }
