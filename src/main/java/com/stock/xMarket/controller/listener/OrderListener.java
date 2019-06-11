@@ -85,7 +85,7 @@ public class OrderListener {
 	 * @param str the JSON
 	 * @throws BusinessException
 	 */
-	@RabbitListener(queues = "${order.queue.name}")
+	@RabbitListener(queues = "orderQueue")
 	public void consumeOrder(String str) throws BusinessException {
 		try {
 			logger.info("委托单监听器监听到消息: {} ", str);
@@ -149,7 +149,7 @@ public class OrderListener {
 
 	}
 
-	@RabbitListener(queues = "${cancelOrder.queue.name}")
+	@RabbitListener(queues = "cancelOrderQueue")
 	public void consumeCancelOrder(int orderId) throws BusinessException {
 		try {
 			logger.info("委托单监听器监听到消息: {} ", orderId);

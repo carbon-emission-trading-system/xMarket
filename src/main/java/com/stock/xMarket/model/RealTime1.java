@@ -34,6 +34,14 @@ public class RealTime1 implements Serializable {
 		this.buyOneToFive = buyOneToFive;
 		this.sellOneToFive = sellOneToFive;
 	}
+	
+	
+	
+	public RealTime1() {
+	}
+
+
+
 	public int getStockId() {
 		return stockId;
 	}

@@ -98,89 +98,103 @@ public class RabbitMqConfig {
 	        return rabbitTemplate;
 	    }
 	    
+	    
+	    //交易单
+	    @Bean
+	    public DirectExchange tradeOrderExchange(){
+	        return new DirectExchange("tradeOrderExchange",true,false);
+	    }
+	    
 	    //委托单
-	
-
 	    @Bean
 	    public TopicExchange userOrderExchange(){
-	        return new TopicExchange(env.getProperty("order.exchange.name"),true,false);
-	    }
-	    
-	    @Bean(name = "userOrderQueue")
-	    public Queue userOrderQueue(){
-	        return new Queue(env.getProperty("order.queue.name"),true);
-	    }
-
-	    @Bean
-	    public Binding userOrderBinding(){
-	        return BindingBuilder.bind(userOrderQueue()).to(userOrderExchange()).with(env.getProperty("order.routing.key.name"));
-	    }
-	    
-	    @Bean(name = "cancelOrderQueue")
-	    public Queue cancelOrderQueue(){
-	        return new Queue(env.getProperty("cancelOrder.queue.name"),true);
-	    }
-
-	    @Bean
-	    public Binding cancelOrderBinding(){
-	        return BindingBuilder.bind(cancelOrderQueue()).to(userOrderExchange()).with(env.getProperty("cancelOrder.routing.key.name"));
+	        return new TopicExchange("userOrderExchange",true,false);
 	    }
 	    
 	    //匹配
 	    @Bean
 	    public TopicExchange marchExchange(){
-	        return new TopicExchange(env.getProperty("march.exchange.name"),true,false);
-	    }
-	    //连续竞价
-	    @Bean(name = "marchQueue")
-	    public Queue marchQueue(){
-	        return new Queue(env.getProperty("march.queue.name"),true);
-	    }
-
-	    @Bean
-	    public Binding marchBinding(){
-	        return BindingBuilder.bind(marchQueue()).to(marchExchange()).with(env.getProperty("march.routing.key.name"));
+	        return new TopicExchange("marchExchange",true,false);
 	    }
 	    
-	    //集合竞价
-	    @Bean(name = "allMarchQueue")
-	    public Queue allMarchQueue(){
-	        return new Queue(env.getProperty("allMarch.queue.name"),true);
-	    }
-
-	    @Bean
-	    public Binding allMarchBinding(){
-	        return BindingBuilder.bind(allMarchQueue()).to(marchExchange()).with(env.getProperty("allMarch.routing.key.name"));
-	    }
-
-	  //实时消息
+	    
+	    //实时消息
 	    @Bean
 	    public TopicExchange realTimeExchange(){
-	        return new TopicExchange(env.getProperty("realTime.exchange.name"),true,false);
+	        return new TopicExchange("realTimeExchange",true,false);
 	    }
 
 	    
 	    //分时信息
 	    @Bean
 	    public TopicExchange timeShareExchange(){
-	        return new TopicExchange(env.getProperty("timeShare.exchange.name"),true,false);
-	    }
-	   
-	    //交易单
-	    @Bean
-	    public DirectExchange tradeOrderExchange(){
-	        return new DirectExchange(env.getProperty("tradeOrder.exchange.name"),true,false);
+	        return new TopicExchange("timeShareExchange",true,false);
 	    }
 	    
-	    @Bean
+	    
+	    //交易单队列
+	    @Bean(name = "tradeOrderQueue")
 	    public Queue tradeOrderQueue(){
-	        return new Queue(env.getProperty("tradeOrder.queue.name"),true);
+	        return new Queue("tradeOrderQueue",true);
+	    }
+
+	    //委托单
+	    @Bean(name = "userOrderQueue")
+	    public Queue userOrderQueue(){
+	        return new Queue("userOrderQueue",true);
+	    }
+	    
+	    //撤销单
+	    @Bean(name = "cancelOrderQueue")
+	    public Queue cancelOrderQueue(){
+	        return new Queue("cancelOrderQueue",true);
+	    }
+	    
+	    //连续竞价
+	    @Bean(name = "marchQueue")
+	    public Queue marchQueue(){
+	        return new Queue("marchQueue",true);
+	    }
+	    
+	    
+	    //集合竞价
+	    @Bean(name = "allMarchQueue")
+	    public Queue allMarchQueue(){
+	        return new Queue("allMarchQueue",true);
 	    }
 
 	    @Bean
-	    public Binding tradeOrderBinding(){
-	        return BindingBuilder.bind(tradeOrderQueue()).to(tradeOrderExchange()).with(env.getProperty("tradeOrder.routing.key.name"));
+	    public Binding allMarchBinding(){
+	        return BindingBuilder.bind(allMarchQueue()).to(marchExchange()).with("allMarchRoutingKey");
 	    }
+
+	    
+	    @Bean
+	    public Binding tradeOrderBinding(){
+	        return BindingBuilder.bind(tradeOrderQueue()).to(tradeOrderExchange()).with("tradeOrderRoutingKey");
+	    }
+
+
+	    @Bean
+	    public Binding userOrderBinding(){
+	        return BindingBuilder.bind(userOrderQueue()).to(userOrderExchange()).with("orderRoutingKey");
+	    }
+	    
+	    
+
+	    @Bean
+	    public Binding cancelOrderBinding(){
+	        return BindingBuilder.bind(cancelOrderQueue()).to(userOrderExchange()).with("cancelOrderRoutingKey");
+	    }
+	    
+	
+	    @Bean
+	    public Binding marchBinding(){
+	        return BindingBuilder.bind(marchQueue()).to(marchExchange()).with("marchRoutingKey");
+	    }
+	    
+	
+	
 	    
 	    }
 

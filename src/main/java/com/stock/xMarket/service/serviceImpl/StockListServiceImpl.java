@@ -22,11 +22,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 @Service
 @Transactional
 public class StockListServiceImpl implements StockListService {
-	  final static Logger logger=LoggerFactory.getLogger(StockInformationController.class);
+	final static Logger logger = LoggerFactory.getLogger(StockInformationController.class);
 
 	@Autowired
 	private RealTime2Redis realTime2Redis;
@@ -34,64 +33,63 @@ public class StockListServiceImpl implements StockListService {
 	private RealTime1Redis realTime1Redis;
 	@Autowired
 	private SelfSelectStockRepository selfSelectStockRepository;
-	
-	//展示个股股票列表
+
+	// 展示个股股票列表
 	@Override
-	public List<RealTime2> findRealTime2(){
-		
-		List<RealTime2> list = new ArrayList<>();	
-		list = realTime2Redis.getAll();		
+	public List<RealTime2> findRealTime2() {
+
+		List<RealTime2> list = new ArrayList<>();
+		list = realTime2Redis.getAll();
 		return list;
 	}
-	
-	//展示个股股票列表
+
+	// 展示个股股票列表
 	@Override
-	public List<RealTime1> findRealTime1(){
-		
+	public List<RealTime1> findRealTime1() {
+
 		List<RealTime1> list1 = new ArrayList<>();
 		list1 = realTime1Redis.getAll();
 		return list1;
 	}
-	
-	//根据用户id，展示自选股列表
+
+	// 根据用户id，展示自选股列表
 	@Override
-	public List<RealTime1> findSelfSelectStockRealTime1(int userId) throws BusinessException{
-		
+	public List<RealTime1> findSelfSelectStockRealTime1(int userId) throws BusinessException {
+
 		List<SelfSelectStock> selfSelectStockList = new ArrayList<>();
 		selfSelectStockList = selfSelectStockRepository.findByUserId(userId);
-		
-		List<RealTime1> realTime1List = new ArrayList<>();
-		for(SelfSelectStock s : selfSelectStockList) {
-			
-			
 
-if(realTime2Redis.hasKey(String.valueOf(s.getStockId()))) {
-	realTime1List.add( realTime1Redis.get(String.valueOf(s.getStockId())) );
-				
+		List<RealTime1> realTime1List = new ArrayList<>();
+		for (SelfSelectStock s : selfSelectStockList) {
+
+			String key = String.valueOf(s.getStockId());
+			if (realTime1Redis.hasKey(key)) {
+				RealTime1 realTime1 = realTime1Redis.get(key);
+				realTime1List.add(realTime1);
+
 			}
 		}
-		
+
 		return realTime1List;
 	}
-	
+
 	@Override
-	public List<RealTime2> findSelfSelectStockRealTime2(int userId) throws BusinessException{
+	public List<RealTime2> findSelfSelectStockRealTime2(int userId) throws BusinessException {
 		List<SelfSelectStock> selfSelectStockList = new ArrayList<>();
 		selfSelectStockList = selfSelectStockRepository.findByUserId(userId);
-		
+
 		List<RealTime2> realTime2List = new ArrayList<>();
-		
-		for(SelfSelectStock s : selfSelectStockList) {
-			String key=String.valueOf(s.getStockId());
-			if(realTime2Redis.hasKey(key)) {
-				
-				logger.info(JSON.toJSONString(realTime2Redis.get(key)));
-				realTime2List.add( realTime2Redis.get(key));
-				
+
+		for (SelfSelectStock s : selfSelectStockList) {
+			String key = String.valueOf(s.getStockId());
+			if (realTime2Redis.hasKey(key)) {
+				RealTime2 realTime2 = realTime2Redis.get(key);
+				realTime2List.add(realTime2);
+
 			}
 		}
-		
+
 		return realTime2List;
 	}
-	
+
 }

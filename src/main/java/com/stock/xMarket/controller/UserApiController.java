@@ -80,7 +80,7 @@ public class UserApiController extends BaseApiController {
 
 	@RequestMapping(value = "/validateCode")
 	public String validate(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.setContentType("image/jpeg");
+		//response.setContentType("image/jpeg");
 		// 禁止图像缓存
 		response.setHeader("Pragma", "No-cache");
 		response.setHeader("Cache-Control", "no-cache");
