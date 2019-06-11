@@ -86,14 +86,17 @@ public class OrderServiceImpl implements OrderService {
 		
 		ArrayList<String> orderIdList=userOrderRedis.get(String.valueOf(userId));
 		
-		
+		if(!orderIdList.isEmpty()) {
 		for(String orderId:orderIdList) {
 			Order order=orderRedis.get(orderId);
+			if(order!=null) {
 			TransactionOrder transactionOrder=transactionRedis.get(orderId);
-			BeanUtils.copyProperties(transactionOrder, order);
+			if(transactionOrder!=null)
+				BeanUtils.copyProperties(transactionOrder, order);
+			}
 			orderList.add(order);
 		}
-		
+		}
 
 		List<Order> dbOrderList=orderRepository.findByUser_UserId(userId);
 		
