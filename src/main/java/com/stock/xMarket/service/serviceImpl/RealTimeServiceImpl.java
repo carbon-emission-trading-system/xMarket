@@ -1,5 +1,6 @@
 package com.stock.xMarket.service.serviceImpl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +53,12 @@ public class RealTimeServiceImpl implements RealTimeService {
 	private RealTime1Redis realTime1Redis;
 
 
+	 /*	 * 获得的是double类型	 * 保留两位小数        */	
+    public double keepDecimal(double num){		
+    	BigDecimal bg = new BigDecimal(num);		
+    	double num1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();		
+    	return num1;
+    }
 
 	@Override
 //	@Scheduled(fixedRate = 6000)
@@ -109,13 +116,13 @@ public class RealTimeServiceImpl implements RealTimeService {
     		BeanUtils.copyProperties(rt, realTimeVO);
     		
     		realTimeVO.setStockName(map.get(rt.getStockId()).getStockName());
-    		realTimeVO.setIncrease(increase);
-    		realTimeVO.setYesterdayOpenPrice(map.get(rt.getStockId()).getYesterdayOpenPrice());
-    		realTimeVO.setYesterdayClosePrice(map.get(rt.getStockId()).getYesterdayClosePrice());
-    		realTimeVO.setTotalMarketCapitalization(totalMarketCapitalization);
-    		realTimeVO.setPeRatio(peRatio);
-    		realTimeVO.setPbRatio(pbRatio);
-    		realTimeVO.setTradeMarket(map.get(rt.getStockId()).getTradeMarket());
+    		realTimeVO.setIncrease(keepDecimal(increase*100));//以%为单位
+    		realTimeVO.setYesterdayOpenPrice(keepDecimal(map.get(rt.getStockId()).getYesterdayOpenPrice()));
+    		realTimeVO.setYesterdayClosePrice(keepDecimal(map.get(rt.getStockId()).getYesterdayClosePrice()));
+    		realTimeVO.setTotalMarketCapitalization(keepDecimal(totalMarketCapitalization/100000000));//以亿为单位
+    		realTimeVO.setPeRatio(keepDecimal(peRatio));
+    		realTimeVO.setPbRatio(keepDecimal(pbRatio));
+    		realTimeVO.setTradeMarket(map.get(rt.getStockId()).getTradeMarket());   		
     		
     		realTimeVOList.add(realTimeVO);
     	}
