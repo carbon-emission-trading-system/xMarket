@@ -19,6 +19,11 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 public class User implements Serializable{
 	
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public User(){}
 	
 	public User(String userName, String password){

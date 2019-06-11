@@ -25,6 +25,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,14 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	private double totalFunds = 0;
 	private double holdPosProAndLos = 0;
 	private double totalMarketValue = 0;
+	
+	
+	/*	 * 获得的是double类型	 * 保留两位小数        */	
+    public double keepDecimal(double num){		
+    	BigDecimal bg = new BigDecimal(num);		
+    	double num1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();		
+    	return num1;
+    }
 
 	//更新持仓信息
 	@Override
@@ -97,6 +106,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			transactionOrderRepository.saveAndFlush(transactionOrder);
 			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 持仓信息更新完毕");
 		}else{
+			holdPositon=new HoldPosition();
 			//如果持仓信息不存在，可能是用户第一次购买该股票，是建仓。创建一条新的持仓信息插入数据库
 			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 该用户为第一次购买此股票，开始建仓");
 			User user = userRepository.findById(userId).get();
@@ -186,15 +196,15 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				BeanUtils.copyProperties(h, holdPositionVO);
 				holdPositionVO.setStockId(stockId);
 				holdPositionVO.setStockName(h.getStock().getStockName());
-				holdPositionVO.setPresentPrice(presentPrice);
+				holdPositionVO.setPresentPrice(keepDecimal(presentPrice));
 				holdPositionVO.setActualAmount(h.getPositionNumber());
-				holdPositionVO.setTotalProfitAndLoss(totalProfitAndLoss);
+				holdPositionVO.setTotalProfitAndLoss(keepDecimal(totalProfitAndLoss));
 				//盈亏比例=（ 市价 - 成本价）/成本价
-				holdPositionVO.setProfitAndLossRatio( (presentPrice-costPrice)/costPrice );
+				holdPositionVO.setProfitAndLossRatio(keepDecimal( (presentPrice-costPrice)/costPrice*100 ));//单位应是%
 			    //市值 = 市价*股票余额
-				holdPositionVO.setMarketValue( marketValue );
+				holdPositionVO.setMarketValue(keepDecimal(marketValue));
 				//仓位占比 = 市值/总资产
-				holdPositionVO.setPositionRatio( marketValue / totalFunds );		
+				holdPositionVO.setPositionRatio(keepDecimal( marketValue / totalFunds * 100));//单位应是%		
 				holdPositionVOList.add(holdPositionVO);
 				
 				
@@ -213,12 +223,12 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		UserFundVO userFundVO = new UserFundVO();
 		UserFund userFund = userFundRepository.findByUser_UserId(userId);
 		
-		userFundVO.setTotalFunds(totalFunds);//总资产
-		userFundVO.setHoldPosProAndLos(holdPosProAndLos);//持仓盈亏
-		userFundVO.setBalance(userFund.getBalance());;//可用资金
-		userFundVO.setTotalMarketValue(totalMarketValue);//总市值
+		userFundVO.setTotalFunds(keepDecimal(totalFunds));//总资产
+		userFundVO.setHoldPosProAndLos(keepDecimal(holdPosProAndLos));//持仓盈亏
+		userFundVO.setBalance(keepDecimal(userFund.getBalance()));//可用资金
+		userFundVO.setTotalMarketValue(keepDecimal(totalMarketValue));//总市值
 		//userFundVO.setTodayProAndLos();//当日盈亏
-		userFundVO.setFrozenAmount(userFund.getFrozenAmount());//冻结资金
+		userFundVO.setFrozenAmount(keepDecimal(userFund.getFrozenAmount()));//冻结资金
 		return userFundVO;
 	}
 	

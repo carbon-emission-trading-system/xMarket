@@ -269,6 +269,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		// TODO Auto-generated method stub
 		
 		Date date=new Date(System.currentTimeMillis());
+		System.out.println(date);
 		return transactionOrderRepository.findByOwnerIdAndDate(userId, date);
 		
 	}

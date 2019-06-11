@@ -1,5 +1,6 @@
 package com.stock.xMarket.controller;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -62,7 +63,14 @@ public class StockListController extends BaseApiController {
 //		return CommonReturnType.success(stockListVOList);
 
     }
-
+    
+    /*	 * 获得的是double类型	 * 保留两位小数        */	
+    public double keepDecimal(double num){		
+    	BigDecimal bg = new BigDecimal(num);		
+    	double num1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();		
+    	return num1;
+    }
+   
     public CommonReturnType finalResult(List<RealTime1> realTime1List,List<RealTime2> realTime2List,List<StockListVO> stockListVOList) {
     	Map<Integer, RealTime2> map = realTime2List.stream().collect(Collectors.toMap(RealTime2::getStockId, a -> a,(k1,k2)->k1));
 
@@ -81,11 +89,11 @@ public class StockListController extends BaseApiController {
     		BeanUtils.copyProperties(rt, stockListVO);
 
     		stockListVO.setStockName(map.get(rt.getStockId()).getStockName());
-    		stockListVO.setIncrease(increase);
-    		stockListVO.setYesterdayOpenPrice(map.get(rt.getStockId()).getYesterdayOpenPrice());
-    		stockListVO.setTotalMarketCapitalization(totalMarketCapitalization);
-    		stockListVO.setPeRatio(peRatio);
-    		stockListVO.setPbRatio(pbRatio);
+    		stockListVO.setIncrease(keepDecimal(increase*100));
+    		stockListVO.setYesterdayOpenPrice(keepDecimal(map.get(rt.getStockId()).getYesterdayOpenPrice()));
+    		stockListVO.setTotalMarketCapitalization(keepDecimal(totalMarketCapitalization/100000000));//以亿为单位
+    		stockListVO.setPeRatio(keepDecimal(peRatio));
+    		stockListVO.setPbRatio(keepDecimal(pbRatio));
     		stockListVO.setTradeMarket(map.get(rt.getStockId()).getTradeMarket());
 
     		stockListVOList.add(stockListVO);
