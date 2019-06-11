@@ -55,6 +55,9 @@ public class RealTimeServiceImpl implements RealTimeService {
 
 	 /*	 * 获得的是double类型	 * 保留两位小数        */	
     public double keepDecimal(double num){		
+    	
+    	if(num==Double.POSITIVE_INFINITY||num==Double.NEGATIVE_INFINITY)
+    		return num;
     	BigDecimal bg = new BigDecimal(num);		
     	double num1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();		
     	return num1;
