@@ -154,7 +154,6 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			}
 
 			//计算服务费、成交价和股票余额
-			buyOrder.setTime(tradeOrder.getTime());
 			buyOrder.setStampTax(0);
 			buyOrder.setOtherFee(buyOrder.getExchangeAmount()*0.0002887);
 			buyOrder.setServiceTax(serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));
