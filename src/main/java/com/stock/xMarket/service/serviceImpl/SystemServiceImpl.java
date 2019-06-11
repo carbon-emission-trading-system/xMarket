@@ -79,7 +79,7 @@ public class SystemServiceImpl implements SystemService {
 
 		for (Stock stock : stockList) {
 			String key = String.valueOf(stock.getStockId());
-			RealTime2 realTime2 = new RealTime2(stock.getStockId());
+			RealTime2 realTime2 = new RealTime2(stock);
 			// double ytdClosePrice=realTimeRedis.get(key).getLatestPrice();
 			// realTimeVO.setYesterdayClosePrice(ytdClosePrice);
 			realTime2Redis.put(key, realTime2, -1);
