@@ -154,6 +154,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			}
 
 			//计算服务费、成交价和股票余额
+			buyOrder.setTime(tradeOrder.getTime());
 			buyOrder.setStampTax(0);
 			buyOrder.setOtherFee(buyOrder.getExchangeAmount()*0.0002887);
 			buyOrder.setServiceTax(serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));
@@ -186,6 +187,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		BeanUtils.copyProperties(tradeOrder,transactionOrder);
 
 		//插入部分属性：买卖标识符、委托单id、拥有者id
+		transactionOrder.setTime(tradeOrder.getTime());
 		transactionOrder.setStockName(stockRepository.findByStockId(tradeOrder.getStockId()).getStockName());
 		transactionOrder.setType(1);
 		transactionOrder.setOrderId(tradeOrder.getSellOrderId());
@@ -201,6 +203,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		BeanUtils.copyProperties(tradeOrder,transactionOrder);
 
 		//插入部分属性：买卖标识符、委托单id、拥有者id
+		transactionOrder.setTime(tradeOrder.getTime());
 		transactionOrder.setStockName(stockRepository.findByStockId(tradeOrder.getStockId()).getStockName());
 		transactionOrder.setType(0);
 		transactionOrder.setOrderId(tradeOrder.getBuyOrderId());
