@@ -45,13 +45,7 @@ public class RealTimeAPIController extends BaseApiController{
 	@RequestMapping(value = "/realTimeDataDisplay")
 	public String realTimeDataDisplay(@RequestParam Integer stockId) {
 	
-		
-		
-		
-		
-		
-		
-		
+	
 		
 		return "首次拿到实时信息";
 		

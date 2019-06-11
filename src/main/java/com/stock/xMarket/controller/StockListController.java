@@ -35,7 +35,7 @@ public class StockListController extends BaseApiController {
 	//所有个股信息，展示股票列表
     @RequestMapping(value = "/stockList", method = RequestMethod.GET)
     public CommonReturnType findAllRealTime() {
-//
+    	
     	List<RealTime2> realTime2List = realTimeService.findRealTime2();
     	List<RealTime1> realTime1List = realTimeService.findRealTime1();
 //    	DecimalFormat df=new DecimalFormat("0.0000");//设置保留位数
@@ -66,7 +66,7 @@ public class StockListController extends BaseApiController {
     
     /*	 * 获得的是double类型	 * 保留两位小数        */	
     public double keepDecimal(double num){		
-    	if(num==Double.POSITIVE_INFINITY||num==Double.NEGATIVE_INFINITY)
+    	if(num==Double.POSITIVE_INFINITY||num==Double.NEGATIVE_INFINITY||Double.isNaN(num))
     		return num;
     	BigDecimal bg = new BigDecimal(num);		
     	double num1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();		
@@ -79,7 +79,7 @@ public class StockListController extends BaseApiController {
     	for(RealTime1 rt : realTime1List) {
 
     		//涨跌幅= (最新价-昨日收盘价)/昨日收盘价
-    		double increase =(rt.getLastTradePrice()-map.get(rt.getStockId()).getYesterdayClosePrice())/map.get(rt.getStockId()).getYesterdayClosePrice();
+    		double increase =(rt.getLastTradePrice()-rt.getYesterdayClosePrice())/rt.getYesterdayClosePrice();
     		//总市值=股价*总股本数
     		double totalMarketCapitalization = rt.getLastTradePrice()*map.get(rt.getStockId()).getTotalShareCapital();
     		//市盈率=股价/每股收益

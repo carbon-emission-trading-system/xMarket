@@ -1,6 +1,9 @@
 package com.stock.xMarket.VO;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.stock.xMarket.model.Gear;
 
 public class RealTimeVO implements Serializable{
 	
@@ -35,6 +38,8 @@ public class RealTimeVO implements Serializable{
 	private double outMarket;//外盘
 	private double inMarket;//内盘
 	private double conversionHand;//换手
+	private List<Gear> buyOneToFive;//买一买五
+	private List<Gear> sellOneToFive;//卖一卖五
 
 	
 	
@@ -314,6 +319,34 @@ public class RealTimeVO implements Serializable{
 
 	public void setConversionHand(double conversionHand) {
 		this.conversionHand = conversionHand;
+	}
+
+
+
+
+	public List<Gear> getBuyOneToFive() {
+		return buyOneToFive;
+	}
+
+
+
+
+	public void setBuyOneToFive(List<Gear> buyOneToFive) {
+		this.buyOneToFive = buyOneToFive;
+	}
+
+
+
+
+	public List<Gear> getSellOneToFive() {
+		return sellOneToFive;
+	}
+
+
+
+
+	public void setSellOneToFive(List<Gear> sellOneToFive) {
+		this.sellOneToFive = sellOneToFive;
 	}
 
 

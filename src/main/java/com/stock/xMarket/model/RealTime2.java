@@ -12,7 +12,6 @@ public class RealTime2 implements Serializable {
 	private String stockName;
 	private double earningsPerShare; //每股收益
 	private double yesterdayOpenPrice; //昨日开盘价
-	private double yesterdayClosePrice; //昨日收盘价
 	private long totalShareCapital; //总股本
 	private double bookValue; //每股净资
 	private int tradeMarket; //0--深A，1--沪A
@@ -20,13 +19,12 @@ public class RealTime2 implements Serializable {
 	public RealTime2() {
 	}
 	public RealTime2(int stockId, String stockName, double earningsPerShare, double yesterdayOpenPrice,
-			double yesterdayClosePrice, long totalShareCapital, double bookValue, int tradeMarket) {
+			 long totalShareCapital, double bookValue, int tradeMarket) {
 		super();
 		this.stockId = stockId;
 		this.stockName = stockName;
 		this.earningsPerShare = earningsPerShare;
 		this.yesterdayOpenPrice = yesterdayOpenPrice;
-		this.yesterdayClosePrice = yesterdayClosePrice;
 		this.totalShareCapital = totalShareCapital;
 		this.bookValue = bookValue;
 		this.tradeMarket = tradeMarket;
@@ -64,12 +62,7 @@ public class RealTime2 implements Serializable {
 	public void setYesterdayOpenPrice(double yesterdayOpenPrice) {
 		this.yesterdayOpenPrice = yesterdayOpenPrice;
 	}
-	public double getYesterdayClosePrice() {
-		return yesterdayClosePrice;
-	}
-	public void setYesterdayClosePrice(double yesterdayClosePrice) {
-		this.yesterdayClosePrice = yesterdayClosePrice;
-	}
+
 	public long getTotalShareCapital() {
 		return totalShareCapital;
 	}

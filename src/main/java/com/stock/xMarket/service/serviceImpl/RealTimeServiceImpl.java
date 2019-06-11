@@ -56,7 +56,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 	 /*	 * 获得的是double类型	 * 保留两位小数        */	
     public double keepDecimal(double num){		
     	
-    	if(num==Double.POSITIVE_INFINITY||num==Double.NEGATIVE_INFINITY)
+    	if(num==Double.POSITIVE_INFINITY||num==Double.NEGATIVE_INFINITY||Double.isNaN(num))
     		return num;
     	BigDecimal bg = new BigDecimal(num);		
     	double num1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();		
@@ -64,7 +64,7 @@ public class RealTimeServiceImpl implements RealTimeService {
     }
 
 	@Override
-//	@Scheduled(fixedRate = 6000)
+	@Scheduled(fixedRate = 6000)
 	public void sendRealTime() {
 		//updateRealTime();
 		List<RealTimeVO> realTimeList = new ArrayList<RealTimeVO>();
@@ -107,7 +107,7 @@ public class RealTimeServiceImpl implements RealTimeService {
     	for(RealTime1 rt : realTime1List) {
     		
     		//涨跌幅= (最新价-昨日收盘价)/昨日收盘价
-    		double increase =(rt.getLastTradePrice()-map.get(rt.getStockId()).getYesterdayClosePrice())/map.get(rt.getStockId()).getYesterdayClosePrice();		
+    		double increase =(rt.getLastTradePrice()-rt.getYesterdayClosePrice())/rt.getYesterdayClosePrice();		
     		//总市值=股价*总股本数
     		double totalMarketCapitalization = rt.getLastTradePrice()*map.get(rt.getStockId()).getTotalShareCapital();
     		//市盈率=股价/每股收益
@@ -121,11 +121,12 @@ public class RealTimeServiceImpl implements RealTimeService {
     		realTimeVO.setStockName(map.get(rt.getStockId()).getStockName());
     		realTimeVO.setIncrease(keepDecimal(increase*100));//以%为单位
     		realTimeVO.setYesterdayOpenPrice(keepDecimal(map.get(rt.getStockId()).getYesterdayOpenPrice()));
-    		realTimeVO.setYesterdayClosePrice(keepDecimal(map.get(rt.getStockId()).getYesterdayClosePrice()));
     		realTimeVO.setTotalMarketCapitalization(keepDecimal(totalMarketCapitalization/100000000));//以亿为单位
     		realTimeVO.setPeRatio(keepDecimal(peRatio));
     		realTimeVO.setPbRatio(keepDecimal(pbRatio));
     		realTimeVO.setTradeMarket(map.get(rt.getStockId()).getTradeMarket());   		
+    	
+    		
     		
     		realTimeVOList.add(realTimeVO);
     	}

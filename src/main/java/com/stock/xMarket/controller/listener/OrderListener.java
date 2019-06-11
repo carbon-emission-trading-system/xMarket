@@ -122,7 +122,7 @@ public class OrderListener {
 		//生成id
 		int orderId=(int) (System.currentTimeMillis()/1000);
 		order.setOrderId(String.valueOf(orderId));
-		orderVO.setOrderId(orderId);
+		orderVO.setOrderId(String.valueOf(orderId));
 		
 		// 丢入撮合系统
 		rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));

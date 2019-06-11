@@ -80,7 +80,7 @@ public class OrderController extends BaseApiController{
 		//生成id
 		int orderId=(int) (System.currentTimeMillis()/1000);
 		order.setOrderId(String.valueOf(orderId));
-		orderVO.setOrderId(orderId);
+		orderVO.setOrderId(String.valueOf(orderId));
 
 		
 		
