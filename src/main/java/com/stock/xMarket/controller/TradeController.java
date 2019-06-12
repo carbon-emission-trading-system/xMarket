@@ -3,10 +3,12 @@ package com.stock.xMarket.controller;
 import com.stock.xMarket.VO.StockTradeVO;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
+import com.stock.xMarket.model.HoldPosition;
 import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.UserFund;
 import com.stock.xMarket.redis.RealTime1Redis;
+import com.stock.xMarket.repository.HoldPositionRepository;
 import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.UserFundRepository;
 import com.stock.xMarket.response.CommonReturnType;
@@ -28,7 +30,10 @@ public class TradeController extends BaseApiController {
     private UserFundRepository userFundRepository;
 
     @Autowired
-    private StockRepository stockRepository;//后续可去除
+    private StockRepository stockRepository;
+
+    @Autowired
+    private HoldPositionRepository holdPositionRepository;
 
     final static Logger logger=LoggerFactory.getLogger(TradeController.class);
 
@@ -47,8 +52,10 @@ public class TradeController extends BaseApiController {
         if (stock == null){
             throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标股票不存在！");
         }
+        HoldPosition holdPosition = holdPositionRepository.findByUser_UserId(userId);
 
-        return CommonReturnType.success(createStockTradeVO(userFund,realTime1,stock));
+
+        return CommonReturnType.success(createStockTradeVO(userFund,realTime1,stock,holdPosition));
 //        StockTradeVO stockTradeVO = new StockTradeVO();
 //        stockTradeVO.setAvailableNumber(10000);
 //        stockTradeVO.setOpenPrice(100);
@@ -63,13 +70,18 @@ public class TradeController extends BaseApiController {
 
 
     //创建StockTradeVO的方法
-    public StockTradeVO createStockTradeVO(UserFund userFund,RealTime1 realTime1,Stock stock) {
+    public StockTradeVO createStockTradeVO(UserFund userFund,RealTime1 realTime1,Stock stock,HoldPosition holdPosition) {
         StockTradeVO stockTradeVO = new StockTradeVO();
         stockTradeVO.setBalance(userFund.getBalance());
         stockTradeVO.setStockId(realTime1.getStockId());
         stockTradeVO.setOrderPrice(realTime1.getLastTradePrice());
         stockTradeVO.setTradeMarket(stock.getTradeMarket());
         stockTradeVO.setStockName(stock.getStockName());
+        if (holdPosition == null){
+            stockTradeVO.setAvailableNumber(0);
+        }else {
+            stockTradeVO.setAvailableNumber(holdPosition.getAvailableNumber());
+        }
         stockTradeVO.setYesterdayClosePrice(realTime1.getYesterdayClosePrice());
         return stockTradeVO;
     }
