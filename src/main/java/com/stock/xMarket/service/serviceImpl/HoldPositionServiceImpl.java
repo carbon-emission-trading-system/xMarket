@@ -169,19 +169,11 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		UserFund userFund = userFundRepository.findByUser_UserId(userId);
 		//用户资金余额 = 冻结资金 + 可用资金
 		double amountBalance = userFund.getFrozenAmount() + userFund.getBalance();
-		//用户持仓股票市值和
-		double totalMarketValue =0;
+		
 		//判断当前用户是否有持仓股
 		if(list!=null) {
 			//当用户有持仓股时
 			List<HoldPositionVO> holdPositionVOList = new ArrayList<>();
-			//持仓股票总市值
-			for(HoldPosition h : list) {
-				int stockId = h.getStock().getStockId();
-				totalMarketValue = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice() * h.getPositionNumber();
-			}
-			//计算用户总资产
-			totalFunds = amountBalance + totalMarketValue;
 			
 			for(HoldPosition h : list) {
 				HoldPositionVO holdPositionVO = new HoldPositionVO();
@@ -198,6 +190,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				holdPositionVO.setStockName(h.getStock().getStockName());
 				holdPositionVO.setPresentPrice(keepDecimal(presentPrice));
 				holdPositionVO.setTotalProfitAndLoss(keepDecimal(totalProfitAndLoss));
+				holdPositionVO.setFrozenNumber(h.getPositionNumber() - h.getAvailableNumber());
 				//盈亏比例=（ 市价 - 成本价）/成本价
 				holdPositionVO.setProfitAndLossRatio(keepDecimal( (presentPrice-costPrice)/costPrice*100 )); //单位应是%
 			    //市值 = 市价*股票余额
@@ -210,6 +203,10 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				holdPosProAndLos += totalProfitAndLoss;//为计算用户资产信息中的持仓盈亏做服务
 				totalMarketValue += marketValue;//为计算用户资产信息中的总市值做服务
 			}
+
+			//计算用户总资产
+			totalFunds = amountBalance + totalMarketValue;
+			
 			return holdPositionVOList;
 		}else {
 			return null;
