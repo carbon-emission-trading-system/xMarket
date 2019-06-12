@@ -70,7 +70,7 @@ public class TradeController extends BaseApiController {
         stockTradeVO.setOrderPrice(realTime1.getLastTradePrice());
         stockTradeVO.setTradeMarket(stock.getTradeMarket());
         stockTradeVO.setStockName(stock.getStockName());
-        stockTradeVO.setOpenPrice(realTime1.getOpenPrice());
+        stockTradeVO.setYesterdayClosePrice(realTime1.getYesterdayClosePrice());
         return stockTradeVO;
     }
 
