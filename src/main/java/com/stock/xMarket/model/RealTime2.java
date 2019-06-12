@@ -37,6 +37,7 @@ public class RealTime2 implements Serializable {
 		// TODO Auto-generated constructor stub
 		this.stockId=stock.getStockId();
 		this.stockName=stock.getStockName();
+		this.earningsPerShare=stock.getEarningsPerShare();
 	}
 	public int getStockId() {
 		return stockId;
