@@ -58,7 +58,7 @@ public class TimeShareServiceImpl implements TimeShareService {
 	public static final String ALL_REALTIME_REDIS="allRealTimeRedis";
 	
 	@Override
-	@Scheduled(fixedRate = 600000)
+	@Scheduled(fixedRate = 6000)
 	public void sendTimeShare() {
 		
 		
@@ -75,13 +75,13 @@ public class TimeShareServiceImpl implements TimeShareService {
 		// TODO Auto-generated method stub
 		for(RealTimeVO realTime:realTimeList) {
 			int stockID=realTime.getStockId();
-			TimeShareVO timeShare =new TimeShareVO();
-			BeanUtils.copyProperties(realTime, timeShare);
-			timeShare.setDate(new Date(System.currentTimeMillis()));
-			timeShare.setRealTime(new Time(System.currentTimeMillis()));
+			TimeShareVO timeShareVO =new TimeShareVO();
+			BeanUtils.copyProperties(realTime, timeShareVO);
+			timeShareVO.setDate(new Date(System.currentTimeMillis()));
+			timeShareVO.setRealTime(new Time(System.currentTimeMillis()));
 			
-			timeShareList.add(timeShare);
-			rabbitTemplate.convertAndSend("timeShareExchange","stock.SZSE."+stockID,JSON.toJSONString(timeShare));
+			timeShareList.add(timeShareVO);
+			rabbitTemplate.convertAndSend("timeShareExchange","stock.SZSE."+stockID,JSON.toJSONString(timeShareVO));
 		}
 		
 		saveTimeShare(timeShareList);

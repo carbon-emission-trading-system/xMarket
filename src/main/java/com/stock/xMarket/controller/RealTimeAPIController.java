@@ -68,7 +68,7 @@ public class RealTimeAPIController extends BaseApiController{
 			TimeShareVO timeShareVO=new TimeShareVO();
 			
 			BeanUtils.copyProperties(timeShare, timeShareVO);
-			Date date =timeShareVO.getDate();
+			Date date =timeShare.getDate();
 			timeShareVO.setDate(date);
 			timeShareVO.setStockId(stockId);
 			timeShareVOList.add(timeShareVO);
