@@ -1,5 +1,7 @@
 package com.stock.xMarket.service.serviceImpl;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -56,7 +58,7 @@ public class TimeShareServiceImpl implements TimeShareService {
 	public static final String ALL_REALTIME_REDIS="allRealTimeRedis";
 	
 	@Override
-	@Scheduled(fixedRate = 60000)
+	@Scheduled(fixedRate = 6000)
 	public void sendTimeShare() {
 		
 		
@@ -75,6 +77,9 @@ public class TimeShareServiceImpl implements TimeShareService {
 			int stockID=realTime.getStockId();
 			TimeShareVO timeShare =new TimeShareVO();
 			BeanUtils.copyProperties(realTime, timeShare);
+			timeShare.setDate(new Date(System.currentTimeMillis()));
+			timeShare.setRealTime(new Time(System.currentTimeMillis()));
+			
 			timeShareList.add(timeShare);
 			rabbitTemplate.convertAndSend("timeShareExchange","stock.SZSE."+stockID,JSON.toJSONString(timeShare));
 		}

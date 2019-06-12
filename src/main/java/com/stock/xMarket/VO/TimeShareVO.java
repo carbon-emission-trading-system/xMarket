@@ -1,18 +1,30 @@
 package com.stock.xMarket.VO;
 
+import java.sql.Date;
 import java.sql.Time;
 
 public class TimeShareVO {
-	private String stockID;
+	private int stockId;
 	private Time realTime;
 	private double latestPrice;
 	private double averagePrice;
 	private int volume;
-	public String getStockID() {
-		return stockID;
+	private Date date;
+	
+	
+	
+	public Date getDate() {
+		return date;
 	}
-	public void setStockID(String stockID) {
-		this.stockID = stockID;
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	public int getStockId() {
+		return stockId;
+	}
+	public void setStockId(int stockId) {
+		this.stockId = stockId;
 	}
 	public Time getRealTime() {
 		return realTime;

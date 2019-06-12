@@ -3,16 +3,19 @@ package com.stock.xMarket.controller;
 
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.stock.xMarket.VO.TimeShareVO;
 import com.stock.xMarket.model.SelfSelectStock;
 import com.stock.xMarket.model.TimeShare;
 import com.stock.xMarket.repository.TimeShareRepository;
@@ -52,13 +55,25 @@ public class RealTimeAPIController extends BaseApiController{
 	}
 	
 	
-	@RequestMapping(value = "/timeShareDisplay")
+	@RequestMapping(value = "/timeSharingDisplay")
 	public CommonReturnType timeShareDisplay(@RequestParam Integer stockId) {
 		
-		Date date=new Date(System.currentTimeMillis());
-		List<TimeShare> timeShareList=timeShareRepository.findByStock_StockIdAndDate(stockId,date);
+		Date nowDate=new Date(System.currentTimeMillis());
 		
-		return success(timeShareList);
+		List<TimeShareVO> timeShareVOList=new ArrayList<>();
+		
+		
+		List<TimeShare> timeShareList=timeShareRepository.findByStock_StockIdAndDate(stockId,nowDate);
+		for(TimeShare timeShare:timeShareList) {
+			TimeShareVO timeShareVO=new TimeShareVO();
+			
+			BeanUtils.copyProperties(timeShare, timeShareVO);
+			
+			timeShareVO.setStockId(stockId);
+			timeShareVOList.add(timeShareVO);
+		}
+		
+		return success(timeShareVOList);
 		
 	}
 	
