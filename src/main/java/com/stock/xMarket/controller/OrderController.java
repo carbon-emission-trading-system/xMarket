@@ -103,7 +103,16 @@ public class OrderController extends BaseApiController{
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标股票不存在！");
 		}
 
-		
+		if (orderVO.getType() == 1) {
+			// 更新股票可用余额
+			holdPositionService.updateHoldPositionByOrder(order);
+		}else {
+			// 更新个人资金
+			userFundService.updateUserFundByOrder(order);
+		}
+
+
+
 		if(OpeningUtil.isSet(order.getTime())) {
 			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
 		}else {
@@ -119,14 +128,6 @@ public class OrderController extends BaseApiController{
 					logger.info("将委托单加入Redis发生异常");
 				}
 
-				
-				if (orderVO.getType() == 1) {
-					// 更新股票可用余额
-					holdPositionService.updateHoldPositionByOrder(order);
-				}else {
-					// 更新个人资金
-					userFundService.updateUserFundByOrder(order);
-				}
 		
 		
 		

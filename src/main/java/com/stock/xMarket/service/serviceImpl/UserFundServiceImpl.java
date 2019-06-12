@@ -5,6 +5,8 @@ import java.sql.Time;
 
 import javax.transaction.Transactional;
 
+import com.stock.xMarket.error.BusinessException;
+import com.stock.xMarket.error.EmBusinessError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,7 +69,7 @@ public class UserFundServiceImpl implements UserFundService {
 	 * @param order the order
 	 */
 	@Override
-	public void updateUserFundByOrder(Order order) {
+	public void updateUserFundByOrder(Order order) throws BusinessException {
 		// TODO Auto-generated method stub
 		
 		int userId = order.getUser().getUserId();
@@ -93,8 +95,11 @@ public class UserFundServiceImpl implements UserFundService {
 			frozenAmount+=serviceFaxCaculator(order.getOrderPrice()*order.getOrderAmount());
 			
 		}
-		
+
 			double balance=userFund.getBalance()-frozenAmount;
+			if(balance<0){
+				throw new BusinessException(EmBusinessError.FUND_ERROR);
+			}
 			frozenAmount+=userFund.getFrozenAmount();
 			userFund.setFrozenAmount(frozenAmount);
 			userFund.setBalance(balance);

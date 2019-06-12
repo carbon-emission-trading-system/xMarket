@@ -154,6 +154,9 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		}
 		
 		int availableNumber=holdPositon.getAvailableNumber()-order.getOrderAmount();
+		if (availableNumber<0){
+			throw new BusinessException(EmBusinessError.FUND_ERROR);
+		}
 		
 		holdPositon.setAvailableNumber(availableNumber);
 		
