@@ -17,6 +17,7 @@ public class StockListVO implements Serializable {
 	private double lowestPrice; //最低价
 	private double openPrice; //今日开盘价
 	private double yesterdayOpenPrice; //昨日开盘价
+	private double yesterdayClosePrice; //昨日收盘价
 	private double tradeAmount; //总成交额
 	private double  totalMarketCapitalization; //总市值
 	private double peRatio ; //市盈率
@@ -26,7 +27,7 @@ public class StockListVO implements Serializable {
 	
 	
 	public StockListVO(int stockId, String stockName, double lastTradePrice, double increase, double highestPrice,
-			double lowestPrice, double openPrice, double yesterdayOpenPrice, double tradeAmount,
+			double lowestPrice, double openPrice, double yesterdayOpenPrice, double yesterdayClosePrice, double tradeAmount,
 			double totalMarketCapitalization, double peRatio, double pbRatio, int tradeMarket) {
 		super();
 		this.stockId = stockId;
@@ -37,6 +38,7 @@ public class StockListVO implements Serializable {
 		this.lowestPrice = lowestPrice;
 		this.openPrice = openPrice;
 		this.yesterdayOpenPrice = yesterdayOpenPrice;
+		this.yesterdayClosePrice = yesterdayClosePrice;
 		this.tradeAmount = tradeAmount;
 		this.totalMarketCapitalization = totalMarketCapitalization;
 		this.peRatio = peRatio;
@@ -44,6 +46,22 @@ public class StockListVO implements Serializable {
 		this.tradeMarket = tradeMarket;
 	}
 	
+	public double getYesterdayClosePrice() {
+		return yesterdayClosePrice;
+	}
+
+	public void setYesterdayClosePrice(double yesterdayClosePrice) {
+		this.yesterdayClosePrice = yesterdayClosePrice;
+	}
+
+	public double getTradeAmount() {
+		return tradeAmount;
+	}
+
+	public void setTradeAmount(double tradeAmount) {
+		this.tradeAmount = tradeAmount;
+	}
+
 	public StockListVO() {	
 	}
 	
@@ -126,4 +144,7 @@ public class StockListVO implements Serializable {
 		this.tradeMarket = tradeMarket;
 	}
 	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 }
