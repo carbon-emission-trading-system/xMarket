@@ -74,8 +74,6 @@ public class RealTimeServiceImpl implements RealTimeService {
 		
 		List<RealTime2> list2 = new ArrayList<>();
 		list2 = realTime2Redis.getAll();
-		
-	
 		realTimeList = finalRealTime(list1,list2);
 		// TODO Auto-generated method stub
 		for (RealTimeVO realTime : realTimeList) {

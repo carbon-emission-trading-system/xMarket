@@ -39,8 +39,8 @@ public class StockListController extends BaseApiController {
     	List<RealTime2> realTime2List = realTimeService.findRealTime2();
     	List<RealTime1> realTime1List = realTimeService.findRealTime1();
 //    	DecimalFormat df=new DecimalFormat("0.0000");//设置保留位数
-    	List<StockListVO> realTimeVOList = new ArrayList<StockListVO>();
-    	return finalResult(realTime1List,realTime2List,realTimeVOList);
+    	List<StockListVO> StockListVOList = new ArrayList<StockListVO>();
+    	return finalResult(realTime1List,realTime2List,StockListVOList);
     	
 //		List<StockListVO> stockListVOList = new ArrayList<>();
 //		StockListVO stockListVO = new StockListVO();

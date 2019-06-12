@@ -38,6 +38,7 @@ public class RealTime2 implements Serializable {
 		this.stockId=stock.getStockId();
 		this.stockName=stock.getStockName();
 		this.earningsPerShare=stock.getEarningsPerShare();
+		this.bookValue=stock.getBookValue();
 	}
 	public int getStockId() {
 		return stockId;
