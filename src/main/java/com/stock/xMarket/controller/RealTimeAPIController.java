@@ -22,7 +22,7 @@ import com.stock.xMarket.repository.TimeShareRepository;
 import com.stock.xMarket.response.CommonReturnType;
 import com.stock.xMarket.service.RealTimeService;
 import com.stock.xMarket.service.SelfSelectStockService;
-
+import com.stock.xMarket.service.TimeShareService;
 
 import static com.stock.xMarket.response.CommonReturnType.*;
 
@@ -39,24 +39,17 @@ public class RealTimeAPIController extends BaseApiController{
 	@Autowired
 	SelfSelectStockService selfSelectStockService;
 	
-
+	@Autowired
+	TimeShareService timeShareService;
 	
 	@Autowired
 	TimeShareRepository timeShareRepository;
 	
-	
-	@RequestMapping(value = "/realTimeDataDisplay")
-	public String realTimeDataDisplay(@RequestParam Integer stockId) {
+
 	
 	
-		
-		return "首次拿到实时信息";
-		
-	}
-	
-	
-	@RequestMapping(value = "/timeSharingDisplay")
-	public CommonReturnType timeShareDisplay(@RequestParam Integer stockId) {
+	@RequestMapping(value = "/firstTimeSharingDisplay")
+	public CommonReturnType firstTimeShareDisplay(@RequestParam Integer stockId) {
 		
 		Date nowDate=new Date(System.currentTimeMillis());
 		
@@ -77,6 +70,8 @@ public class RealTimeAPIController extends BaseApiController{
 		return success(timeShareVOList);
 		
 	}
+	
+
 	
 	@RequestMapping(value = "/isSelfSelectStock")
 	public CommonReturnType isSelfSelectStock(@RequestParam Integer stockId,@RequestParam Integer userId) {
