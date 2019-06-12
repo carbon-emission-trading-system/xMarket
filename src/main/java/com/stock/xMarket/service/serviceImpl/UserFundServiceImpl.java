@@ -46,7 +46,7 @@ public class UserFundServiceImpl implements UserFundService {
 		
 		if(transactionOrder.getType()==0) {
 			
-			Double frozenAmount=userFund.getFrozenAmount()-transactionOrder.getActualAmount()-transactionOrder.getServiceTax();
+			Double frozenAmount=userFund.getFrozenAmount()-transactionOrder.getActualAmount();
 			userFund.setFrozenAmount(frozenAmount);
 			userFundRepository.saveAndFlush(userFund);
 			
@@ -80,11 +80,11 @@ public class UserFundServiceImpl implements UserFundService {
 		
 		if(order.getTradeStraregy()>0) {
 			if(OpeningUtil.isOpening(time)) {
-				double OpenPrice=realTime1Redis.get(String.valueOf(stockId)).getOpenPrice();
-				frozenAmount=OpenPrice*1.20*order.getOrderAmount();
+				double ytdPrice=realTime1Redis.get(String.valueOf(stockId)).getYesterdayClosePrice();
+				frozenAmount=ytdPrice*1.10*order.getOrderAmount();
 			}else {
 				double ytdPrice=realTime1Redis.get(String.valueOf(stockId)).getYesterdayClosePrice();
-				frozenAmount=ytdPrice*1.25*order.getOrderAmount();
+				frozenAmount=ytdPrice*1.1*order.getOrderAmount();
 			}
 			
 		}else {
