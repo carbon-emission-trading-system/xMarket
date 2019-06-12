@@ -7,7 +7,7 @@ public class StockTradeVO {
     private int tradeMarket;//交易所市场
     private double OrderPrice;//最新成交价
     private double availableNumber;//可用余额
-    private double yesterdayClosePrice;//昨日收盘价
+    private double openPrice;//开盘价
 
     public int getStockId() {
         return stockId;
@@ -57,11 +57,11 @@ public class StockTradeVO {
         this.availableNumber = availableNumber;
     }
 
-    public double getYesterdayClosePrice() {
-        return yesterdayClosePrice;
+    public double getOpenPrice() {
+        return openPrice;
     }
 
-    public void setYesterdayClosePrice(double yesterdayClosePrice) {
-        this.yesterdayClosePrice = yesterdayClosePrice;
+    public void setOpenPrice(double openPrice) {
+        this.openPrice = openPrice;
     }
 }
