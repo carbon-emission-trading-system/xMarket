@@ -26,45 +26,6 @@ public class StockListVO implements Serializable {
 	
 	
 	
-	public StockListVO(int stockId, String stockName, double lastTradePrice, double increase, double highestPrice,
-			double lowestPrice, double openPrice, double yesterdayOpenPrice, double yesterdayClosePrice, double tradeAmount,
-			double totalMarketCapitalization, double peRatio, double pbRatio, int tradeMarket) {
-		super();
-		this.stockId = stockId;
-		this.stockName = stockName;
-		this.lastTradePrice = lastTradePrice;
-		this.increase = increase;
-		this.highestPrice = highestPrice;
-		this.lowestPrice = lowestPrice;
-		this.openPrice = openPrice;
-		this.yesterdayOpenPrice = yesterdayOpenPrice;
-		this.yesterdayClosePrice = yesterdayClosePrice;
-		this.tradeAmount = tradeAmount;
-		this.totalMarketCapitalization = totalMarketCapitalization;
-		this.peRatio = peRatio;
-		this.pbRatio = pbRatio;
-		this.tradeMarket = tradeMarket;
-	}
-	
-	public double getYesterdayClosePrice() {
-		return yesterdayClosePrice;
-	}
-
-	public void setYesterdayClosePrice(double yesterdayClosePrice) {
-		this.yesterdayClosePrice = yesterdayClosePrice;
-	}
-
-	public double getTradeAmount() {
-		return tradeAmount;
-	}
-
-	public void setTradeAmount(double tradeAmount) {
-		this.tradeAmount = tradeAmount;
-	}
-
-	public StockListVO() {	
-	}
-	
 	public int getStockId() {
 		return stockId;
 	}
@@ -113,10 +74,16 @@ public class StockListVO implements Serializable {
 	public void setYesterdayOpenPrice(double yesterdayOpenPrice) {
 		this.yesterdayOpenPrice = yesterdayOpenPrice;
 	}
-	public double gettradeAmount() {
+	public double getYesterdayClosePrice() {
+		return yesterdayClosePrice;
+	}
+	public void setYesterdayClosePrice(double yesterdayClosePrice) {
+		this.yesterdayClosePrice = yesterdayClosePrice;
+	}
+	public double getTradeAmount() {
 		return tradeAmount;
 	}
-	public void settradeAmount(double tradeAmount) {
+	public void setTradeAmount(double tradeAmount) {
 		this.tradeAmount = tradeAmount;
 	}
 	public double getTotalMarketCapitalization() {
@@ -143,8 +110,26 @@ public class StockListVO implements Serializable {
 	public void setTradeMarket(int tradeMarket) {
 		this.tradeMarket = tradeMarket;
 	}
+	public StockListVO(int stockId, String stockName, double lastTradePrice, double increase, double highestPrice,
+			double lowestPrice, double openPrice, double yesterdayOpenPrice, double yesterdayClosePrice,
+			double tradeAmount, double totalMarketCapitalization, double peRatio, double pbRatio, int tradeMarket) {
 	
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+		this.stockId = stockId;
+		this.stockName = stockName;
+		this.lastTradePrice = lastTradePrice;
+		this.increase = increase;
+		this.highestPrice = highestPrice;
+		this.lowestPrice = lowestPrice;
+		this.openPrice = openPrice;
+		this.yesterdayOpenPrice = yesterdayOpenPrice;
+		this.yesterdayClosePrice = yesterdayClosePrice;
+		this.tradeAmount = tradeAmount;
+		this.totalMarketCapitalization = totalMarketCapitalization;
+		this.peRatio = peRatio;
+		this.pbRatio = pbRatio;
+		this.tradeMarket = tradeMarket;
 	}
+	public StockListVO() {
+	}
+	
 }

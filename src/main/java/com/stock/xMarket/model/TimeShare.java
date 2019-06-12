@@ -53,6 +53,12 @@ public class TimeShare {
 	}
 
 
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
 	public Stock getStock() {
 		return stock;
 	}

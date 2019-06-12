@@ -41,6 +41,9 @@ public class Stock implements Serializable{
 	@Column(name="earnings_per_share")
 	private double earningsPerShare;
 
+	@Column(name="bookValue")
+	private double bookValue; 
+	
 	@Column(name="trade_market")
 	private int tradeMarket;//交易市场   market
 	
@@ -48,8 +51,22 @@ public class Stock implements Serializable{
 	@JsonBackReference
 	private List<Order> orders;
 */
+	
+	
+	
+	
+	
+	
 	public int getStockId() {
 		return stockId;
+	}
+
+	public double getBookValue() {
+		return bookValue;
+	}
+
+	public void setBookValue(double bookValue) {
+		this.bookValue = bookValue;
 	}
 
 	public void setStockId(int stockId) {
