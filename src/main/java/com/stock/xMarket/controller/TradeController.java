@@ -52,7 +52,7 @@ public class TradeController extends BaseApiController {
         if (stock == null){
             throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标股票不存在！");
         }
-        HoldPosition holdPosition = holdPositionRepository.findByUser_UserId(userId);
+        HoldPosition holdPosition = holdPositionRepository.findByUser_UserIdAndStock_StockId(userId,stockId);
 
 
         return CommonReturnType.success(createStockTradeVO(userFund,realTime1,stock,holdPosition));
