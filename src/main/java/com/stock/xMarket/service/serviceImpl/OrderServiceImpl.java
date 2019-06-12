@@ -86,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
 		
 		ArrayList<String> orderIdList=userOrderRedis.get(String.valueOf(userId));
 		
-		if(!orderIdList.isEmpty()) {
+		if(orderIdList!=null) {
 		for(String orderId:orderIdList) {
 			Order order=orderRedis.get(orderId);
 			if(order!=null) {

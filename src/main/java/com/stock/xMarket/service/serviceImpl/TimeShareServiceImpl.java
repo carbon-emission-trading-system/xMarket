@@ -56,7 +56,7 @@ public class TimeShareServiceImpl implements TimeShareService {
 	public static final String ALL_REALTIME_REDIS="allRealTimeRedis";
 	
 	@Override
-//	@Scheduled(fixedRate = 6000)
+	@Scheduled(fixedRate = 60000)
 	public void sendTimeShare() {
 		
 		
