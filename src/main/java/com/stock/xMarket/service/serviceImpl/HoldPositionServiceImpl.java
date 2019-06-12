@@ -172,11 +172,14 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		//用户资金余额 = 冻结资金 + 可用资金
 		double amountBalance = userFund.getFrozenAmount() + userFund.getBalance();
 		
+		
 		//判断当前用户是否有持仓股
 		if(list!=null) {
 			//当用户有持仓股时
 			List<HoldPositionVO> holdPositionVOList = new ArrayList<>();
-			
+			totalFunds = 0;
+			holdPosProAndLos = 0;
+			totalMarketValue = 0;
 			for(HoldPosition h : list) {
 				HoldPositionVO holdPositionVO = new HoldPositionVO();
 				int stockId = h.getStock().getStockId();
@@ -202,17 +205,18 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				holdPositionVOList.add(holdPositionVO);
 				
 				
-				holdPosProAndLos += totalProfitAndLoss;//为计算用户资产信息中的持仓盈亏做服务
-				totalMarketValue += marketValue;//为计算用户资产信息中的总市值做服务
+				holdPosProAndLos += totalProfitAndLoss; //为计算用户资产信息中的持仓盈亏做服务
+				totalMarketValue += marketValue; //为计算用户资产信息中的总市值做服务
 			}
-
+			
 			//计算用户总资产
 			totalFunds = amountBalance + totalMarketValue;
-			
 			return holdPositionVOList;
 		}else {
+			totalFunds = amountBalance;
 			return null;
 		}
+		
 	}
 	
 	//根据用户id，计算用户资产信息
