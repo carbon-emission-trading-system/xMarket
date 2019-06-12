@@ -3,21 +3,12 @@ package com.stock.xMarket.service.serviceImpl;
 
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
-import com.stock.xMarket.model.Stock;
-import com.stock.xMarket.model.User;
-import com.stock.xMarket.model.UserFund;
+import com.stock.xMarket.model.*;
 import com.stock.xMarket.redis.RealTime1Redis;
-import com.stock.xMarket.repository.HoldPositionRepository;
-import com.stock.xMarket.repository.StockRepository;
-import com.stock.xMarket.repository.TransactionOrderRepository;
-import com.stock.xMarket.repository.UserFundRepository;
-import com.stock.xMarket.repository.UserRepository;
+import com.stock.xMarket.repository.*;
 import com.stock.xMarket.service.HoldPositionService;
-import com.stock.xMarket.model.Order;
 import com.stock.xMarket.VO.HoldPositionVO;
 import com.stock.xMarket.VO.UserFundVO;
-import com.stock.xMarket.model.HoldPosition;
-import com.stock.xMarket.model.TransactionOrder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +45,9 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	
 	@Autowired
 	private UserFundRepository userFundRepository;
+
+	@Autowired
+	private HistoryHoldPositionRepository historyHoldPositionRepository;
 	
 	private double totalFunds = 0;
 	private double holdPosProAndLos = 0;
@@ -86,6 +80,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			//根据成交单是买还是卖，更新信息
 			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 开始更新持仓信息");
 			if(transactionOrder.getType()==1) {
+				//如果是卖
 				//计算新的持仓数量和可用数量
 				positionNumber = holdPositon.getPositionNumber() - transactionOrder.getExchangeAmount();
 				int availableNumber = holdPositon.getAvailableNumber() - transactionOrder.getExchangeAmount();
@@ -94,8 +89,24 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				if(positionNumber<0||availableNumber<0){
 					throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"成交单出现错误！");
 				}
+				//如果剩余数量为0，则清仓
+				if(positionNumber==0){
+					HistoryHoldPosition historyHoldPosition = new HistoryHoldPosition();
+					historyHoldPosition.setStockId(holdPositon.getStock().getStockId());
+					historyHoldPosition.setClearPositionDate(transactionOrder.getDate());
+					historyHoldPosition.setBuildPositionDate(holdPositon.getOpeningTime());
+					//总盈亏=最后一次到手的钱-成本价*数量，成本价可以为负
+					historyHoldPosition.setProfitAndLossRatio(transactionOrder.getActualAmount()-holdPositon.getCostPrice()*holdPositon.getAvailableNumber());
+					historyHoldPosition.setStockHoldDay((int)(transactionOrder.getDate().getTime()-holdPositon.getOpeningTime().getTime())/(1000*60*60*24));
+					historyHoldPosition.setStockName(holdPositon.getStock().getStockName());
+					historyHoldPosition.setTotalProfitAndLoss(transactionOrder.getTradePrice()/costPrice-1);
+					historyHoldPosition.setUserId(holdPositon.getUser().getUserId());
+					historyHoldPositionRepository.saveAndFlush(historyHoldPosition);
+					holdPositionRepository.delete(holdPositon);
+				}
 				holdPositon.setAvailableNumber(availableNumber);
 			}else {
+				//如果是买
 				//计算新的持仓数量和成本价
 				positionNumber = holdPositon.getPositionNumber() + transactionOrder.getExchangeAmount();
 				costPrice = (holdPositon.getCostPrice()*holdPositon.getPositionNumber()+transactionOrder.getActualAmount())/positionNumber;//positionNumber
