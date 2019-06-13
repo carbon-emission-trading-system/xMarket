@@ -200,8 +200,8 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				double costPrice = h.getCostPrice();//成本价
 				int positionNumber = h.getPositionNumber(); 
 				double presentPrice = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice();//现价--也就是市价
-				//总盈亏 = 成本价  * 股票余额 - 现价 *股票余额 = （成本价-现价）* 股票余额
-				double totalProfitAndLoss = (costPrice-presentPrice)*positionNumber;
+				//总盈亏 =  现价 *股票余额 - 成本价  * 股票余额 = （现价 - 成本价）* 股票余额
+				double totalProfitAndLoss = (presentPrice - costPrice)*positionNumber;
 				//市值 = 现价*股票余额
 				double marketValue = presentPrice * positionNumber;
 				BeanUtils.copyProperties(h, holdPositionVO);
