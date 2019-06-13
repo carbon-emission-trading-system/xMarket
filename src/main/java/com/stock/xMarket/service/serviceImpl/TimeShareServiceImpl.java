@@ -1,5 +1,6 @@
 package com.stock.xMarket.service.serviceImpl;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -64,6 +65,15 @@ public class TimeShareServiceImpl implements TimeShareService {
 
 	public static final String ALL_REALTIME_REDIS="allRealTimeRedis";
 	
+	  /*	 * 获得的是double类型	 * 保留两位小数        */	
+    public double keepDecimal(double num){		
+    	if(num==Double.POSITIVE_INFINITY||num==Double.NEGATIVE_INFINITY||Double.isNaN(num))
+    		return num;
+    	BigDecimal bg = new BigDecimal(num);		
+    	double num1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();		
+    	return num1;
+    }
+	
 	@Override
 	@Scheduled(fixedRate = 60000)
 	public void sendTimeShare() {
@@ -84,11 +94,11 @@ public class TimeShareServiceImpl implements TimeShareService {
 			timeShareVO.setDate(new Date(System.currentTimeMillis()));
 			timeShareVO.setRealTime(new Time(System.currentTimeMillis()));
 			if(realTime.getVolume()!=0&&realTime.getTradeAmount()!=0)
-				timeShareVO.setAveragePrice(realTime.getTradeAmount()/realTime.getVolume());
+				timeShareVO.setAveragePrice(keepDecimal(realTime.getTradeAmount()/realTime.getVolume()));
 			
 			timeShareList.add(timeShareVO);
 			
-			 JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd";
+			 JSON.DEFFAULT_DATE_FORMAT = "HH:mm:ss";
 			
 			rabbitTemplate.convertAndSend("timeShareExchange","stock.SZSE."+stockID,JSON.toJSONString(timeShareVO,SerializerFeature.WriteDateUseDateFormat));
 		}

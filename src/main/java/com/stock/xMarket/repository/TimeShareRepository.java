@@ -11,7 +11,7 @@ import com.stock.xMarket.model.TimeShare;
 @Repository
 public interface TimeShareRepository extends JpaRepository<TimeShare,Integer>{
 
-	List<TimeShare> findByStockIdAndDate(Integer stockId, Date date);
+	List<TimeShare> findByStockIdAndDateOrderByRealTime(Integer stockId, Date date);
 
 	
 }

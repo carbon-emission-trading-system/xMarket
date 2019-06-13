@@ -126,6 +126,7 @@ public class OrderController extends BaseApiController{
 				}catch (Exception e) {
 					// TODO: handle exception
 					logger.info("将委托单加入Redis发生异常");
+					throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"将委托单加入Redis发生异常");
 				}
 
 		
