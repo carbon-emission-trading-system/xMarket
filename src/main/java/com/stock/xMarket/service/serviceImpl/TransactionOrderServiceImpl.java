@@ -216,16 +216,22 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		if(money>166.666){
 			return money*0.03;
 		}
+		else if (money == 0){
+			return 0;
+		}
 		return 5;
 	}
 
 	public TransactionOrder createRevokeOrder(TradeOrder tradeOrder){
 		TransactionOrder revokeOrder = new TransactionOrder();
-		if(tradeOrder.getBuyOrderId() == 0){
+		tradeOrder.setTradePrice(0);
+		if(tradeOrder.getBuyOrderId() == -1){
 			LOGGER.info("委托单"+tradeOrder.getSellOrderId()+"撤单");
 			revokeOrder = createSellTransactionOrder(tradeOrder);
 
 			revokeOrder.setRevokeAmount(tradeOrder.getExchangeAmount());
+			revokeOrder.setExchangeAmount(0);
+
 			//redis中查重
 			TransactionOrder redisOrder =  transactionRedis.get(String.valueOf(revokeOrder.getOrderId()));
 			if(redisOrder!=null){
@@ -243,6 +249,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			revokeOrder = createBuyTransactionOrder(tradeOrder);
 
 			revokeOrder.setRevokeAmount(tradeOrder.getExchangeAmount());
+			revokeOrder.setExchangeAmount(0);
 			//redis中查重
 			TransactionOrder redisOrder =  transactionRedis.get(String.valueOf(revokeOrder.getOrderId()));
 			if(redisOrder!=null){
