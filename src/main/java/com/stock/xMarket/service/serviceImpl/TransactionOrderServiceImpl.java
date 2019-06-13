@@ -82,7 +82,13 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			
 			return;
 		}
-
+		
+		if(tradeOrder.getExchangeAmount()==0)
+		{
+			LOGGER.info("交易单成交数量为零");
+			throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"交易单成交数量为零！");
+			
+		}
 		//计算总成交金额
 		tradeOrder.setTotalExchangeMoney();
 		//如果买卖标识位都为false，则抛出异常
