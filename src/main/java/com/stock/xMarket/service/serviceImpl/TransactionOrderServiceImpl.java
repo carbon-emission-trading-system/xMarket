@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.fastjson.JSON;
 import com.stock.xMarket.VO.TransactionOrderVO;
 import com.stock.xMarket.repository.TransactionOrderRepository;
 import com.stock.xMarket.service.HoldPositionService;
@@ -65,7 +66,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	public void addTransactionOrder(TradeOrder tradeOrder) throws BusinessException {
 
 		//先判断是否为撤单
-		if(tradeOrder.getBuyOrderId() == 0 || tradeOrder.getSellOrderId() == 0){
+		if(tradeOrder.getBuyOrderId() == -1 || tradeOrder.getSellOrderId() == -1){
 			//创建撤单成交单
 			TransactionOrder revokeOrder = createRevokeOrder(tradeOrder);
 			//存入数据库
@@ -122,7 +123,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 			//存入数据库
 			LOGGER.info("委托单号："+sellOrder.getOrderId()+" 的委托卖单完成交易，成交单存入数据库");
-			LOGGER.info(sellOrder.getOrderId()+" 的内容:");
+			LOGGER.info(sellOrder.getOrderId()+" 的内容(sell):"+JSON.toJSONString(sellOrder));
 			
 			transactionOrderRepository.saveAndFlush(sellOrder);
 			
@@ -166,6 +167,8 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 			//存入数据库
 			LOGGER.info("委托单号："+buyOrder.getOrderId()+" 的委托买单完成交易，成交单存入数据库");
+
+			LOGGER.info(sellOrder.getOrderId()+" 的内容(buy):"+JSON.toJSONString(buyOrder));
 			transactionOrderRepository.saveAndFlush(buyOrder);
 			
 			//委托单完成，更新委托单

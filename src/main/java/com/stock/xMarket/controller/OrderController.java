@@ -113,12 +113,6 @@ public class OrderController extends BaseApiController{
 
 
 
-		if(OpeningUtil.isSet(order.getTime())) {
-			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
-		}else {
-			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
-		}
-
 		
 		// 将委托单添加至Redis
 				try {
@@ -130,7 +124,13 @@ public class OrderController extends BaseApiController{
 				}
 
 		
-		
+
+				if(OpeningUtil.isSet(order.getTime())) {
+					rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
+				}else {
+					rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
+				}
+
 		
 		return success();
 

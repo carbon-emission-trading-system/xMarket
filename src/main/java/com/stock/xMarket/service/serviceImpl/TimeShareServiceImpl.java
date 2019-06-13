@@ -26,7 +26,9 @@ import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.RealTime2;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.TimeShare;
+
 import com.stock.xMarket.redis.RealTime1Redis;
+import com.stock.xMarket.redis.TimeShareRedis;
 import com.stock.xMarket.redis.RealTime2Redis;
 import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.TimeShareRepository;
@@ -43,6 +45,9 @@ public class TimeShareServiceImpl implements TimeShareService {
 
 	@Autowired
 	private RealTime1Redis realTime1Redis;
+	
+	@Autowired
+	private TimeShareRedis timeShareRedis;
 	
 	@Autowired
 	AmqpAdmin amqpAdmin;
@@ -93,8 +98,11 @@ public class TimeShareServiceImpl implements TimeShareService {
 			BeanUtils.copyProperties(realTime, timeShareVO);
 			timeShareVO.setDate(new Date(System.currentTimeMillis()));
 			timeShareVO.setRealTime(new Time(System.currentTimeMillis()));
-			if(realTime.getVolume()!=0&&realTime.getTradeAmount()!=0)
+			if(realTime.getVolume()!=0&&realTime.getTradeAmount()!=0) {
 				timeShareVO.setAveragePrice(keepDecimal(realTime.getTradeAmount()/realTime.getVolume()));
+				timeShareVO.setVolume(realTime.getVolume()-timeShareRedis.get(String.valueOf(stockID)));
+			}
+			timeShareRedis.put(String.valueOf(stockID), realTime.getVolume(), -1);
 			
 			timeShareList.add(timeShareVO);
 			

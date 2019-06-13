@@ -124,7 +124,8 @@ public class OrderServiceImpl implements OrderService {
 		if(order==null)
 			order=new Order();
 		else {
-		orderRedis.remove(String.valueOf(OrderId));
+			orderRedis.remove(String.valueOf(OrderId));
+		
 		}
 		
 		BeanUtils.copyProperties(transactionOrder, order);
@@ -142,7 +143,7 @@ public class OrderServiceImpl implements OrderService {
 			orderIdList=new ArrayList<>();
 
 		try {
-		orderIdList.remove(order.getOrderId());
+		orderIdList.remove(String.valueOf(order.getOrderId()));
 		}catch (NoSuchElementException e) {
 			// TODO: handle exception
 			System.out.println("Redis异常");

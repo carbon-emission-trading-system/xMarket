@@ -12,7 +12,7 @@ public class TimeShareVO {
 	private Date date;
 	
 	
-	
+
 	public double getLastTradePrice() {
 		return lastTradePrice;
 	}

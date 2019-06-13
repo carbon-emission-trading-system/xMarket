@@ -24,6 +24,7 @@ import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.StockHistory;
 import com.stock.xMarket.redis.OrderRedis;
 import com.stock.xMarket.redis.RealTime2Redis;
+import com.stock.xMarket.redis.TimeShareRedis;
 import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.repository.HoldPositionRepository;
 import com.stock.xMarket.repository.OrderRepository;
@@ -42,6 +43,9 @@ public class SystemServiceImpl implements SystemService {
 
 	@Autowired
 	private RealTime1Redis realTime1Redis;
+	
+	@Autowired
+	private TimeShareRedis timeShareRedis;
 
 	@Autowired
 	private OrderRedis orderRedis;
@@ -83,6 +87,7 @@ public class SystemServiceImpl implements SystemService {
 			// double ytdClosePrice=realTimeRedis.get(key).getLatestPrice();
 			// realTimeVO.setYesterdayClosePrice(ytdClosePrice);
 			realTime2Redis.put(key, realTime2, -1);
+			timeShareRedis.put(key, 0, -1);
 
 		}
 	}
