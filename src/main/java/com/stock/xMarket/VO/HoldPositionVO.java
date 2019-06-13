@@ -15,7 +15,7 @@ public class HoldPositionVO implements Serializable {
 	private int frozenNumber; //冻结数量
 	//备选，公式太复杂啦！
 	//private double todayProfitAndLoss; //当日盈亏 = 
-	private double totalProfitAndLoss; //总盈亏 = 成本价 * 股票余额 - 市值
+	private double totalProfitAndLoss; //总盈亏 =  市值 - 成本价 * 股票余额
 	private double profitAndLossRatio; //盈亏比例=（ 市价 - 成本价）/成本价
 	private double marketValue; //市值 = 市价*股票余额 
 	private double positionRatio; //仓位占比 = 市值/总资产
