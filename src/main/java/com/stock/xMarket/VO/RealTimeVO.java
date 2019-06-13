@@ -19,18 +19,18 @@ public class RealTimeVO implements Serializable{
 	private int stockId;
 	private String stockName;
 	private double lowestPrice;//最低价
-	private double latestPrice;//最新价
+	private double lastTradePrice; //最新成交价
 	private double highestPrice; //最高价
 	private double increase; //涨幅
 	private double upsAndDowns;//涨跌
-	//private double dailyLimit;//涨停价
-	//private double downLimit;//跌停价
+	private double dailyLimit;//涨停价
+	private double downLimit;//跌停价
 	private double openPrice; //今日开盘价
 	private double yesterdayOpenPrice; //昨日开盘价
 	private double yesterdayClosePrice;//昨日收盘价
 	private double commissionProportion;//委比
 	private double tradeAmount; //成交额
-	private int tradeVolumn;//成交量
+	private int volume;//成交量
 	private double  totalMarketCapitalization; //总市值
 	private double peRatio ; //市盈率
 	private double pbRatio; //市净率
@@ -43,6 +43,34 @@ public class RealTimeVO implements Serializable{
 
 	
 	
+
+	public double getDailyLimit() {
+		return dailyLimit;
+	}
+
+
+
+
+	public void setDailyLimit(double dailyLimit) {
+		this.dailyLimit = dailyLimit;
+	}
+
+
+
+
+	public double getDownLimit() {
+		return downLimit;
+	}
+
+
+
+
+	public void setDownLimit(double downLimit) {
+		this.downLimit = downLimit;
+	}
+
+
+
 
 	public int getStockId() {
 		return stockId;
@@ -86,15 +114,19 @@ public class RealTimeVO implements Serializable{
 
 
 
-	public double getLatestPrice() {
-		return latestPrice;
+
+
+
+
+	public double getLastTradePrice() {
+		return lastTradePrice;
 	}
 
 
 
 
-	public void setLatestPrice(double latestPrice) {
-		this.latestPrice = latestPrice;
+	public void setLastTradePrice(double lastTradePrice) {
+		this.lastTradePrice = lastTradePrice;
 	}
 
 
@@ -212,15 +244,18 @@ public class RealTimeVO implements Serializable{
 
 
 
-	public int getTradeVolumn() {
-		return tradeVolumn;
+
+
+
+	public int getVolume() {
+		return volume;
 	}
 
 
 
 
-	public void setTradeVolumn(int tradeVolumn) {
-		this.tradeVolumn = tradeVolumn;
+	public void setVolume(int volume) {
+		this.volume = volume;
 	}
 
 

@@ -112,7 +112,7 @@ public class SystemServiceImpl implements SystemService {
 			StockHistory stockHistory = new StockHistory();
 			BeanUtils.copyProperties(realTimeVO, stockHistory);
 
-			double closePrice = realTimeVO.getLatestPrice();
+			double closePrice = realTimeVO.getLastTradePrice();
 			// 保存其他信息
 			stockHistory.setClosePrice(closePrice);
 

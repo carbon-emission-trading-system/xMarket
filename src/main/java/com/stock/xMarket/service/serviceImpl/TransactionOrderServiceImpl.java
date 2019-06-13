@@ -122,6 +122,8 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 			//存入数据库
 			LOGGER.info("委托单号："+sellOrder.getOrderId()+" 的委托卖单完成交易，成交单存入数据库");
+			LOGGER.info(sellOrder.getOrderId()+" 的内容:");
+			
 			transactionOrderRepository.saveAndFlush(sellOrder);
 			
 			//更新委托单

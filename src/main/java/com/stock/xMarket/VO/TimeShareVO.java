@@ -6,12 +6,20 @@ import java.sql.Time;
 public class TimeShareVO {
 	private int stockId;
 	private Time realTime;
-	private double latestPrice;
+	private double lastTradePrice;
 	private double averagePrice;
 	private int volume;
 	private Date date;
 	
 	
+	
+	public double getLastTradePrice() {
+		return lastTradePrice;
+	}
+	
+	public void setLastTradePrice(double lastTradePrice) {
+		this.lastTradePrice = lastTradePrice;
+	}
 	
 	public Date getDate() {
 		return date;
@@ -32,12 +40,7 @@ public class TimeShareVO {
 	public void setRealTime(Time realTime) {
 		this.realTime = realTime;
 	}
-	public double getLatestPrice() {
-		return latestPrice;
-	}
-	public void setLatestPrice(double latestPrice) {
-		this.latestPrice = latestPrice;
-	}
+
 	public double getAveragePrice() {
 		return averagePrice;
 	}

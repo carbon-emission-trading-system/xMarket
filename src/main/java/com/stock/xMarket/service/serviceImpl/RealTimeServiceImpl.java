@@ -123,7 +123,8 @@ public class RealTimeServiceImpl implements RealTimeService {
     		realTimeVO.setPeRatio(keepDecimal(peRatio));
     		realTimeVO.setPbRatio(keepDecimal(pbRatio));
     		realTimeVO.setTradeMarket(map.get(rt.getStockId()).getTradeMarket());   		
-    	
+    		realTimeVO.setDailyLimit(realTimeVO.getLastTradePrice()*1.1);
+    		realTimeVO.setDownLimit(realTimeVO.getLastTradePrice()*0.9);
     		
     		
     		realTimeVOList.add(realTimeVO);

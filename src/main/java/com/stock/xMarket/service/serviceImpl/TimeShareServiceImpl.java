@@ -65,7 +65,7 @@ public class TimeShareServiceImpl implements TimeShareService {
 	public static final String ALL_REALTIME_REDIS="allRealTimeRedis";
 	
 	@Override
-	@Scheduled(fixedRate = 6000)
+	@Scheduled(fixedRate = 60000)
 	public void sendTimeShare() {
 		List<TimeShareVO> timeShareList = new ArrayList<>();
 		List<RealTime1> list1 = new ArrayList<>();
@@ -83,6 +83,8 @@ public class TimeShareServiceImpl implements TimeShareService {
 			BeanUtils.copyProperties(realTime, timeShareVO);
 			timeShareVO.setDate(new Date(System.currentTimeMillis()));
 			timeShareVO.setRealTime(new Time(System.currentTimeMillis()));
+			if(realTime.getVolume()!=0&&realTime.getTradeAmount()!=0)
+				timeShareVO.setAveragePrice(realTime.getTradeAmount()/realTime.getVolume());
 			
 			timeShareList.add(timeShareVO);
 			

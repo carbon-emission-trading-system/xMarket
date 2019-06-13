@@ -35,7 +35,7 @@ public class TimeShare {
 	private Time realTime;
 	
 	@Column
-	private double latestPrice;
+	private double lastTradePrice;
 	
 	@Column
 	private double averagePrice;
@@ -71,11 +71,12 @@ public class TimeShare {
 	public void setRealTime(Time realTime) {
 		this.realTime = realTime;
 	}
-	public double getLatestPrice() {
-		return latestPrice;
+
+	public double getLastTradePrice() {
+		return lastTradePrice;
 	}
-	public void setLatestPrice(double latestPrice) {
-		this.latestPrice = latestPrice;
+	public void setLastTradePrice(double lastTradePrice) {
+		this.lastTradePrice = lastTradePrice;
 	}
 	public double getAveragePrice() {
 		return averagePrice;

@@ -56,7 +56,7 @@ public class RealTimeAPIController extends BaseApiController{
 		List<TimeShareVO> timeShareVOList=new ArrayList<>();
 		
 		
-		List<TimeShare> timeShareList=timeShareRepository.findByStock_StockIdAndDate(stockId,nowDate);
+		List<TimeShare> timeShareList=timeShareRepository.findByStockIdAndDate(stockId,nowDate);
 		for(TimeShare timeShare:timeShareList) {
 			TimeShareVO timeShareVO=new TimeShareVO();
 			
