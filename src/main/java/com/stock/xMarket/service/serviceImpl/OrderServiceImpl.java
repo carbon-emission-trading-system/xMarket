@@ -123,7 +123,9 @@ public class OrderServiceImpl implements OrderService {
 		Order order=orderRedis.get(String.valueOf(OrderId));
 		if(order==null)
 			order=new Order();
+		else {
 		orderRedis.remove(String.valueOf(OrderId));
+		}
 		
 		BeanUtils.copyProperties(transactionOrder, order);
 		
