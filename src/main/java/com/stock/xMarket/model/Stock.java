@@ -27,7 +27,6 @@ public class Stock implements Serializable{
 	public Stock(){}
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="stock_id")
 	private int stockId;
 	

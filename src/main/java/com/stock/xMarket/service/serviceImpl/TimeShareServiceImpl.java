@@ -23,9 +23,11 @@ import com.stock.xMarket.VO.TimeShareVO;
 import com.stock.xMarket.config.RabbitMqConfig;
 import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.RealTime2;
+import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.TimeShare;
 import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.redis.RealTime2Redis;
+import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.TimeShareRepository;
 import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.service.RealTimeService;
@@ -55,6 +57,9 @@ public class TimeShareServiceImpl implements TimeShareService {
 	
 	@Autowired
 	public TimeShareRepository timeShareRepository;
+	
+	@Autowired
+	public StockRepository stockRepository;
 	
 
 	public static final String ALL_REALTIME_REDIS="allRealTimeRedis";
@@ -90,12 +95,23 @@ public class TimeShareServiceImpl implements TimeShareService {
 	
 	}
 
-	private void saveTimeShare(List<TimeShareVO> timeShareList) {
+	private void saveTimeShare(List<TimeShareVO> timeShareVOList) {
 		// TODO Auto-generated method stub
-		List<TimeShare> timeShare = new ArrayList<>();
-		BeanUtils.copyProperties(timeShareList, timeShare);
+		List<TimeShare> timeShareList = new ArrayList<>();
 		
-		timeShareRepository.saveAll(timeShare);
+		for(TimeShareVO timeShareVO: timeShareVOList) {
+			
+			TimeShare timeShare=new TimeShare();
+			
+			BeanUtils.copyProperties(timeShareVO, timeShare);
+			
+			timeShareList.add(timeShare);
+			
+		}
+		
+		
+		
+		timeShareRepository.saveAll(timeShareList);
 	}
 	
 

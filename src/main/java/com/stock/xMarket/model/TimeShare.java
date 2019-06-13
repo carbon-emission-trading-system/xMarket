@@ -24,9 +24,8 @@ public class TimeShare {
 	private int timeShareId;
 	
 	
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name="stock_id")
-	private Stock stock;
+	@Column
+	private int stockId;
 
 	@Column
 	private Date date;
@@ -59,11 +58,12 @@ public class TimeShare {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public Stock getStock() {
-		return stock;
+
+	public int getStockId() {
+		return stockId;
 	}
-	public void setStock(Stock stock) {
-		this.stock = stock;
+	public void setStockId(int stockId) {
+		this.stockId = stockId;
 	}
 	public Time getRealTime() {
 		return realTime;
