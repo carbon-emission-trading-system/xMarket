@@ -128,11 +128,17 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			sellOrder.setStockBalance(sellOrder.getExchangeAmount());
 
 			//存入数据库
+			try {
 			LOGGER.info("委托单号："+sellOrder.getOrderId()+" 的委托卖单完成交易，成交单存入数据库");
 			LOGGER.info(sellOrder.getOrderId()+" 的内容(sell):"+JSON.toJSONString(sellOrder));
 			
 			transactionOrderRepository.saveAndFlush(sellOrder);
+			}catch (Exception e) {
+				// TODO: handle exception
+				LOGGER.info("委托单存入数据库失败！");
+			}
 			
+			try {
 			//更新委托单
 			orderService.updateOrderBytransactionOrder(sellOrder);
 			
@@ -141,6 +147,14 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			
 			//更新个人资金
 			userFundService.updateUserFundByTransaction(sellOrder);
+			}catch (Exception e) {
+				// TODO: handle exception
+				LOGGER.info("更新操作失败！");
+				throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"更新操作失败！");
+			}
+			
+			
+		
 		}
 
 		//如果买方标识位为false，则将买方成交单放入redis；反之则放入数据库
@@ -171,18 +185,40 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			buyOrder.setTradePrice(buyOrder.getTotalExchangeMoney()/buyOrder.getExchangeAmount());
 			buyOrder.setStockBalance(buyOrder.getExchangeAmount());
 
-			//存入数据库
-			LOGGER.info("委托单号："+buyOrder.getOrderId()+" 的委托买单完成交易，成交单存入数据库");
+			
+			
 
-			LOGGER.info(sellOrder.getOrderId()+" 的内容(buy):"+JSON.toJSONString(buyOrder));
-			transactionOrderRepository.saveAndFlush(buyOrder);
+			//存入数据库
+			try {
+				//存入数据库
+				LOGGER.info("委托单号："+buyOrder.getOrderId()+" 的委托买单完成交易，成交单存入数据库");
+
+				LOGGER.info(sellOrder.getOrderId()+" 的内容(buy):"+JSON.toJSONString(buyOrder));
+				transactionOrderRepository.saveAndFlush(buyOrder);
+				
+			}catch (Exception e) {
+				// TODO: handle exception
+				LOGGER.info("委托单存入数据库失败！");
+			}
 			
-			//委托单完成，更新委托单
-			orderService.updateOrderBytransactionOrder(buyOrder);
+			try {
+				//委托单完成，更新委托单
+				orderService.updateOrderBytransactionOrder(buyOrder);
+				//更新持仓
+				holdPositionService.updateHoldPositionByTransaction(buyOrder);
+				//更新个人资金
+				userFundService.updateUserFundByTransaction(buyOrder);
+			}catch (Exception e) {
+				// TODO: handle exception
+				LOGGER.info("更新操作失败！");
+				throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"更新操作失败！");
+			}
 			
-			holdPositionService.updateHoldPositionByTransaction(buyOrder);
 			
-			userFundService.updateUserFundByTransaction(buyOrder);
+			
+			
+			
+		
 			
 			
 		}

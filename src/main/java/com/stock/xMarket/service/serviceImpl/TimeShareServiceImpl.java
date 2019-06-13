@@ -68,7 +68,6 @@ public class TimeShareServiceImpl implements TimeShareService {
 	public StockRepository stockRepository;
 	
 
-	public static final String ALL_REALTIME_REDIS="allRealTimeRedis";
 	
 	  /*	 * 获得的是double类型	 * 保留两位小数        */	
     public double keepDecimal(double num){		
@@ -80,7 +79,7 @@ public class TimeShareServiceImpl implements TimeShareService {
     }
 	
 	@Override
-	@Scheduled(fixedRate = 60000)
+	@Scheduled(fixedRate = 6000000)
 	public void sendTimeShare() {
 		List<TimeShareVO> timeShareList = new ArrayList<>();
 		List<RealTime1> list1 = new ArrayList<>();

@@ -39,7 +39,7 @@ public class StockInformationController extends BaseApiController{
     @RequestMapping(value = "/KlineDiagramDisplay", method = RequestMethod.GET)
     public CommonReturnType KlineDiagramDisplay(@RequestParam(name = "stockId")int stockId) throws BusinessException, ParseException {
         logger.info("后端接收到建立K线图请求"+" 股票："+stockId);
-        return CommonReturnType.success(createDayKLineDataVOList(stockHistoryRepository.findAllByStockId(stockId)));
+        return CommonReturnType.success(createDayKLineDataVOList(stockHistoryRepository.findAllByStockIdOrderByDate(stockId)));
 //        List<KLineDataVO> kLineDataVOList = new ArrayList<>();
 //        KLineDataVO kLineDataVO1 = new KLineDataVO("2019-08-01",40,41,42,39.8,90000);
 //        kLineDataVOList.add(kLineDataVO1);
