@@ -19,24 +19,7 @@ import javax.persistence.Table;
 public class TradeOrder {
 	
 	
-	public TradeOrder(int tradeOrderId, int stockId, int buyOrderId, int sellOrderId,boolean buyPoint, boolean sellPoint,
-			 Time time, Date date, double tradePrice, int exchangeAmount, boolean tradeType,
-			  int buyerId,int sellerId) {
-		super();
-		this.tradeOrderId = tradeOrderId;
-		this.stockId = stockId;
-		this.buyOrderId = buyOrderId;
-		this.sellOrderId = sellOrderId;
-		this.sellPoint = sellPoint;
-		this.buyPoint = buyPoint;
-		this.time = time;
-		this.date = date;
-		this.tradePrice = tradePrice;
-		this.exchangeAmount = exchangeAmount;
-		this.tradeType = tradeType;
-		this.sellerId = sellerId;
-		this.buyerId = buyerId;
-	}
+	
 	
 	public TradeOrder() {
 		super();
@@ -45,13 +28,13 @@ public class TradeOrder {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column
-	private int tradeOrderId;
+	private long tradeOrderId;
 	@Column
 	private int stockId;
 	@Column
-	private int buyOrderId;
+	private long buyOrderId;
 	@Column
-	private int sellOrderId;
+	private long sellOrderId;
 	@Column
 	private boolean sellPoint;
 	@Column
@@ -79,12 +62,29 @@ public class TradeOrder {
 	@Column(name="trade_market")
 	private int tradeMarket;//交易市场   market
 
-	public int getTradeOrderId() {
-		return tradeOrderId;
-	}
 
-	public void setTradeOrderId(int tradeOrderId) {
+	
+
+
+	public TradeOrder(long tradeOrderId, int stockId, long buyOrderId, long sellOrderId, boolean sellPoint,
+			boolean buyPoint, Time time, Date date, double tradePrice, int exchangeAmount, boolean tradeType,
+			double totalExchangeMoney, int sellerId, int buyerId, int tradeMarket) {
+		super();
 		this.tradeOrderId = tradeOrderId;
+		this.stockId = stockId;
+		this.buyOrderId = buyOrderId;
+		this.sellOrderId = sellOrderId;
+		this.sellPoint = sellPoint;
+		this.buyPoint = buyPoint;
+		this.time = time;
+		this.date = date;
+		this.tradePrice = tradePrice;
+		this.exchangeAmount = exchangeAmount;
+		this.tradeType = tradeType;
+		this.totalExchangeMoney = totalExchangeMoney;
+		this.sellerId = sellerId;
+		this.buyerId = buyerId;
+		this.tradeMarket = tradeMarket;
 	}
 
 	public int getTradeMarket() {
@@ -103,19 +103,29 @@ public class TradeOrder {
 		this.stockId = stockId;
 	}
 
-	public int getBuyOrderId() {
+	
+
+	public long getTradeOrderId() {
+		return tradeOrderId;
+	}
+
+	public void setTradeOrderId(long tradeOrderId) {
+		this.tradeOrderId = tradeOrderId;
+	}
+
+	public long getBuyOrderId() {
 		return buyOrderId;
 	}
 
-	public void setBuyOrderId(int buyOrderId) {
+	public void setBuyOrderId(long buyOrderId) {
 		this.buyOrderId = buyOrderId;
 	}
 
-	public int getSellOrderId() {
+	public long getSellOrderId() {
 		return sellOrderId;
 	}
 
-	public void setSellOrderId(int sellOrderId) {
+	public void setSellOrderId(long sellOrderId) {
 		this.sellOrderId = sellOrderId;
 	}
 

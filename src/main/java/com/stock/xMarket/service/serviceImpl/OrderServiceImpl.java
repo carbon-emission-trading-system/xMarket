@@ -63,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
 		if(userOrderRedis.get(userId)!=null)
 			orderIdList=userOrderRedis.get(userId);
 
-		orderIdList.add(order.getOrderId());
+		orderIdList.add(String.valueOf(order.getOrderId()));
 		userOrderRedis.put(userId, orderIdList, -1);
 		
 		
@@ -119,16 +119,18 @@ public class OrderServiceImpl implements OrderService {
 	public void updateOrderBytransactionOrder(TransactionOrder transactionOrder) {
 		// TODO Auto-generated method stub
 		
-		int OrderId=transactionOrder.getOrderId();
+		long OrderId=transactionOrder.getOrderId();
 		Order order=orderRedis.get(String.valueOf(OrderId));
 		if(order==null)
 			order=new Order();
+		else {
 		orderRedis.remove(String.valueOf(OrderId));
+		}
 		
 		BeanUtils.copyProperties(transactionOrder, order);
 		
 		order.setExchangeAveragePrice(transactionOrder.getTradePrice());
-		order.setOrderId(transactionOrder.getOrderId()+"");
+		order.setOrderId(transactionOrder.getOrderId());
 		
 		addOrderToDb(order);
 		
