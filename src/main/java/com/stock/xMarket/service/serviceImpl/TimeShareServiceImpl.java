@@ -16,6 +16,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.stock.xMarket.VO.KLineDataVO;
 import com.stock.xMarket.VO.RealTimeVO;
 import com.stock.xMarket.VO.TimeShareVO;
 import com.stock.xMarket.config.RabbitMqConfig;
@@ -58,7 +60,7 @@ public class TimeShareServiceImpl implements TimeShareService {
 	public static final String ALL_REALTIME_REDIS="allRealTimeRedis";
 	
 	@Override
-	@Scheduled(fixedRate = 600000)
+	@Scheduled(fixedRate = 6000)
 	public void sendTimeShare() {
 		List<TimeShareVO> timeShareList = new ArrayList<>();
 		List<RealTime1> list1 = new ArrayList<>();
@@ -78,7 +80,10 @@ public class TimeShareServiceImpl implements TimeShareService {
 			timeShareVO.setRealTime(new Time(System.currentTimeMillis()));
 			
 			timeShareList.add(timeShareVO);
-			rabbitTemplate.convertAndSend("timeShareExchange","stock.SZSE."+stockID,JSON.toJSONString(timeShareVO));
+			
+			 JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd";
+			
+			rabbitTemplate.convertAndSend("timeShareExchange","stock.SZSE."+stockID,JSON.toJSONString(timeShareVO,SerializerFeature.WriteDateUseDateFormat));
 		}
 		
 		saveTimeShare(timeShareList);

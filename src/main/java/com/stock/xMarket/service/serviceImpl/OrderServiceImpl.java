@@ -118,6 +118,7 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void updateOrderBytransactionOrder(TransactionOrder transactionOrder) {
 		// TODO Auto-generated method stub
+		
 		int OrderId=transactionOrder.getOrderId();
 		Order order=orderRedis.get(String.valueOf(OrderId));
 		if(order==null)
@@ -146,8 +147,9 @@ public class OrderServiceImpl implements OrderService {
 		}
 		userOrderRedis.put(userId, orderIdList, -1);
 		
+		}
 		
-	}
+	
 
 	
 	
