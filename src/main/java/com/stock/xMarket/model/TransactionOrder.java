@@ -27,7 +27,7 @@ public class TransactionOrder implements Serializable{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="transaction_order_id")
-	private int transactionOrderId;
+	private long transactionOrderId;
 	
 	@Column(name="stock_id")
 	private int stockId;
@@ -39,7 +39,7 @@ public class TransactionOrder implements Serializable{
 	private int type;//买卖标识  1是卖
 	
 	@Column(name="order_id")
-	private int orderId;//委托单id  sellOrderId
+	private long orderId;//委托单id  sellOrderId
 	
 	@Column(name="owner_id")
 	private int ownerId;//拥有者id
@@ -84,6 +84,41 @@ public class TransactionOrder implements Serializable{
 	private double totalExchangeMoney;// exchangeFee
 
 	
+	
+	
+	public TransactionOrder(long transactionOrderId, int stockId, String stockName, int type, long orderId, int ownerId,
+			Time time, Date date, double tradePrice, int exchangeAmount, Boolean tradeType, double serviceTax,
+			double stampTax, double otherFee, double actualAmount, int tradeMarket, int stockBalance, int revokeAmount,
+			double totalExchangeMoney) {
+		super();
+		this.transactionOrderId = transactionOrderId;
+		this.stockId = stockId;
+		this.stockName = stockName;
+		this.type = type;
+		this.orderId = orderId;
+		this.ownerId = ownerId;
+		this.time = time;
+		this.date = date;
+		this.tradePrice = tradePrice;
+		this.exchangeAmount = exchangeAmount;
+		this.tradeType = tradeType;
+		this.serviceTax = serviceTax;
+		this.stampTax = stampTax;
+		this.otherFee = otherFee;
+		this.actualAmount = actualAmount;
+		this.tradeMarket = tradeMarket;
+		this.stockBalance = stockBalance;
+		this.revokeAmount = revokeAmount;
+		this.totalExchangeMoney = totalExchangeMoney;
+	}
+
+	
+	
+	public TransactionOrder() {
+	}
+
+
+
 	public String getStockName() {
 		return stockName;
 	}
@@ -100,12 +135,22 @@ public class TransactionOrder implements Serializable{
 		this.totalExchangeMoney = totalExchangeMoney;
 	}
 
-	public int getTransactionOrderId() {
+	
+
+	public long getTransactionOrderId() {
 		return transactionOrderId;
 	}
 
-	public void setTransactionOrderId(int transactionOrderId) {
+	public void setTransactionOrderId(long transactionOrderId) {
 		this.transactionOrderId = transactionOrderId;
+	}
+
+	public long getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(long orderId) {
+		this.orderId = orderId;
 	}
 
 	public int getStockId() {
@@ -125,13 +170,7 @@ public class TransactionOrder implements Serializable{
 		this.type = type;
 	}
 
-	public int getOrderId() {
-		return orderId;
-	}
 
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
-	}
 
 	public int getOwnerId() {
 		return ownerId;

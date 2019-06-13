@@ -21,9 +21,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.stock.xMarket.VO.RealTimeVO;
-import com.stock.xMarket.VO.TradeOrderVO;
 import com.stock.xMarket.config.RabbitMqConfig;
-import com.stock.xMarket.controller.listener.OrderListener;
+import com.stock.xMarket.controller.listener.TradeOrderListener;
 import com.stock.xMarket.model.TradeOrder;
 import com.stock.xMarket.repository.TradeOrderRepository;
 import com.stock.xMarket.service.RealTimeService;
@@ -38,7 +37,7 @@ import com.stock.xMarket.service.TransactionOrderService;
 public class TradeOrderServiceImpl implements TradeOrderService {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(OrderListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(TradeOrderListener.class);
     
     
   

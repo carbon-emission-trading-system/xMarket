@@ -78,9 +78,9 @@ public class OrderController extends BaseApiController{
 		Order order = new Order();
 		
 		//生成id
-		int orderId=(int) (System.currentTimeMillis()/1000);
-		order.setOrderId(String.valueOf(orderId));
-		orderVO.setOrderId(String.valueOf(orderId));
+		long orderId= Long.valueOf(String.valueOf(String.valueOf(orderVO.getUserId()+System.currentTimeMillis())));
+		order.setOrderId(orderId);
+		orderVO.setOrderId(orderId);
 
 		
 		
