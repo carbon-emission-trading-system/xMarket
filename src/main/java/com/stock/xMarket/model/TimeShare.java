@@ -24,9 +24,8 @@ public class TimeShare {
 	private int timeShareId;
 	
 	
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name="stock_id")
-	private Stock stock;
+	@Column
+	private int stockId;
 
 	@Column
 	private Date date;
@@ -36,7 +35,7 @@ public class TimeShare {
 	private Time realTime;
 	
 	@Column
-	private double latestPrice;
+	private double lastTradePrice;
 	
 	@Column
 	private double averagePrice;
@@ -59,11 +58,12 @@ public class TimeShare {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public Stock getStock() {
-		return stock;
+
+	public int getStockId() {
+		return stockId;
 	}
-	public void setStock(Stock stock) {
-		this.stock = stock;
+	public void setStockId(int stockId) {
+		this.stockId = stockId;
 	}
 	public Time getRealTime() {
 		return realTime;
@@ -71,11 +71,12 @@ public class TimeShare {
 	public void setRealTime(Time realTime) {
 		this.realTime = realTime;
 	}
-	public double getLatestPrice() {
-		return latestPrice;
+
+	public double getLastTradePrice() {
+		return lastTradePrice;
 	}
-	public void setLatestPrice(double latestPrice) {
-		this.latestPrice = latestPrice;
+	public void setLastTradePrice(double lastTradePrice) {
+		this.lastTradePrice = lastTradePrice;
 	}
 	public double getAveragePrice() {
 		return averagePrice;
