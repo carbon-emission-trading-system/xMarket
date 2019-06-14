@@ -13,6 +13,7 @@ import com.stock.xMarket.model.TransactionOrder;
 import com.stock.xMarket.redis.TransactionRedis;
 
 import com.stock.xMarket.repository.StockRepository;
+import com.stock.xMarket.util.FeeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -27,6 +28,10 @@ import com.stock.xMarket.service.HoldPositionService;
 import com.stock.xMarket.service.OrderService;
 import com.stock.xMarket.service.TransactionOrderService;
 import com.stock.xMarket.service.UserFundService;
+
+import static com.stock.xMarket.util.FeeUtil.otherTaxCaculator;
+import static com.stock.xMarket.util.FeeUtil.serviceFeeCaculator;
+import static com.stock.xMarket.util.FeeUtil.stampTaxCaculator;
 
 @Service
 @Transactional
@@ -120,9 +125,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			}
 
 			//放入数据库前先计算服务费、成交价和股票余额
-			sellOrder.setStampTax(sellOrder.getTotalExchangeMoney()*0.01);
-			sellOrder.setOtherFee(sellOrder.getExchangeAmount()*0.0002687);
-			sellOrder.setServiceTax(serviceFaxCaculator(sellOrder.getTotalExchangeMoney()));
+			sellOrder.setStampTax(stampTaxCaculator(sellOrder.getTotalExchangeMoney()));
+			sellOrder.setOtherFee(otherTaxCaculator(sellOrder.getExchangeAmount()));
+			sellOrder.setServiceTax(serviceFeeCaculator(sellOrder.getTotalExchangeMoney()));
 			sellOrder.setActualAmount(sellOrder.getTotalExchangeMoney()-sellOrder.getOtherFee()-sellOrder.getServiceTax()-sellOrder.getStampTax());
 			sellOrder.setTradePrice(sellOrder.getTotalExchangeMoney()/sellOrder.getExchangeAmount());
 			sellOrder.setStockBalance(sellOrder.getExchangeAmount());
@@ -179,8 +184,8 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 			//计算服务费、成交价和股票余额
 			buyOrder.setStampTax(0);
-			buyOrder.setOtherFee(buyOrder.getExchangeAmount()*0.0002887);
-			buyOrder.setServiceTax(serviceFaxCaculator(buyOrder.getTotalExchangeMoney()));
+			buyOrder.setOtherFee(otherTaxCaculator(buyOrder.getExchangeAmount()));
+			buyOrder.setServiceTax(serviceFeeCaculator(buyOrder.getTotalExchangeMoney()));
 			buyOrder.setActualAmount(buyOrder.getTotalExchangeMoney()+buyOrder.getServiceTax()+buyOrder.getOtherFee());
 			buyOrder.setTradePrice(buyOrder.getTotalExchangeMoney()/buyOrder.getExchangeAmount());
 			buyOrder.setStockBalance(buyOrder.getExchangeAmount());
@@ -258,17 +263,6 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	}
 
 
-	//用于计算手续费的函数
-	public double serviceFaxCaculator(double money){
-		if(money>166.666){
-			return money*0.03;
-		}
-		else if (money == 0){
-			return 0;
-		}
-		return 5;
-	}
-
 	public TransactionOrder createRevokeOrder(TradeOrder tradeOrder){
 		TransactionOrder revokeOrder = new TransactionOrder();
 		tradeOrder.setTradePrice(0);
@@ -286,9 +280,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 				revokeOrder.setExchangeAmount(redisOrder.getExchangeAmount());
 				revokeOrder.setTotalExchangeMoney(redisOrder.getTotalExchangeMoney());
 				revokeOrder.setTradePrice(revokeOrder.getTotalExchangeMoney()/revokeOrder.getExchangeAmount());
-				revokeOrder.setStampTax(revokeOrder.getTotalExchangeMoney()*0.01);
-				revokeOrder.setOtherFee(revokeOrder.getTotalExchangeMoney()*0.0002687);
-				revokeOrder.setServiceTax(serviceFaxCaculator(revokeOrder.getTotalExchangeMoney()));
+				revokeOrder.setStampTax(stampTaxCaculator(revokeOrder.getTotalExchangeMoney()));
+				revokeOrder.setOtherFee(otherTaxCaculator(revokeOrder.getTotalExchangeMoney()));
+				revokeOrder.setServiceTax(serviceFeeCaculator(revokeOrder.getTotalExchangeMoney()));
 				revokeOrder.setActualAmount(revokeOrder.getTotalExchangeMoney()-revokeOrder.getOtherFee()-revokeOrder.getServiceTax()-revokeOrder.getStampTax());
 			}
 		}else{
@@ -305,8 +299,8 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 				revokeOrder.setTotalExchangeMoney(redisOrder.getTotalExchangeMoney());
 				revokeOrder.setTradePrice(revokeOrder.getTotalExchangeMoney()/revokeOrder.getExchangeAmount());
 				revokeOrder.setStampTax(0);
-				revokeOrder.setOtherFee(revokeOrder.getTotalExchangeMoney()*0.0002887);
-				revokeOrder.setServiceTax(serviceFaxCaculator(revokeOrder.getTotalExchangeMoney()));
+				revokeOrder.setOtherFee(otherTaxCaculator(revokeOrder.getTotalExchangeMoney()));
+				revokeOrder.setServiceTax(serviceFeeCaculator(revokeOrder.getTotalExchangeMoney()));
 				revokeOrder.setActualAmount(revokeOrder.getTotalExchangeMoney()+revokeOrder.getOtherFee()+revokeOrder.getServiceTax()+revokeOrder.getStampTax());
 			}
 		}
