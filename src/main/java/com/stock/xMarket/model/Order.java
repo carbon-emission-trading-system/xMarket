@@ -62,20 +62,19 @@ public class Order implements Serializable{
 
 	@Column(name="cancel_number")
 	private int cancelNumber;
+	
+	@Column
+	private double frozenAmount;
+	
+	
 
 	public Order(){}
 
 	
-	
-
-
-
-
-
 
 	public Order(long orderId, Stock stock, User user, Time time, int type, Date date, int tradeStraregy,
-			int orderAmount, int exchangeAmount, double orderPrice, double exchangeAveragePrice, int cancelNumber) {
-		super();
+			int orderAmount, int exchangeAmount, double orderPrice, double exchangeAveragePrice, int cancelNumber,
+			double frozenAmount) {
 		this.orderId = orderId;
 		this.stock = stock;
 		this.user = user;
@@ -88,13 +87,20 @@ public class Order implements Serializable{
 		this.orderPrice = orderPrice;
 		this.exchangeAveragePrice = exchangeAveragePrice;
 		this.cancelNumber = cancelNumber;
+		this.frozenAmount = frozenAmount;
 	}
 
 
 
+	public double getFrozenAmount() {
+		return frozenAmount;
+	}
 
 
 
+	public void setFrozenAmount(double frozenAmount) {
+		this.frozenAmount = frozenAmount;
+	}
 
 
 
@@ -106,19 +112,9 @@ public class Order implements Serializable{
 
 
 
-
-
-
-
 	public void setOrderId(long orderId) {
 		this.orderId = orderId;
 	}
-
-
-
-
-
-
 
 
 

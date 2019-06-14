@@ -83,10 +83,10 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				//如果是卖
 				//计算新的持仓数量和可用数量
 				positionNumber = holdPositon.getPositionNumber() - transactionOrder.getExchangeAmount();
-				int availableNumber = holdPositon.getAvailableNumber() - transactionOrder.getExchangeAmount();
+				//int availableNumber = holdPositon.getAvailableNumber() - transactionOrder.getExchangeAmount();
 				//计算成本价
 				costPrice = (holdPositon.getCostPrice()*holdPositon.getPositionNumber()-transactionOrder.getActualAmount())/positionNumber;//positionNumber
-				if(positionNumber<0||availableNumber<0){
+				if(positionNumber<0){
 					throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"成交单出现错误！");
 				}
 				//如果剩余数量为0，则清仓
@@ -104,7 +104,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 					historyHoldPositionRepository.saveAndFlush(historyHoldPosition);
 					holdPositionRepository.delete(holdPositon);
 				}
-				holdPositon.setAvailableNumber(availableNumber);
+				//holdPositon.setAvailableNumber(availableNumber);
 			}else {
 				//如果是买
 				//计算新的持仓数量和成本价

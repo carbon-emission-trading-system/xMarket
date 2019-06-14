@@ -79,7 +79,6 @@ public class OrderController extends BaseApiController{
 		
 		//生成id
 		long orderId= Long.valueOf(String.valueOf(String.valueOf(orderVO.getUserId()+System.currentTimeMillis())));
-		order.setOrderId(orderId);
 		orderVO.setOrderId(orderId);
 
 		
@@ -102,8 +101,13 @@ public class OrderController extends BaseApiController{
 			// TODO: handle exception
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标股票不存在！");
 		}
+		
+		
+	
+		
+		
 
-		if (orderVO.getType() == 1) {
+		if (order.getType() == 1) {
 			// 更新股票可用余额
 			holdPositionService.updateHoldPositionByOrder(order);
 		}else {
