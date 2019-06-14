@@ -1,6 +1,7 @@
 
 package com.stock.xMarket.service.serviceImpl;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -127,11 +128,14 @@ public class OrderServiceImpl implements OrderService {
 			orderRedis.remove(String.valueOf(OrderId));
 		
 		}
+		Time time=order.getTime();
 		
 		BeanUtils.copyProperties(transactionOrder, order);
 		
 		order.setExchangeAveragePrice(transactionOrder.getTradePrice());
 		order.setOrderId(transactionOrder.getOrderId());
+		order.setTime(time);
+		order.setCancelNumber(transactionOrder.getRevokeAmount());
 		
 		addOrderToDb(order);
 		

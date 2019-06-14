@@ -64,7 +64,7 @@ public class RealTimeServiceImpl implements RealTimeService {
     }
 
 	@Override
-	@Scheduled(fixedRate = 600000)
+	@Scheduled(fixedRate = 3000)
 	public void sendRealTime() {
 		//updateRealTime();
 		List<RealTimeVO> realTimeList = new ArrayList<RealTimeVO>();
