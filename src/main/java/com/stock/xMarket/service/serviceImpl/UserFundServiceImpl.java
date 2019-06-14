@@ -124,7 +124,7 @@ public class UserFundServiceImpl implements UserFundService {
 			if(order.getType()==0) {
 			//计算手续费,买的时候更新
 			double orderAmount=order.getOrderPrice()*order.getOrderAmount();
-			frozenAmount=orderAmount+FeeUtil.buyTaxCaculator(orderAmount);
+			frozenAmount=orderAmount+FeeUtil.otherTaxCaculator(orderAmount);
 			frozenAmount+=FeeUtil.serviceFeeCaculator(order.getOrderPrice()*order.getOrderAmount());
 			}
 		}

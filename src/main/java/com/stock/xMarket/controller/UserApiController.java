@@ -51,9 +51,9 @@ public class UserApiController extends BaseApiController {
 		//验证码
 		String sessionCode = (String) session.getAttribute("code");
 		log.info("id为"+user.getUserId()+"的用户输入验证码："+validateCode+"   正确验证码："+sessionCode);
-//		if(!StringUtils.equalsIgnoreCase(validateCode, sessionCode)){
-//			throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"验证码错误");
-//		}
+		if(!StringUtils.equalsIgnoreCase(validateCode, sessionCode)){
+			throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"验证码错误");
+		}
 
 		UserVO dbUser = userService.getUser(user.getUserName());
 

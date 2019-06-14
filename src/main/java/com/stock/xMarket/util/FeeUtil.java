@@ -12,12 +12,12 @@ public class FeeUtil {
 	
 	
 	//用于计算手续费的函数
-		public static double sellTaxCaculator(double money){
+		public static double stampTaxCaculator(double money){
 			
-			return money*0.00102;
+			return money*0.001;
 		}
 		
-	public static double buyTaxCaculator(double money){
+	public static double otherTaxCaculator(double money){
 			
 			return money*0.00002;
 		}
