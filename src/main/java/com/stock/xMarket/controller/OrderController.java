@@ -130,9 +130,9 @@ public class OrderController extends BaseApiController{
 		
 
 				if(OpeningUtil.isSet(order.getTime())) {
-					rabbitTemplate.convertAndSend("marchExchange", "allMarchRoutingKey", JSON.toJSONString(orderVO));
+					rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
 				}else {
-					rabbitTemplate.convertAndSend("marchExchange", "allMarchRoutingKey", JSON.toJSONString(orderVO));
+					rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
 				}
 
 		

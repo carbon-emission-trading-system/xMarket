@@ -13,6 +13,8 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.scheduling.annotation.Scheduled;
+
 
 import com.alibaba.fastjson.JSON;
 import com.stock.xMarket.VO.RealTimeVO;
@@ -93,6 +95,7 @@ public class SystemServiceImpl implements SystemService {
 	}
 
 	@Override
+    @Scheduled(cron = "0 00 00 ? * MON-FRI")
 	public void addStockHistory() {
 
 		List<Stock> stockList = new ArrayList<>();
@@ -132,6 +135,7 @@ public class SystemServiceImpl implements SystemService {
 	
 
 	@Override
+    @Scheduled(cron = "0 00 00 ? * MON-FRI")
 	public void cleanOrder() {
 		// TODO Auto-generated method stub
 
@@ -147,6 +151,7 @@ public class SystemServiceImpl implements SystemService {
 	}
 
 	@Override
+    @Scheduled(cron = "0 00 00 ? * MON-FRI")
 	public void unfreeze() {
 		// TODO Auto-generated method stub
 		List<HoldPosition> holdPositionList = holdPositionRepository.findAll();
