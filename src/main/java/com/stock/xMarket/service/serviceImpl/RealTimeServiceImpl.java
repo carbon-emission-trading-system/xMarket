@@ -125,7 +125,7 @@ public class RealTimeServiceImpl implements RealTimeService {
     		realTimeVO.setTradeMarket(map.get(rt.getStockId()).getTradeMarket());   		
     		realTimeVO.setDailyLimit(keepDecimal(realTimeVO.getYesterdayClosePrice()*1.1));
     		realTimeVO.setDownLimit(keepDecimal(realTimeVO.getYesterdayClosePrice()*0.9));
-    		
+    		realTimeVO.setClosePrice(rt.getClosePrice());
     		
     		realTimeVOList.add(realTimeVO);
     	}

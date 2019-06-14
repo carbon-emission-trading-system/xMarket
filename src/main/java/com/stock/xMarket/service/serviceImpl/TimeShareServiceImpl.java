@@ -105,7 +105,7 @@ public class TimeShareServiceImpl implements TimeShareService {
 			
 			timeShareList.add(timeShareVO);
 			
-			 JSON.DEFFAULT_DATE_FORMAT = "HH:mm:ss";
+			 JSON.DEFFAULT_DATE_FORMAT = "HH:mm";
 			
 			rabbitTemplate.convertAndSend("timeShareExchange","stock.SZSE."+stockID,JSON.toJSONString(timeShareVO,SerializerFeature.WriteDateUseDateFormat));
 		}

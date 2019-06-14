@@ -26,6 +26,7 @@ public class RealTimeVO implements Serializable{
 	private double dailyLimit;//涨停价
 	private double downLimit;//跌停价
 	private double openPrice; //今日开盘价
+	private double closePrice;//
 	private double yesterdayOpenPrice; //昨日开盘价
 	private double yesterdayClosePrice;//昨日收盘价
 	private double commissionProportion;//委比
@@ -43,6 +44,20 @@ public class RealTimeVO implements Serializable{
 
 	
 	
+
+	public double getClosePrice() {
+		return closePrice;
+	}
+
+
+
+
+	public void setClosePrice(double closePrice) {
+		this.closePrice = closePrice;
+	}
+
+
+
 
 	public double getDailyLimit() {
 		return dailyLimit;
