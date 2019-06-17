@@ -4,6 +4,7 @@ import javax.transaction.Transactional;
 
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
+import com.stock.xMarket.util.MD5Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -49,22 +50,31 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public UserVO getUser(String username) throws BusinessException {
-		LOGGER.info("获取"+username+"的信息");
+	public UserVO getUser(String userName) throws BusinessException {
+		LOGGER.info("获取"+userName+"的信息");
 		// TODO Auto-generated method stub
 		UserVO userVO = new UserVO();
-		User user = userRedis.get("username");
-		if(user == null){
-			user = userRepository.findByUserName(username);
-			if(user != null){
-				userRedis.put(user.getUserName(), user, -1);
-			}else{
-				throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标用户不存在");
-			}
+		User user = userRepository.findByUserName(userName);
+		if(user != null){
+			userRedis.put(user.getUserName(), user, -1);
+		}else{
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标用户不存在");
 		}
+
 		BeanUtils.copyProperties(user, userVO);
-		LOGGER.info("获取"+username+"的信息成功");
+		LOGGER.info("获取"+userName+"的信息成功");
 		return userVO;
+	}
+
+	@Override
+	public void changePassword(String userName, String password) throws BusinessException {
+		User user = userRepository.findByUserName(userName);
+		if(user != null){
+			user.setLoginPassword(MD5Util.inputToDb(password));
+			userRepository.saveAndFlush(user);
+		}else{
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标用户不存在");
+		}
 	}
 
 	@Override
@@ -93,7 +103,6 @@ public class UserServiceImpl implements UserService{
         mailSender.send(message);
 		LOGGER.info("邮件发送成功");
 	}
-
 
 
 	@Override

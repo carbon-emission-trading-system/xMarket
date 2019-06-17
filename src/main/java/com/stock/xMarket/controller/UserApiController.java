@@ -163,5 +163,25 @@ public class UserApiController extends BaseApiController {
 			return CommonReturnType.success();
 		}
 	}
+
+
+	@RequestMapping(value = "/changePassword",method = RequestMethod.POST)
+	public CommonReturnType changePassword(@RequestParam(value = "oldPassword") String oldPassword,
+										   @RequestParam(value = "newPassword") String newPassword,
+										   @RequestParam(value = "userName") String userName) throws BusinessException {
+		UserVO dbUser = userService.getUser(userName);
+
+		if (dbUser != null) {
+			if (dbUser.getLoginPassword().equals(MD5Util.inputToDb(oldPassword))) {
+				userService.changePassword(userName,newPassword);
+				log.info("id为"+dbUser.getUserId()+"的用户修改密码成功");
+				return CommonReturnType.success();
+			} else {
+				throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"密码错误");
+			}
+		} else {
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"用户不存在");
+		}
+	}
 	
 }
