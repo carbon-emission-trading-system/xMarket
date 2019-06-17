@@ -52,6 +52,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	private double totalFunds = 0;
 	private double holdPosProAndLos = 0;
 	private double totalMarketValue = 0;
+	private double totalTodayProAndLos = 0;
 	
 	
 	/*	 * 获得的是double类型	 * 保留两位小数        */	
@@ -196,9 +197,11 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			totalFunds = 0;
 			holdPosProAndLos = 0;
 			totalMarketValue = 0;
+			totalTodayProAndLos =0;
 			for(HoldPosition h : list) {
 				HoldPositionVO holdPositionVO = new HoldPositionVO();
 				int stockId = h.getStock().getStockId();
+				List<TransactionOrder> transactionOrderList = transactionOrderRepository.findByOwnerIdAndStockId(userId, stockId);
 				double costPrice = h.getCostPrice();//成本价
 				int positionNumber = h.getPositionNumber(); 
 				double presentPrice = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice();//现价--也就是市价
@@ -206,6 +209,21 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				double totalProfitAndLoss = (presentPrice - costPrice)*positionNumber;
 				//市值 = 现价*股票余额
 				double marketValue = presentPrice * positionNumber;
+				//盈亏金额=（市值-卖出费用+累计卖出清算金额+当日卖出清算金额）-（累计买入清算金额+当日买入清算金额）
+				//也就是市值+历史交易单的卖出发生金额-历史交易单的买入发生金额
+				double totalSellActualAmount = 0;
+				double totalBuyActualAmount = 0;
+				for(TransactionOrder transactionOrder : transactionOrderList) {
+					if(transactionOrder.getType()==1) {
+						//卖
+						totalSellActualAmount += transactionOrder.getActualAmount();
+					}else {
+						//买
+						totalBuyActualAmount += transactionOrder.getActualAmount();
+					}
+				}
+				
+				double todayProfitAndLoss = marketValue + totalSellActualAmount - totalBuyActualAmount;
 				BeanUtils.copyProperties(h, holdPositionVO);
 				holdPositionVO.setStockId(stockId);
 				holdPositionVO.setStockName(h.getStock().getStockName());
@@ -218,11 +236,14 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				holdPositionVO.setMarketValue(keepDecimal(marketValue));
 				//仓位占比 = 市值/总资产
 				holdPositionVO.setPositionRatio(keepDecimal( marketValue / totalFunds * 100)); //单位应是%		
+				holdPositionVO.setTodayProfitAndLoss(todayProfitAndLoss);
+				
 				holdPositionVOList.add(holdPositionVO);
 				
 				
 				holdPosProAndLos += totalProfitAndLoss; //为计算用户资产信息中的持仓盈亏做服务
 				totalMarketValue += marketValue; //为计算用户资产信息中的总市值做服务
+				totalTodayProAndLos += todayProfitAndLoss;
 			}
 			
 			//计算用户总资产
@@ -245,7 +266,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		userFundVO.setHoldPosProAndLos(keepDecimal(holdPosProAndLos));//持仓盈亏
 		userFundVO.setBalance(keepDecimal(userFund.getBalance()));//可用资金
 		userFundVO.setTotalMarketValue(keepDecimal(totalMarketValue));//总市值
-		//userFundVO.setTodayProAndLos();//当日盈亏
+		userFundVO.setTodayProAndLos(totalTodayProAndLos);//当日盈亏
 		userFundVO.setFrozenAmount(keepDecimal(userFund.getFrozenAmount()));//冻结资金
 		userFundVO.setAmountBalance(keepDecimal(userFund.getBalance() + userFund.getFrozenAmount()));//资金余额
 		return userFundVO;

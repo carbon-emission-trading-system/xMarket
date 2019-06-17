@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stock.xMarket.VO.NewsVO;
+import com.stock.xMarket.VO.OneNewsVO;
 import com.stock.xMarket.model.News;
 import com.stock.xMarket.response.CommonReturnType;
 import com.stock.xMarket.service.serviceImpl.NewsServiceImpl;
@@ -39,9 +40,11 @@ public class NewsController extends BaseApiController {
 	@RequestMapping(value = "/getOneNews",method = RequestMethod.GET)
 	public CommonReturnType getOneNews(@RequestParam("title") String title) {
 		
-		NewsVO newsVO = new NewsVO();
-		BeanUtils.copyProperties(newsService.findByName(title), newsVO);
-		return CommonReturnType.success(newsVO); 
+
+		OneNewsVO oneNewsVO = new OneNewsVO();
+		BeanUtils.copyProperties(newsService.findByTitle(title), oneNewsVO);
+		return CommonReturnType.success(oneNewsVO); 
+
 	}
 	
 	
