@@ -4,28 +4,28 @@ import java.sql.Date;
 
 public class OneNewsVO {
 
-	private String newsType;
+	private String type;
 	
-	private String name;
+	private String title;
 	
 	private Date date;
 
-	private String newsContent;
+	private String content;
 
-	public String getNewsType() {
-		return newsType;
+	public String getType() {
+		return type;
 	}
 
-	public void setNewsType(String newsType) {
-		this.newsType = newsType;
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public Date getDate() {
@@ -36,13 +36,13 @@ public class OneNewsVO {
 		this.date = date;
 	}
 
-	public String getNewsContent() {
-		return newsContent;
+	public String getContent() {
+		return content;
 	}
 
-	public void setNewsContent(String newsContent) {
-		this.newsContent = newsContent;
+	public void setContent(String content) {
+		this.content = content;
 	}
-	
+
 	
 }

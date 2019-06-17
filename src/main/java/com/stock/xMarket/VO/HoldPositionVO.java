@@ -13,14 +13,19 @@ public class HoldPositionVO implements Serializable {
 	private int positionNumber; // 股票余额（positionNumber） 
 	private int availableNumber; //可用余额
 	private int frozenNumber; //冻结数量
-	//备选，公式太复杂啦！
-	//private double todayProfitAndLoss; //当日盈亏 = 
+	private double todayProfitAndLoss; //今日参考盈亏＝当前数量*(最新价格-昨日收盘价)+∑(成交价格-昨日价格)*卖出数量-∑ (成交价格-昨日价格)*买入数量
 	private double totalProfitAndLoss; //总盈亏 =  市值 - 成本价 * 股票余额
 	private double profitAndLossRatio; //盈亏比例=（ 市价 - 成本价）/成本价
 	private double marketValue; //市值 = 市价*股票余额 
 	private double positionRatio; //仓位占比 = 市值/总资产
 	
 	
+	public double getTodayProfitAndLoss() {
+		return todayProfitAndLoss;
+	}
+	public void setTodayProfitAndLoss(double todayProfitAndLoss) {
+		this.todayProfitAndLoss = todayProfitAndLoss;
+	}
 	public int getStockId() {
 		return stockId;
 	}

@@ -10,5 +10,5 @@ public interface NewsService {
 
 	List<News> findAll();
 
-	News findByName(String name);
+	News findByName(String title);
 }

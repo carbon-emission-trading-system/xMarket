@@ -4,16 +4,16 @@ import java.sql.Date;
 
 public class NewsVO {
 
-	private String name;
+	private String title;
 	
 	private Date date;
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public Date getDate() {

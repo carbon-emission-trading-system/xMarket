@@ -21,17 +21,17 @@ public class News {
 	@Column(name="news_id")
 	private int newsId;
 	
-	@Column(name = "news_type")
-	private String newsType;
+	@Column(name = "type")
+	private String type;
 	
-	@Column(name = "name")
-	private String name;
+	@Column(name = "title")
+	private String title;
 	
 	@Column(name = "date")
 	private Date date;
 
-	@Column(name = "news_content")
-	private String newsContent;
+	@Column(name = "content")
+	private String content;
 
 	public int getNewsId() {
 		return newsId;
@@ -41,20 +41,20 @@ public class News {
 		this.newsId = newsId;
 	}
 
-	public String getNewsType() {
-		return newsType;
-	}
-	
-	public void setNewsType(String newsType) {
-		this.newsType = newsType;
-	}
-	
-	public String getName() {
-		return name;
+	public String getType() {
+		return type;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public Date getDate() {
@@ -65,12 +65,12 @@ public class News {
 		this.date = date;
 	}
 
-	public String getNewsContent() {
-		return newsContent;
+	public String getContent() {
+		return content;
 	}
 
-	public void setNewsContent(String newsContent) {
-		this.newsContent = newsContent;
+	public void setContent(String content) {
+		this.content = content;
 	}
 	
 	

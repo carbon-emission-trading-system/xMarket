@@ -37,10 +37,10 @@ public class NewsController extends BaseApiController {
 	}
 	
 	@RequestMapping(value = "/getOneNews",method = RequestMethod.GET)
-	public CommonReturnType getOneNews(@RequestParam("name") String name) {
+	public CommonReturnType getOneNews(@RequestParam("title") String title) {
 		
 		NewsVO newsVO = new NewsVO();
-		BeanUtils.copyProperties(newsService.findByName(name), newsVO);
+		BeanUtils.copyProperties(newsService.findByName(title), newsVO);
 		return CommonReturnType.success(newsVO); 
 	}
 	
