@@ -93,6 +93,8 @@ public class OrderController extends BaseApiController{
 		
 		
 		BeanUtils.copyProperties(orderVO, order);
+		
+		order.setState(0);
 
 		try {
 			int id=orderVO.getUserId();
