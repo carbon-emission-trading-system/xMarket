@@ -54,7 +54,7 @@ public class TransactionOrder implements Serializable{
 	private double tradePrice;//成交价
 	
 	@Column(name="exchange_amount")
-	private int exchangeAmount;//成家数量
+	private int exchangeAmount;//成交数量
 	
 	@Column(name="trade_type")
 	private Boolean tradeType;//买/卖盘    ture是买盘

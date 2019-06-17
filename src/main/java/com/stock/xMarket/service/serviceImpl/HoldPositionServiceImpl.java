@@ -200,6 +200,17 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			holdPosProAndLos = 0;
 			totalMarketValue = 0;
 			totalTodayProAndLos =0;
+			
+			for(HoldPosition h : list) {
+				int stockId = h.getStock().getStockId();
+				int positionNumber = h.getPositionNumber(); 
+				double presentPrice = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice();//现价--也就是市价
+				double marketValue = presentPrice * positionNumber;
+				totalMarketValue += marketValue;
+			}
+			
+			//计算用户总资产
+			totalFunds = amountBalance + totalMarketValue;
 			for(HoldPosition h : list) {
 				HoldPositionVO holdPositionVO = new HoldPositionVO();
 				int stockId = h.getStock().getStockId();
@@ -211,29 +222,30 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				double totalProfitAndLoss = (presentPrice - costPrice)*positionNumber;
 				//市值 = 现价*股票余额
 				double marketValue = presentPrice * positionNumber;
-				//盈亏金额=（市值-卖出费用+累计卖出清算金额+当日卖出清算金额）-（累计买入清算金额+当日买入清算金额）
-				//也就是市值 + 当日交易单的卖出发生金额 - 当日交易单的买入发生金额
+				
+				//当日盈亏 = 可用数量*(最新价格-昨日收盘价)+∑（发生金额-昨收盘*卖出数量）-∑ （发生金额-昨收盘*买入数量）
 				double totalSellActualAmount = 0;
 				double totalBuyActualAmount = 0;
 				Date date = new Date();
 				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				double yesterdayClosePrice = realTime1Redis.get(String.valueOf(stockId)).getYesterdayClosePrice();
 				for(TransactionOrder transactionOrder : transactionOrderList) {
 					
 					if(String.valueOf(transactionOrder.getDate()).equals(df.format(date))) {
 						
 						if(transactionOrder.getType()==1) {
 							//卖
-							totalSellActualAmount += transactionOrder.getActualAmount();
+							totalSellActualAmount += transactionOrder.getActualAmount()-yesterdayClosePrice*transactionOrder.getExchangeAmount();
 						}else  {
 							//买
-							totalBuyActualAmount += transactionOrder.getActualAmount();
+							totalBuyActualAmount += transactionOrder.getActualAmount()-yesterdayClosePrice*transactionOrder.getExchangeAmount();
 						}
 						
 					}
 					
 				}
+				double todayProfitAndLoss = positionNumber*(presentPrice-yesterdayClosePrice)+totalSellActualAmount-totalBuyActualAmount;
 				
-				double todayProfitAndLoss = marketValue + totalSellActualAmount - totalBuyActualAmount;
 				BeanUtils.copyProperties(h, holdPositionVO);
 				holdPositionVO.setStockId(stockId);
 				holdPositionVO.setStockName(h.getStock().getStockName());
@@ -252,15 +264,12 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				
 				
 				holdPosProAndLos += totalProfitAndLoss; //为计算用户资产信息中的持仓盈亏做服务
-				totalMarketValue += marketValue; //为计算用户资产信息中的总市值做服务
 				totalTodayProAndLos += todayProfitAndLoss;
 			}
 			
-			//计算用户总资产
-			totalFunds = amountBalance + totalMarketValue;
 			return holdPositionVOList;
 		}else {
-			totalFunds = amountBalance;
+			totalFunds = amountBalance ;
 			return null;
 		}
 		
