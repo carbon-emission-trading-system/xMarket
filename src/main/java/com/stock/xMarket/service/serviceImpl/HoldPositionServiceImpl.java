@@ -245,6 +245,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		userFundVO.setTotalMarketValue(keepDecimal(totalMarketValue));//总市值
 		//userFundVO.setTodayProAndLos();//当日盈亏
 		userFundVO.setFrozenAmount(keepDecimal(userFund.getFrozenAmount()));//冻结资金
+		userFundVO.setAmountBalance(keepDecimal(userFund.getBalance() + userFund.getFrozenAmount()));//资金余额
 		return userFundVO;
 	}
 	
