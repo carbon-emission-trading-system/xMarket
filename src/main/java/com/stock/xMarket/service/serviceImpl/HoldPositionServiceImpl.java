@@ -236,7 +236,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				holdPositionVO.setMarketValue(keepDecimal(marketValue));
 				//仓位占比 = 市值/总资产
 				holdPositionVO.setPositionRatio(keepDecimal( marketValue / totalFunds * 100)); //单位应是%		
-				holdPositionVO.setTodayProfitAndLoss(todayProfitAndLoss);
+				holdPositionVO.setTodayProfitAndLoss(keepDecimal(todayProfitAndLoss));
 				
 				holdPositionVOList.add(holdPositionVO);
 				
@@ -266,7 +266,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		userFundVO.setHoldPosProAndLos(keepDecimal(holdPosProAndLos));//持仓盈亏
 		userFundVO.setBalance(keepDecimal(userFund.getBalance()));//可用资金
 		userFundVO.setTotalMarketValue(keepDecimal(totalMarketValue));//总市值
-		userFundVO.setTodayProAndLos(totalTodayProAndLos);//当日盈亏
+		userFundVO.setTodayProAndLos(keepDecimal(totalTodayProAndLos));//当日盈亏
 		userFundVO.setFrozenAmount(keepDecimal(userFund.getFrozenAmount()));//冻结资金
 		userFundVO.setAmountBalance(keepDecimal(userFund.getBalance() + userFund.getFrozenAmount()));//资金余额
 		return userFundVO;
