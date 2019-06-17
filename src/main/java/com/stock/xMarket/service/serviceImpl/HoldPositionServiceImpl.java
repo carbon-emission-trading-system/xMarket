@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -210,17 +212,25 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				//市值 = 现价*股票余额
 				double marketValue = presentPrice * positionNumber;
 				//盈亏金额=（市值-卖出费用+累计卖出清算金额+当日卖出清算金额）-（累计买入清算金额+当日买入清算金额）
-				//也就是市值+历史交易单的卖出发生金额-历史交易单的买入发生金额
+				//也就是市值 + 当日交易单的卖出发生金额 - 当日交易单的买入发生金额
 				double totalSellActualAmount = 0;
 				double totalBuyActualAmount = 0;
+				Date date = new Date();
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				for(TransactionOrder transactionOrder : transactionOrderList) {
-					if(transactionOrder.getType()==1) {
-						//卖
-						totalSellActualAmount += transactionOrder.getActualAmount();
-					}else {
-						//买
-						totalBuyActualAmount += transactionOrder.getActualAmount();
+					
+					if(String.valueOf(transactionOrder.getDate()).equals(df.format(date))) {
+						
+						if(transactionOrder.getType()==1) {
+							//卖
+							totalSellActualAmount += transactionOrder.getActualAmount();
+						}else  {
+							//买
+							totalBuyActualAmount += transactionOrder.getActualAmount();
+						}
+						
 					}
+					
 				}
 				
 				double todayProfitAndLoss = marketValue + totalSellActualAmount - totalBuyActualAmount;
