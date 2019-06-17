@@ -17,7 +17,7 @@ import com.stock.xMarket.response.CommonReturnType;
 import com.stock.xMarket.service.serviceImpl.NewsServiceImpl;
 
 @RestController
-public class NewsController {
+public class NewsController extends BaseApiController {
 
 	@Autowired
 	private NewsServiceImpl newsService;
