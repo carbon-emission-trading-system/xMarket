@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.stock.xMarket.VO.OrderVO;
+import com.stock.xMarket.error.BusinessException;
+import com.stock.xMarket.error.EmBusinessError;
 import com.stock.xMarket.model.Order;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.TradeOrder;
@@ -148,9 +150,18 @@ public class OrderServiceImpl implements OrderService {
 		BeanUtils.copyProperties(transactionOrder, order);
 
 		order.setExchangeAveragePrice(transactionOrder.getTradePrice());
-		order.setOrderId(transactionOrder.getOrderId());
 		order.setTime(time);
 		order.setCancelNumber(transactionOrder.getRevokeAmount());
+		
+		if(transactionOrder.getRevokeAmount() > 0) {
+			if( transactionOrder.getExchangeAmount() > 0) {
+				order.setState(3);
+			}else {
+				order.setState(4);
+			}
+		}else {
+			order.setState(2);
+		}
 
 		addOrderToDb(order);
 
@@ -194,6 +205,49 @@ public class OrderServiceImpl implements OrderService {
 			}
 
 		}
+	}
+	
+	@Override
+	public void sendCancelOrder(long orderId) throws BusinessException {
+	
+	Order order=orderRepository.findByOrderId(orderId);
+    	
+    	if(order==null) {
+    		
+    		order=orderRedis.get(String.valueOf(orderId));
+    		if(order==null) 
+    			throw new BusinessException(EmBusinessError.UNKNOWN_ERROR);
+    		
+    		
+    	}
+    	
+    	order.setState(1);
+    	
+    	String stockId = String.valueOf(order.getStock().getStockId());
+    	
+    	
+    	ArrayList<Order> orderList = callOrderRedis.get(stockId);
+		if (!orderList.isEmpty()) {
+			if(orderList.contains(order)) {
+			orderList.remove(order);
+			callOrderRedis.put(stockId, orderList, -1);
+			}else {
+			//	rabbitTemplate.convertAndSend("cancelMarchExchange", "cancelMarch." + stockId,
+					//	JSON.toJSONString(order));
+				rabbitTemplate.convertAndSend("cancelMarchExchange", "cancelOrderRoutingKey",
+						JSON.toJSONString(order));
+			}
+			
+		} else {
+		
+//			rabbitTemplate.convertAndSend("cancelMarchExchange", "cancelOrderRoutingKey" ,
+//					JSON.toJSONString(order));
+//			
+			rabbitTemplate.convertAndSend("cancelMarchExchange", "cancelOrderRoutingKey",
+					JSON.toJSONString(order));
+			
+		}
+
 	}
 
 }

@@ -188,32 +188,12 @@ public class OrderController extends BaseApiController{
 
 	//撤单
     @RequestMapping(value = "/cancelOrder", method = RequestMethod.GET)
-    public CommonReturnType cancelOrder(@RequestParam("orderId") long orderId) {
+    public CommonReturnType cancelOrder(@RequestParam("orderId") long orderId) throws BusinessException {
     	
     	logger.info("传进来的orderId："+orderId);
     
-    	Order order=orderRepository.findByOrderId(orderId);
-    	
-    	String stockId = String.valueOf(order.getStock().getStockId());
-    	
-    	
-    	ArrayList<Order> orderList = callOrderRedis.get(stockId);
-		if (!orderList.isEmpty()) {
-			if(orderList.contains(order)) {
-			orderList.remove(order);
-			callOrderRedis.put(stockId, orderList, -1);
-			}else {
-				rabbitTemplate.convertAndSend("cancelMarchExchange", "cancelMarch." + stockId,
-						JSON.toJSONString(order));
-			}
-			
-		} else {
-		
-			rabbitTemplate.convertAndSend("cancelMarchExchange", "cancelMarch." + stockId,
-					JSON.toJSONString(order));
-			
-		}
-    	
+    	orderService.sendCancelOrder(orderId);
+    
     	return success();
     }
 

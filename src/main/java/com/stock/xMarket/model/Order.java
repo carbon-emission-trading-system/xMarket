@@ -66,15 +66,19 @@ public class Order implements Serializable{
 	@Column
 	private double frozenAmount;
 	
-	
+	@Column
+	private double state;
 
 	public Order(){}
 
 	
 
+	
+
+
 	public Order(long orderId, Stock stock, User user, Time time, int type, Date date, int tradeStraregy,
 			int orderAmount, int exchangeAmount, double orderPrice, double exchangeAveragePrice, int cancelNumber,
-			double frozenAmount) {
+			double frozenAmount, double state) {
 		this.orderId = orderId;
 		this.stock = stock;
 		this.user = user;
@@ -88,7 +92,29 @@ public class Order implements Serializable{
 		this.exchangeAveragePrice = exchangeAveragePrice;
 		this.cancelNumber = cancelNumber;
 		this.frozenAmount = frozenAmount;
+		this.state = state;
 	}
+
+
+
+
+
+
+	public double getState() {
+		return state;
+	}
+
+
+
+
+
+
+	public void setState(double state) {
+		this.state = state;
+	}
+
+
+
 
 
 
