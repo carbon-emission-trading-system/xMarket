@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
+import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.TradeOrder;
 import com.stock.xMarket.model.TransactionOrder;
 import com.stock.xMarket.redis.TransactionRedis;
@@ -278,7 +279,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		BeanUtils.copyProperties(tradeOrder,transactionOrder);
 
 		//插入部分属性：买卖标识符、委托单id、拥有者id
-		transactionOrder.setStockName(stockRepository.findByStockId(tradeOrder.getStockId()).getStockName());
+		Stock stock = stockRepository.findByStockId(tradeOrder.getStockId());
+		transactionOrder.setStockName(stock.getStockName());
+		transactionOrder.setTradeMarket(stock.getTradeMarket());
 		transactionOrder.setType(1);
 		transactionOrder.setOrderId(tradeOrder.getSellOrderId());
 		transactionOrder.setOwnerId(tradeOrder.getSellerId());
@@ -293,7 +296,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		BeanUtils.copyProperties(tradeOrder,transactionOrder);
 
 		//插入部分属性：买卖标识符、委托单id、拥有者id
-		transactionOrder.setStockName(stockRepository.findByStockId(tradeOrder.getStockId()).getStockName());
+		Stock stock = stockRepository.findByStockId(tradeOrder.getStockId());
+		transactionOrder.setStockName(stock.getStockName());
+		transactionOrder.setTradeMarket(stock.getTradeMarket());
 		transactionOrder.setType(0);
 		transactionOrder.setOrderId(tradeOrder.getBuyOrderId());
 		transactionOrder.setOwnerId(tradeOrder.getBuyerId());
