@@ -20,4 +20,7 @@ public interface OrderService {
 
 	void updateOrderBytransactionOrder(TransactionOrder transactionOrder);
 
+
+	void sendCallOrder();
+
 }

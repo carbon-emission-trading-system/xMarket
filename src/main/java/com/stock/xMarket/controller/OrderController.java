@@ -27,6 +27,9 @@ import com.stock.xMarket.error.EmBusinessError;
 import com.stock.xMarket.model.Order;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.User;
+import com.stock.xMarket.redis.CallOrderRedis;
+import com.stock.xMarket.redis.RealTime1Redis;
+import com.stock.xMarket.repository.OrderRepository;
 import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.response.CommonReturnType;
@@ -64,6 +67,12 @@ public class OrderController extends BaseApiController{
 	@Autowired
 	UserFundService userFundService;
 
+	@Autowired
+	private CallOrderRedis callOrderRedis;
+	
+	@Autowired
+	private OrderRepository orderRepository;
+	
 	
 	final static Logger logger=LoggerFactory.getLogger(OrderController.class);
 	 
@@ -131,7 +140,19 @@ public class OrderController extends BaseApiController{
 				//allMarchRoutingKey
 				//marchRoutingKey
 				if(OpeningUtil.isSet(order.getTime())) {
+					//集合竞价单，缓存到redis中
 					rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
+					
+//					String stockId = String.valueOf(order.getStock().getStockId());
+//					
+//					ArrayList<Order> orderList = new ArrayList<>();
+//					
+//						if(	callOrderRedis.get(stockId)!=null) 
+//							orderList=callOrderRedis.get(stockId);
+//						
+//						orderList.add(order);
+//						callOrderRedis.put(stockId, orderList, -1);
+					
 				}else {
 					rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
 				}
@@ -165,6 +186,38 @@ public class OrderController extends BaseApiController{
     	return success(userVOList);
     }
 
+	//撤单
+    @RequestMapping(value = "/cancelOrder", method = RequestMethod.GET)
+    public CommonReturnType cancelOrder(@RequestParam("orderId") long orderId) {
+    	
+    	logger.info("传进来的orderId："+orderId);
+    
+    	Order order=orderRepository.findByOrderId(orderId);
+    	
+    	String stockId = String.valueOf(order.getStock().getStockId());
+    	
+    	
+    	ArrayList<Order> orderList = callOrderRedis.get(stockId);
+		if (!orderList.isEmpty()) {
+			if(orderList.contains(order)) {
+			orderList.remove(order);
+			callOrderRedis.put(stockId, orderList, -1);
+			}else {
+				rabbitTemplate.convertAndSend("cancelMarchExchange", "cancelMarch." + stockId,
+						JSON.toJSONString(order));
+			}
+			
+		} else {
+		
+			rabbitTemplate.convertAndSend("cancelMarchExchange", "cancelMarch." + stockId,
+					JSON.toJSONString(order));
+			
+		}
+    	
+    	return success();
+    }
 
+    
+    
 
 }

@@ -22,7 +22,9 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 //	
 	
 
-	List<Order> findByUser_UserIdAndDateOrderByDateDesc(int userId, Date date);
+	List<Order> findByUser_UserIdAndDateOrderByTimeDesc(int userId, Date date);
+
+	Order findByOrderId(long orderId);
 	
 	
 	

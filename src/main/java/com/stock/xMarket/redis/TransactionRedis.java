@@ -6,7 +6,7 @@ import com.stock.xMarket.model.TransactionOrder;
 @Repository
 public class TransactionRedis extends BaseRedis<TransactionOrder> {
 
-    private static final String REDIS_KEY = "com.xmarket.order.redis.TransactionTimerRedis";
+    private static final String REDIS_KEY = "com.stock.xMarket.redis.TransactionRedis";
 
     @Override
     protected String getRedisKey() {
