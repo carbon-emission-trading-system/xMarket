@@ -1,6 +1,7 @@
 
 package com.stock.xMarket.service.serviceImpl;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,7 +100,9 @@ public class OrderServiceImpl implements OrderService {
 		}
 		}
 
-		List<Order> dbOrderList=orderRepository.findByUser_UserId(userId);
+		Date date=new Date(System.currentTimeMillis());
+		
+		List<Order> dbOrderList=orderRepository.findByUser_UserIdAndDateOrderByDateDesc(userId,date);
 		
 
 		orderList.addAll(dbOrderList);

@@ -1,5 +1,6 @@
 package com.stock.xMarket.repository;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +22,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>{
 //	
 	
 
-	List<Order> findByUser_UserId(int userId);
+	List<Order> findByUser_UserIdAndDateOrderByDateDesc(int userId, Date date);
 	
 	
 	
