@@ -122,7 +122,9 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			holdPositon=new HoldPosition();
 			//如果持仓信息不存在，可能是用户第一次购买该股票，是建仓。创建一条新的持仓信息插入数据库
 			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 该用户为第一次购买此股票，开始建仓");
-			User user = userRepository.findById(userId).get();
+						
+//			User user = userRepository.findById(userId).get();
+			User user = userRepository.findByUserId(userId);
 			if(user == null){
 				throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标用户不存在！");
 			}

@@ -143,20 +143,42 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 				LOGGER.info("委托单存入数据库失败！");
 			}
 			
+
+			
+			
+			
 			try {
-			//更新委托单
-			orderService.updateOrderBytransactionOrder(sellOrder);
-			
-			//更新持仓
-			holdPositionService.updateHoldPositionByTransaction(sellOrder);
-			
-			//更新个人资金
-			userFundService.updateUserFundByTransaction(sellOrder);
+				//更新委托单
+				orderService.updateOrderBytransactionOrder(sellOrder);
+				
 			}catch (Exception e) {
 				// TODO: handle exception
-				LOGGER.info("更新操作失败！");
+				LOGGER.info("更新委托单操作失败！");
 				throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"更新操作失败！");
 			}
+
+			try {
+				
+				//更新持仓
+				holdPositionService.updateHoldPositionByTransaction(sellOrder);
+				
+			}catch (Exception e) {
+				// TODO: handle exception
+				LOGGER.info("更新持仓操作失败！");
+				throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"更新操作失败！");
+			}
+			try {
+
+				//更新个人资金
+				userFundService.updateUserFundByTransaction(sellOrder);
+				
+			}catch (Exception e) {
+				// TODO: handle exception
+				LOGGER.info("更新个人资金操作失败！");
+				throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"更新操作失败！");
+			}
+			
+			
 			
 			
 		
@@ -209,16 +231,33 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			try {
 				//委托单完成，更新委托单
 				orderService.updateOrderBytransactionOrder(buyOrder);
-				//更新持仓
-				holdPositionService.updateHoldPositionByTransaction(buyOrder);
-				//更新个人资金
-				userFundService.updateUserFundByTransaction(buyOrder);
+				
 			}catch (Exception e) {
 				// TODO: handle exception
-				LOGGER.info("更新操作失败！");
+				LOGGER.info("更新委托单操作失败！");
 				throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"更新操作失败！");
 			}
-			
+
+			try {
+				
+				//更新持仓
+				holdPositionService.updateHoldPositionByTransaction(buyOrder);
+				
+			}catch (Exception e) {
+				// TODO: handle exception
+				LOGGER.info("更新持仓操作失败！");
+				throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"更新操作失败！");
+			}
+			try {
+				
+				//更新个人资金
+				userFundService.updateUserFundByTransaction(buyOrder);
+				
+			}catch (Exception e) {
+				// TODO: handle exception
+				LOGGER.info("更新个人资金操作失败！");
+				throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"更新操作失败！");
+			}
 			
 			
 			

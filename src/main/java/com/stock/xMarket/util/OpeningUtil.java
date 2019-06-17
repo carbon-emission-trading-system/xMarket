@@ -102,4 +102,25 @@ public class OpeningUtil {
        }
        return s;
    }
+   
+   public static boolean isSet2(Time time) {
+       boolean s=false;
+       try {
+           Calendar cal = Calendar.getInstance();
+           cal.setTime(time);
+           int hour = cal.get(Calendar.HOUR_OF_DAY);
+           int minutes = cal.get(Calendar.MINUTE);
+           
+               if (minutes < 30) {
+                       s = true;
+               } else {// 0:00-9:00
+                   s = false;
+               }
+       } catch (Exception e) {
+           e.printStackTrace();
+           return s;
+       }
+       return s;
+   }
+   
 }
