@@ -94,7 +94,6 @@ public class OrderController extends BaseApiController{
 		
 		BeanUtils.copyProperties(orderVO, order);
 		
-		order.setState(0);
 
 		try {
 			int id=orderVO.getUserId();
@@ -189,7 +188,7 @@ public class OrderController extends BaseApiController{
     }
 
 	//撤单
-    @RequestMapping(value = "/cancelOrder", method = RequestMethod.GET)
+    @RequestMapping(value = "/cancelOrder", method = RequestMethod.POST)
     public CommonReturnType cancelOrder(@RequestParam("orderId") long orderId) throws BusinessException {
     	
     	logger.info("传进来的orderId："+orderId);

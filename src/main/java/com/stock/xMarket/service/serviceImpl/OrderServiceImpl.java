@@ -227,24 +227,26 @@ public class OrderServiceImpl implements OrderService {
     	
     	
     	ArrayList<Order> orderList = callOrderRedis.get(stockId);
+    	if(orderList==null)
+    		orderList=new ArrayList<>();
 		if (!orderList.isEmpty()) {
 			if(orderList.contains(order)) {
 			orderList.remove(order);
 			callOrderRedis.put(stockId, orderList, -1);
 			}else {
-			//	rabbitTemplate.convertAndSend("cancelMarchExchange", "cancelMarch." + stockId,
-					//	JSON.toJSONString(order));
-				rabbitTemplate.convertAndSend("cancelMarchExchange", "cancelOrderRoutingKey",
-						JSON.toJSONString(order));
+			//	rabbitTemplate.convertAndSend("userOrderExchange", "cancelMarch." + stockId,
+					//	orderId);
+				rabbitTemplate.convertAndSend("userOrderExchange", "cancelOrderRoutingKey",
+						orderId);
 			}
 			
 		} else {
 		
-//			rabbitTemplate.convertAndSend("cancelMarchExchange", "cancelOrderRoutingKey" ,
-//					JSON.toJSONString(order));
+//			rabbitTemplate.convertAndSend("userOrderExchange", "cancelOrderRoutingKey" ,
+//					orderId);
 //			
-			rabbitTemplate.convertAndSend("cancelMarchExchange", "cancelOrderRoutingKey",
-					JSON.toJSONString(order));
+			rabbitTemplate.convertAndSend("userOrderExchange", "cancelOrderRoutingKey",
+					orderId);
 			
 		}
 
