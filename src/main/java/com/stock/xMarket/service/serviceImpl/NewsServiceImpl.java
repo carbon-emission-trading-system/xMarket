@@ -26,5 +26,9 @@ public class NewsServiceImpl implements NewsService {
 		return list;
 	}
 	
+	@Override 
+	public News findByName(String name) {
+		return newsRepository.findByName(name);
+	}
 	
 }

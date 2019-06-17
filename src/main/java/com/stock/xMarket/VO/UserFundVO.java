@@ -7,6 +7,7 @@ public class UserFundVO {
     private double totalMarketValue;
     private double todayProAndLos;
     private double frozenAmount;
+    private double amountBalance;
 
     public double getTotalFunds() {
         return totalFunds;
@@ -54,5 +55,13 @@ public class UserFundVO {
 
     public void setFrozenAmount(double frozenAmount) {
         this.frozenAmount = frozenAmount;
+    }
+    
+    public double getAmountBalance() {
+    	return amountBalance;
+    }
+    
+    public void setAmountBalance(double amountBalance) {
+    	this.amountBalance=amountBalance;
     }
 }

@@ -9,4 +9,6 @@ import com.stock.xMarket.model.News;
 public interface NewsService {
 
 	List<News> findAll();
+
+	News findByName(String name);
 }
