@@ -12,4 +12,6 @@ import com.stock.xMarket.model.News;
 public interface NewsRepository extends JpaRepository<News,Integer> {
 
 	List<News> findAll();
+	
+	News findByName(String name);
 }
