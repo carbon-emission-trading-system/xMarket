@@ -67,7 +67,7 @@ public class UserFundServiceImpl implements UserFundService {
 			
 			Double balance=userFund.getBalance()+transactionOrder.getActualAmount();
 			
-			userFund.setFrozenAmount(balance);
+			userFund.setBalance(balance);
 			
 			userFundRepository.saveAndFlush(userFund);
 			
