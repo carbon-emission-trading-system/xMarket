@@ -26,6 +26,7 @@ import com.stock.xMarket.model.RealTime2;
 import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.redis.RealTime2Redis;
 import com.stock.xMarket.service.RealTimeService;
+import com.stock.xMarket.util.DemicalUtil;
 
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -53,16 +54,6 @@ public class RealTimeServiceImpl implements RealTimeService {
 	private RealTime1Redis realTime1Redis;
 
 
-	 /*	 * 获得的是double类型	 * 保留两位小数        */	
-    public double keepDecimal(double num){		
-    	
-    	if(num==Double.POSITIVE_INFINITY||num==Double.NEGATIVE_INFINITY||Double.isNaN(num))
-    		return num;
-    	BigDecimal bg = new BigDecimal(num);		
-    	double num1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();		
-    	return num1;
-    }
-
 	@Override
 //	 @Scheduled(cron = "0/3 * 9-15 ? * MON-FRI")
 	@Scheduled(fixedRate = 100000)
@@ -89,10 +80,10 @@ public class RealTimeServiceImpl implements RealTimeService {
 	public RealTimeVO  findRealTime(int stockId) {
 		
 		List<RealTime1> list1 = new ArrayList<>();
-		list1.add(  realTime1Redis.get(String.valueOf(stockId)) );
+		list1.add(realTime1Redis.get(String.valueOf(stockId)) );
 		
 		List<RealTime2> list2 = new ArrayList<>();
-		list2.add( realTime2Redis.get(String.valueOf(stockId)) );
+		list2.add(realTime2Redis.get(String.valueOf(stockId)) );
 		
 		return finalRealTime(list1,list2).get(0);
 	}
@@ -118,16 +109,16 @@ public class RealTimeServiceImpl implements RealTimeService {
     		BeanUtils.copyProperties(rt, realTimeVO);
     		
     		realTimeVO.setStockName(map.get(rt.getStockId()).getStockName());
-    		realTimeVO.setIncrease(keepDecimal(increase*100));//以%为单位
-    		realTimeVO.setYesterdayOpenPrice(keepDecimal(map.get(rt.getStockId()).getYesterdayOpenPrice()));
-    		realTimeVO.setTotalMarketCapitalization(keepDecimal(totalMarketCapitalization/100000000));//以亿为单位
-    		realTimeVO.setPeRatio(keepDecimal(peRatio));
-    		realTimeVO.setPbRatio(keepDecimal(pbRatio));
+    		realTimeVO.setIncrease(DemicalUtil.keepTwoDecimal(increase*100));//以%为单位
+    		realTimeVO.setYesterdayOpenPrice(DemicalUtil.keepTwoDecimal(map.get(rt.getStockId()).getYesterdayOpenPrice()));
+    		realTimeVO.setTotalMarketCapitalization(DemicalUtil.keepTwoDecimal(totalMarketCapitalization/100000000));//以亿为单位
+    		realTimeVO.setPeRatio(DemicalUtil.keepTwoDecimal(peRatio));
+    		realTimeVO.setPbRatio(DemicalUtil.keepTwoDecimal(pbRatio));
     		realTimeVO.setTradeMarket(map.get(rt.getStockId()).getTradeMarket());   		
-    		realTimeVO.setDailyLimit(keepDecimal(realTimeVO.getYesterdayClosePrice()*1.1));
-    		realTimeVO.setDownLimit(keepDecimal(realTimeVO.getYesterdayClosePrice()*0.9));
+    		realTimeVO.setDailyLimit(DemicalUtil.keepTwoDecimal(realTimeVO.getYesterdayClosePrice()*1.1));
+    		realTimeVO.setDownLimit(DemicalUtil.keepTwoDecimal(realTimeVO.getYesterdayClosePrice()*0.9));
     		realTimeVO.setClosePrice(rt.getClosePrice());
-    		realTimeVO.setUpsAndDowns(keepDecimal(realTimeVO.getLastTradePrice()-realTimeVO.getYesterdayClosePrice()));
+    		realTimeVO.setUpsAndDowns(DemicalUtil.keepTwoDecimal(realTimeVO.getLastTradePrice()-realTimeVO.getYesterdayClosePrice()));
     		
     		realTimeVOList.add(realTimeVO);
     	}
