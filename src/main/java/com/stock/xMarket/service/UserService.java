@@ -21,5 +21,6 @@ public interface UserService {
 	public Boolean isUserExists(String mailAdress);
 
 	void changePassword(String userName,String password) throws BusinessException;
-	
+
+	User findByEmail(String emailAddress);
 }

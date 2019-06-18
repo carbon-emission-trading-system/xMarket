@@ -50,6 +50,11 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public User findByEmail(String emailAddress) {
+		return userRepository.findByEmail(emailAddress);
+	}
+
+	@Override
 	public UserVO getUser(String userName) throws BusinessException {
 		LOGGER.info("获取"+userName+"的信息");
 		// TODO Auto-generated method stub
