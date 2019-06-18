@@ -151,6 +151,7 @@ public class OrderServiceImpl implements OrderService {
 		order.setExchangeAveragePrice(transactionOrder.getTradePrice());
 		order.setTime(time);
 
+
 		order.setCancelNumber(transactionOrder.getCancelNumber());
 
 		
