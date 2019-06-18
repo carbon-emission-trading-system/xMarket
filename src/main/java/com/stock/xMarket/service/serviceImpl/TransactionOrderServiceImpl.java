@@ -81,9 +81,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			
 			orderService.updateOrderBytransactionOrder(cancelOrder);
 			if (cancelOrder.getType()==1){
-				userFundService.updateUserFundByTransaction(cancelOrder);
-			}else {
 				holdPositionService.updateHoldPositionByCancelOrder(cancelOrder);
+			}else {
+				userFundService.updateUserFundByTransaction(cancelOrder);
 			}
 			return;
 		}
