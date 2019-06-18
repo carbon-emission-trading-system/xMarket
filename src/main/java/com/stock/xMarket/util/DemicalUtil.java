@@ -1,6 +1,7 @@
 package com.stock.xMarket.util;
 
-import java.math.BigDecimal;
+//import java.math.BigDecimal;
+import java.text.DecimalFormat;
 
 public class DemicalUtil {
 
@@ -8,8 +9,12 @@ public class DemicalUtil {
     public static double keepTwoDecimal(double num){		
     	if(num==Double.POSITIVE_INFINITY||num==Double.NEGATIVE_INFINITY||Double.isNaN(num))
     		return num;
-    	BigDecimal bg = new BigDecimal(num);		
-    	double num1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();		
+    	//BigDecimal bg = new BigDecimal(num);		
+    	//double num1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();	
+    	
+    	DecimalFormat df = new DecimalFormat("#.00");
+    	double num1 = Double.valueOf(df.format(num));
+    	
     	return num1;
     }
 	
@@ -17,8 +22,12 @@ public class DemicalUtil {
     public static double keepThreeDecimal(double num){		
     	if(num==Double.POSITIVE_INFINITY||num==Double.NEGATIVE_INFINITY||Double.isNaN(num))
     		return num;
-    	BigDecimal bg = new BigDecimal(num);		
-    	double num1 = bg.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();		
+    	//BigDecimal bg = new BigDecimal(num);		
+    	//double num1 = bg.setScale(3, BigDecimal.ROUND_HALF_UP).doubleValue();	
+    	
+    	DecimalFormat df = new DecimalFormat("#.000");
+    	double num1 = Double.valueOf(df.format(num));
+    	
     	return num1;
     }
     
