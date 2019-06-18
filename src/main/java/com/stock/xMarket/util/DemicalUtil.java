@@ -1,6 +1,5 @@
 package com.stock.xMarket.util;
 
-//import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 public class DemicalUtil {
