@@ -199,7 +199,7 @@ public class UserApiController extends BaseApiController {
 	@RequestMapping(value = "/forgetPassword", method = RequestMethod.POST)
 	public CommonReturnType forgetPassword(@RequestParam(value = "newPassword") String newPassword,
 										   @RequestParam(value = "mailCode")  String mailCode,
-									       @RequestParam(value = "mailAddress") String mailAddress,
+									       @RequestParam(value = "mailAdress") String mailAddress,
 									 HttpSession session, HttpServletResponse response) throws BusinessException {
 		String sessionCode = (String) session.getAttribute("mailcode");
 		if (!StringUtils.equalsIgnoreCase(mailCode, sessionCode)) {
