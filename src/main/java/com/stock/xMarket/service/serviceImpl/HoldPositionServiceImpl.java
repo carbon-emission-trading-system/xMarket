@@ -302,6 +302,8 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		if(holdPosition!=null){
 			holdPosition.setFrozenNumber(holdPosition.getFrozenNumber()-cancelOrder.getCancelNumber());
 			holdPosition.setAvailableNumber(holdPosition.getAvailableNumber()+cancelOrder.getCancelNumber());
+			//存入数据库
+			holdPositionRepository.saveAndFlush(holdPosition);
 		}else {
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标持仓信息不存在");
 		}
