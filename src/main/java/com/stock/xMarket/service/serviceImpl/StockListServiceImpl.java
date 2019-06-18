@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.stock.xMarket.VO.StockListVO;
-import com.stock.xMarket.controller.StockInformationController;
+import com.stock.xMarket.controller.KlineController;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
 import com.stock.xMarket.model.RealTime1;
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class StockListServiceImpl implements StockListService {
-	final static Logger logger = LoggerFactory.getLogger(StockInformationController.class);
+	final static Logger logger = LoggerFactory.getLogger(KlineController.class);
 
 	@Autowired
 	private RealTime2Redis realTime2Redis;
