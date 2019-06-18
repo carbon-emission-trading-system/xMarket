@@ -155,7 +155,7 @@ public class UserApiController extends BaseApiController {
 
 		Boolean isExists=userService.isMailExists(mailAdress);
 
-		if(!isExists) {
+		if(isExists) {
 			return CommonReturnType.success();
 		}else {
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"该邮箱地址不存在！");

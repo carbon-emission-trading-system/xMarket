@@ -33,6 +33,9 @@ public class Stock implements Serializable{
 	@Column(name="stock_name")
 	private String stockName;
 	
+	@Column
+	private String stockPinyin;
+	
 	@Column(name="share_capital")
 	private long shareCapital;
 	
@@ -45,11 +48,7 @@ public class Stock implements Serializable{
 	
 	@Column(name="trade_market")
 	private int tradeMarket;//交易市场   market
-	
-	/*@OneToMany(mappedBy = "stock")
-	@JsonBackReference
-	private List<Order> orders;
-*/
+
 	
 	
 	
@@ -104,14 +103,17 @@ public class Stock implements Serializable{
 		this.tradeMarket = tradeMarket;
 	}
 
-/*public List<Order> getOrders() {
-		return orders;
+	public String getStockPinyin() {
+		return stockPinyin;
 	}
 
-	public void setOrders(List<Order> orders) {
-		this.orders = orders;
+	public void setStockPinyin(String stockPinyin) {
+		this.stockPinyin = stockPinyin;
 	}
-*/
+
+	
+	
+
 	
 
 	

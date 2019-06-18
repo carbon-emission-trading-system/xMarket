@@ -17,18 +17,22 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 
 import com.alibaba.fastjson.JSON;
+import com.stock.xMarket.VO.IndexVO;
 import com.stock.xMarket.VO.RealTimeVO;
 import com.stock.xMarket.model.HoldPosition;
+import com.stock.xMarket.model.Index;
 import com.stock.xMarket.model.Order;
 import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.RealTime2;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.StockHistory;
+import com.stock.xMarket.redis.IndexRedis;
 import com.stock.xMarket.redis.OrderRedis;
 import com.stock.xMarket.redis.RealTime2Redis;
 import com.stock.xMarket.redis.TimeShareRedis;
 import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.repository.HoldPositionRepository;
+import com.stock.xMarket.repository.IndexRepository;
 import com.stock.xMarket.repository.OrderRepository;
 import com.stock.xMarket.repository.StockHistoryRepository;
 import com.stock.xMarket.repository.StockRepository;
@@ -50,6 +54,9 @@ public class SystemServiceImpl implements SystemService {
 	private TimeShareRedis timeShareRedis;
 
 	@Autowired
+	private IndexRedis indexRedis;
+	
+	@Autowired
 	private OrderRedis orderRedis;
 
 	@Autowired
@@ -69,7 +76,7 @@ public class SystemServiceImpl implements SystemService {
 	private RealTimeService realTimeService;
 	
 	@Autowired
-	private UserFundRepository userFundRepository;
+	private IndexRepository indexRepository;
 	
 	@Autowired
 	RabbitTemplate rabbitTemplate;
@@ -90,6 +97,20 @@ public class SystemServiceImpl implements SystemService {
 			// realTimeVO.setYesterdayClosePrice(ytdClosePrice);
 			realTime2Redis.put(key, realTime2, -1);
 			timeShareRedis.put(key, 0, -1);
+
+		}
+		
+		
+		List<Index> indexList = new ArrayList<>();
+
+		indexList = indexRepository.findAll();
+		
+		for (Index index : indexList) {
+			String key = String.valueOf(index.getIndexId());
+		
+			IndexVO indexVO=new IndexVO(index);
+			
+			indexRedis.put(key,indexVO, -1);
 
 		}
 	}

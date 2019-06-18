@@ -11,6 +11,7 @@ public class StockListVO implements Serializable {
 	
 	private int stockId;
 	private String stockName;
+	private String stockPinyin;
 	private double lastTradePrice; //最新成交价
 	private double increase; //涨幅
 	private double highestPrice; //最高价
@@ -26,6 +27,12 @@ public class StockListVO implements Serializable {
 	
 	
 	
+	public String getStockPinyin() {
+		return stockPinyin;
+	}
+	public void setStockPinyin(String stockPinyin) {
+		this.stockPinyin = stockPinyin;
+	}
 	public int getStockId() {
 		return stockId;
 	}
@@ -110,12 +117,14 @@ public class StockListVO implements Serializable {
 	public void setTradeMarket(int tradeMarket) {
 		this.tradeMarket = tradeMarket;
 	}
-	public StockListVO(int stockId, String stockName, double lastTradePrice, double increase, double highestPrice,
-			double lowestPrice, double openPrice, double yesterdayOpenPrice, double yesterdayClosePrice,
-			double tradeAmount, double totalMarketCapitalization, double peRatio, double pbRatio, int tradeMarket) {
 	
+	public StockListVO(int stockId, String stockName, String stockPinyin, double lastTradePrice, double increase,
+			double highestPrice, double lowestPrice, double openPrice, double yesterdayOpenPrice,
+			double yesterdayClosePrice, double tradeAmount, double totalMarketCapitalization, double peRatio,
+			double pbRatio, int tradeMarket) {
 		this.stockId = stockId;
 		this.stockName = stockName;
+		this.stockPinyin = stockPinyin;
 		this.lastTradePrice = lastTradePrice;
 		this.increase = increase;
 		this.highestPrice = highestPrice;

@@ -63,7 +63,6 @@ public class RealTimeServiceImpl implements RealTimeService {
 		// redis 中读取数据
 		List<RealTime1> list1 = new ArrayList<>();
 		list1 = realTime1Redis.getAll();
-		
 		List<RealTime2> list2 = new ArrayList<>();
 		list2 = realTime2Redis.getAll();
 		realTimeList = finalRealTime(list1,list2);

@@ -116,6 +116,7 @@ public class StockListServiceImpl implements StockListService {
     		BeanUtils.copyProperties(rt, stockListVO);
 
     		stockListVO.setStockName(map.get(rt.getStockId()).getStockName());
+    		stockListVO.setStockPinyin(map.get(rt.getStockId()).getStockPinyin());
     		stockListVO.setIncrease(DemicalUtil.keepTwoDecimal(increase*100));
     		stockListVO.setYesterdayOpenPrice(DemicalUtil.keepTwoDecimal(map.get(rt.getStockId()).getYesterdayOpenPrice()));
     		stockListVO.setTotalMarketCapitalization(DemicalUtil.keepTwoDecimal(totalMarketCapitalization/100000000));//以亿为单位

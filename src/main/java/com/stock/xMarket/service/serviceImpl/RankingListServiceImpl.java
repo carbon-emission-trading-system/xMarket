@@ -4,9 +4,15 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
 import com.stock.xMarket.VO.StockListVO;
 import com.stock.xMarket.service.RankingListService;
 
+@Service
+@Transactional
 public class RankingListServiceImpl implements RankingListService{
 
 	@Override
