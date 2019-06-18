@@ -9,12 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import com.stock.xMarket.VO.UserInfoVO;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
 import com.stock.xMarket.response.CommonReturnType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -175,6 +177,29 @@ public class UserApiController extends BaseApiController {
 			return CommonReturnType.success();
 		}
 	}
+
+	@RequestMapping("/getUserInfo")
+	public CommonReturnType getUserInfo(@RequestParam(value = "userId") int userId){
+		UserInfoVO userInfoVO = new UserInfoVO();
+		User user = userService.findByUserId(userId);
+		BeanUtils.copyProperties(user,userInfoVO);
+		return CommonReturnType.success(userInfoVO);
+	}
+
+	@RequestMapping("/changeUserName")
+	public CommonReturnType changeUserName(@RequestParam(value = "newUserName") String userName,
+										   @RequestParam(value = "userId") int userId,
+										   HttpServletRequest request) throws BusinessException {
+		Boolean isExists=userService.isUserExists(userName);
+
+		if(isExists) {
+			throw new BusinessException(EmBusinessError.USERNAME_EXIST_ERROR);
+		}else {
+			userService.changeUserName(userName,userId);
+			return CommonReturnType.success();
+		}
+	}
+
 
 
 	@RequestMapping(value = "/changePassword",method = RequestMethod.POST)

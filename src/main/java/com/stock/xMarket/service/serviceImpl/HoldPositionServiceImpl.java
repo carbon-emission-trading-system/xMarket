@@ -73,7 +73,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			// 根据成交单是买还是卖，更新信息
 			LOGGER.info("用户id：" + userId + "  股票id:" + stockId + " 开始更新持仓信息");
 			if (transactionOrder.getType() == 1) {
-				
+
 				// 如果是卖
 				// 计算新的持仓数量和可用数量
 				positionNumber = holdPosition.getPositionNumber() - transactionOrder.getExchangeAmount();
@@ -102,6 +102,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 					historyHoldPosition
 							.setProfitAndLossRatio(transactionOrder.getTradePrice() / holdPosition.getCostPrice() - 1);
 					historyHoldPosition.setUserId(holdPosition.getUser().getUserId());
+
 					historyHoldPositionRepository.saveAndFlush(historyHoldPosition);
 					holdPositionRepository.delete(holdPosition);
 					return;

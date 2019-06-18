@@ -23,4 +23,8 @@ public interface UserService {
 	void changePassword(String userName,String password) throws BusinessException;
 
 	User findByEmail(String emailAddress);
+
+	User findByUserId(int userId);
+
+	void changeUserName(String userName,int userId);
 }

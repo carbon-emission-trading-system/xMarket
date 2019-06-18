@@ -50,6 +50,19 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public User findByUserId(int userId) {
+		return userRepository.findByUserId(userId);
+	}
+
+	@Override
+	public void changeUserName(String userName,int userId){
+		User user = userRepository.findByUserId(userId);
+		user.setUsername(userName);
+		userRepository.saveAndFlush(user);
+		return;
+	}
+
+	@Override
 	public User findByEmail(String emailAddress) {
 		return userRepository.findByEmail(emailAddress);
 	}
