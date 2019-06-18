@@ -79,12 +79,6 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				//如果是卖
 				//计算新的持仓数量和可用数量
 				positionNumber = holdPosition.getPositionNumber() - transactionOrder.getExchangeAmount();
-				//int availableNumber = holdPositon.getAvailableNumber() - transactionOrder.getExchangeAmount();
-				//计算成本价
-				costPrice = (holdPosition.getCostPrice()*holdPosition.getPositionNumber()-transactionOrder.getActualAmount())/positionNumber;//positionNumber
-				if(positionNumber<0){
-					throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"成交单出现错误！");
-				}
 				//如果剩余数量为0，则清仓
 				if(positionNumber==0){
 					HistoryHoldPosition historyHoldPosition = new HistoryHoldPosition();
@@ -92,14 +86,22 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 					historyHoldPosition.setClearPositionDate(transactionOrder.getDate());
 					historyHoldPosition.setBuildPositionDate(holdPosition.getOpeningTime());
 					//总盈亏=最后一次到手的钱-成本价*数量，成本价可以为负
-					historyHoldPosition.setProfitAndLossRatio(transactionOrder.getActualAmount()-holdPosition.getCostPrice()*holdPosition.getAvailableNumber());
+					historyHoldPosition.setTotalProfitAndLoss(transactionOrder.getActualAmount()-holdPosition.getCostPrice()*holdPosition.getAvailableNumber());
 					historyHoldPosition.setStockHoldDay((int)(transactionOrder.getDate().getTime()-holdPosition.getOpeningTime().getTime())/(1000*60*60*24));
 					historyHoldPosition.setStockName(holdPosition.getStock().getStockName());
-					historyHoldPosition.setTotalProfitAndLoss(transactionOrder.getTradePrice()/costPrice-1);
+					historyHoldPosition.setProfitAndLossRatio(transactionOrder.getTradePrice()/costPrice-1);
 					historyHoldPosition.setUserId(holdPosition.getUser().getUserId());
+
 					historyHoldPositionRepository.saveAndFlush(historyHoldPosition);
 					holdPositionRepository.delete(holdPosition);
 				}
+				//int availableNumber = holdPositon.getAvailableNumber() - transactionOrder.getExchangeAmount();
+				//计算成本价
+				costPrice = (holdPosition.getCostPrice()*holdPosition.getPositionNumber()-transactionOrder.getActualAmount())/positionNumber;//positionNumber
+				if(positionNumber<0){
+					throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"成交单出现错误！");
+				}
+
 				//holdPositon.setAvailableNumber(availableNumber);
 			}else {
 				//如果是买
