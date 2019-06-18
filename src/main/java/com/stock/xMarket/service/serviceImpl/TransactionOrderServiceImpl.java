@@ -80,11 +80,11 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			transactionOrderRepository.saveAndFlush(cancelOrder);
 			
 			orderService.updateOrderBytransactionOrder(cancelOrder);
-			
-			holdPositionService.updateHoldPositionByCancelOrder(cancelOrder);
-			
-			userFundService.updateUserFundByTransaction(cancelOrder);
-			
+			if (cancelOrder.getType()==1){
+				userFundService.updateUserFundByTransaction(cancelOrder);
+			}else {
+				holdPositionService.updateHoldPositionByCancelOrder(cancelOrder);
+			}
 			return;
 		}
 		

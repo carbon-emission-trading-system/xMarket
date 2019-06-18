@@ -24,7 +24,7 @@ public class TransactionOrderVO {
 	private double otherFee;//其他杂费
 	private double actualAmount;//发生金额
 	private int tradeMarket;//交易市场
-	private int revokeAmount;//撤单数量
+	private int cancelOrder;//撤单数量
 	
 
 
@@ -40,7 +40,7 @@ public class TransactionOrderVO {
 	public TransactionOrderVO(Date date, Date time, int stockId, String stockName, int type, double tradePrice,
 			int exchangeAmount, double totalExchangeMoney, int stockBalance, long orderId, long transactionOrderId,
 			double serviceTax, double stampTax, double otherFee, double actualAmount, int tradeMarket,
-			int revokeAmount) {
+			int cancelOrder) {
 		super();
 		this.date = date;
 		this.time = time;
@@ -58,7 +58,7 @@ public class TransactionOrderVO {
 		this.otherFee = otherFee;
 		this.actualAmount = actualAmount;
 		this.tradeMarket = tradeMarket;
-		this.revokeAmount = revokeAmount;
+		this.cancelOrder = cancelOrder;
 	}
 
 
@@ -215,12 +215,12 @@ public class TransactionOrderVO {
 		this.tradeMarket = tradeMarket;
 	}
 
-	public int getRevokeAmount() {
-		return revokeAmount;
+	public int getCancelOrder() {
+		return cancelOrder;
 	}
 
-	public void setRevokeAmount(int revokeAmount) {
-		this.revokeAmount = revokeAmount;
+	public void setCancelOrder(int cancelOrder) {
+		this.cancelOrder = cancelOrder;
 	}
 
 	
