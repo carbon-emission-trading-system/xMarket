@@ -77,7 +77,7 @@ public class TransactionOrder implements Serializable{
 	@Column(name="stock_balance")
 	private int stockBalance;//股票余额
 
-	@Column(name="revoke_amount")
+
 	private int cancelNumber;//撤单数量
 
 	@Transient

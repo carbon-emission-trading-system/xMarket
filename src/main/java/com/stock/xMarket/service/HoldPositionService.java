@@ -17,6 +17,7 @@ public interface HoldPositionService {
 	void updateHoldPositionByOrder(Order order) throws BusinessException;
 
 	void updateHoldPositionByCancelOrder(TransactionOrder cancelOrder) throws BusinessException;
+
 	//根据用户id找到用户持仓股票
 	List<HoldPositionVO> findHoldPosition(int userId);
 
