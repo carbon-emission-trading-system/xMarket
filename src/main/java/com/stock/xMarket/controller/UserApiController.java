@@ -127,7 +127,6 @@ public class UserApiController extends BaseApiController {
 		try {
 			userService.sendMail(mailAdress, message);
 		} catch (Exception e) {
-
 			throw new BusinessException(EmBusinessError.VERIFICATION_CODE_FAIL_ERROR);
 		}
 		HttpSession session = request.getSession();
@@ -149,7 +148,20 @@ public class UserApiController extends BaseApiController {
 			return CommonReturnType.success();
 		}
 	}
-	
+
+	@RequestMapping("/determineIfMailExists2")
+	public CommonReturnType determineIfMailExists2(@RequestParam(value = "mailAdress") String mailAdress, HttpServletRequest request) throws BusinessException {
+
+
+		Boolean isExists=userService.isMailExists(mailAdress);
+
+		if(!isExists) {
+			return CommonReturnType.success();
+		}else {
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"该邮箱地址不存在！");
+		}
+	}
+
 	@RequestMapping("/determineIfUserNameExists")
 	public CommonReturnType determineIfUserNameExists(@RequestParam(value = "userName") String userName, HttpServletRequest request) throws BusinessException {
 
@@ -183,5 +195,23 @@ public class UserApiController extends BaseApiController {
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"用户不存在");
 		}
 	}
-	
+
+	@RequestMapping(value = "/forgetPassword", method = RequestMethod.POST)
+	public CommonReturnType forgetPassword(@RequestParam(value = "newPassword") String newPassword,
+										   @RequestParam(value = "mailCode")  String mailCode,
+									       @RequestParam(value = "mailAddress") String mailAddress,
+									 HttpSession session, HttpServletResponse response) throws BusinessException {
+		String sessionCode = (String) session.getAttribute("mailcode");
+		if (!StringUtils.equalsIgnoreCase(mailCode, sessionCode)) {
+			throw new BusinessException(EmBusinessError.VALIDATION_ERROR, "验证码错误");
+		}
+
+		newPassword = MD5Util.inputToDb(newPassword);
+		User user = userService.findByEmail(mailAddress);
+		user.setLoginPassword(newPassword);
+		userService.regist(user);
+		return CommonReturnType.success();
+	}
+
+
 }
