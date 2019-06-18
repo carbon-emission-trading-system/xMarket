@@ -292,16 +292,16 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	}
 
 	@Override
-	public void updateHoldPositionByRevokeOrder(TransactionOrder revokeOrder) throws BusinessException {
-		int userId=revokeOrder.getOwnerId();
+	public void updateHoldPositionByCancelOrder(TransactionOrder cancelOrder) throws BusinessException {
+		int userId=cancelOrder.getOwnerId();
 
-		int stockId=revokeOrder.getStockId();
+		int stockId=cancelOrder.getStockId();
 
 		//从数据库读取对应数据
 		HoldPosition holdPosition = holdPositionRepository.findByUser_UserIdAndStock_StockId(userId,stockId);
 		if(holdPosition!=null){
-			holdPosition.setFrozenNumber(holdPosition.getFrozenNumber()-revokeOrder.getCancelNumber());
-			holdPosition.setAvailableNumber(holdPosition.getAvailableNumber()+revokeOrder.getCancelNumber());
+			holdPosition.setFrozenNumber(holdPosition.getFrozenNumber()-cancelOrder.getCancelNumber());
+			holdPosition.setAvailableNumber(holdPosition.getAvailableNumber()+cancelOrder.getCancelNumber());
 		}else {
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标持仓信息不存在");
 		}

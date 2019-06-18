@@ -73,17 +73,17 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		//先判断是否为撤单
 		if(tradeOrder.getBuyOrderId() == -1 || tradeOrder.getSellOrderId() == -1){
 			//创建撤单成交单
-			TransactionOrder revokeOrder = createRevokeOrder(tradeOrder);
+			TransactionOrder cancelOrder = createRevokeOrder(tradeOrder);
 			//存入数据库
-			LOGGER.info("委托单号："+revokeOrder.getOrderId()+" 的委托买单已被撤单，成交单存入数据库");
+			LOGGER.info("委托单号："+cancelOrder.getOrderId()+" 的委托买单已被撤单，成交单存入数据库");
 			
-			transactionOrderRepository.saveAndFlush(revokeOrder);
+			transactionOrderRepository.saveAndFlush(cancelOrder);
 			
-			orderService.updateOrderBytransactionOrder(revokeOrder);
+			orderService.updateOrderBytransactionOrder(cancelOrder);
 			
-			holdPositionService.updateHoldPositionByTransaction(revokeOrder);
+			holdPositionService.updateHoldPositionByCancelOrder(cancelOrder);
 			
-			userFundService.updateUserFundByTransaction(revokeOrder);
+			userFundService.updateUserFundByTransaction(cancelOrder);
 			
 			return;
 		}
