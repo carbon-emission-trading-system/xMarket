@@ -14,13 +14,10 @@ import com.stock.xMarket.model.TransactionOrder;
 import com.stock.xMarket.redis.TransactionRedis;
 
 import com.stock.xMarket.repository.StockRepository;
-import com.stock.xMarket.util.FeeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
@@ -316,7 +313,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			LOGGER.info("委托单"+tradeOrder.getSellOrderId()+"撤单");
 			revokeOrder = createSellTransactionOrder(tradeOrder);
 
-			revokeOrder.setRevokeAmount(tradeOrder.getExchangeAmount());
+			revokeOrder.setCancelNumber(tradeOrder.getExchangeAmount());
 			revokeOrder.setExchangeAmount(0);
 
 			//redis中查重
@@ -335,7 +332,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			LOGGER.info("委托单"+tradeOrder.getBuyOrderId()+"撤单");
 			revokeOrder = createBuyTransactionOrder(tradeOrder);
 
-			revokeOrder.setRevokeAmount(tradeOrder.getExchangeAmount());
+			revokeOrder.setCancelNumber(tradeOrder.getExchangeAmount());
 			revokeOrder.setExchangeAmount(0);
 			//redis中查重
 			TransactionOrder redisOrder =  transactionRedis.get(String.valueOf(revokeOrder.getOrderId()));
@@ -361,7 +358,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		// TODO Auto-generated method stub
 		
 		Date date=new Date(System.currentTimeMillis());
-		return transactionOrderRepository.findByOwnerIdAndDateOrderByDateDesc(userId, date);
+		return transactionOrderRepository.findByOwnerIdAndDateOrderByDateDescTimeDesc(userId, date);
 		
 	}
 }

@@ -54,7 +54,7 @@ public class TransactionOrder implements Serializable{
 	private double tradePrice;//成交价
 	
 	@Column(name="exchange_amount")
-	private int exchangeAmount;//成家数量
+	private int exchangeAmount;//成交数量
 	
 	@Column(name="trade_type")
 	private Boolean tradeType;//买/卖盘    ture是买盘
@@ -78,7 +78,7 @@ public class TransactionOrder implements Serializable{
 	private int stockBalance;//股票余额
 
 	@Column(name="revoke_amount")
-	private int revokeAmount;//撤单数量
+	private int cancelNumber;//撤单数量
 
 	@Transient
 	private double totalExchangeMoney;// exchangeFee
@@ -88,7 +88,7 @@ public class TransactionOrder implements Serializable{
 	
 	public TransactionOrder(long transactionOrderId, int stockId, String stockName, int type, long orderId, int ownerId,
 			Time time, Date date, double tradePrice, int exchangeAmount, Boolean tradeType, double serviceTax,
-			double stampTax, double otherFee, double actualAmount, int tradeMarket, int stockBalance, int revokeAmount,
+			double stampTax, double otherFee, double actualAmount, int tradeMarket, int stockBalance, int cancelNumber,
 			double totalExchangeMoney) {
 		super();
 		this.transactionOrderId = transactionOrderId;
@@ -108,7 +108,7 @@ public class TransactionOrder implements Serializable{
 		this.actualAmount = actualAmount;
 		this.tradeMarket = tradeMarket;
 		this.stockBalance = stockBalance;
-		this.revokeAmount = revokeAmount;
+		this.cancelNumber = cancelNumber;
 		this.totalExchangeMoney = totalExchangeMoney;
 	}
 
@@ -260,12 +260,12 @@ public class TransactionOrder implements Serializable{
 		this.stockBalance = stockBalance;
 	}
 
-	public int getRevokeAmount() {
-		return revokeAmount;
+	public int getCancelNumber() {
+		return cancelNumber;
 	}
 
-	public void setRevokeAmount(int revokeAmount) {
-		this.revokeAmount = revokeAmount;
+	public void setCancelNumber(int cancelNumber) {
+		this.cancelNumber = cancelNumber;
 	}
 
 	public static long getSerialversionuid() {

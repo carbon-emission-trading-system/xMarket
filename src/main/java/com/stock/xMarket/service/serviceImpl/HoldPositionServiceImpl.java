@@ -75,8 +75,8 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		int stockId=transactionOrder.getStockId();
 
 		//从数据库读取对应数据
-		HoldPosition holdPositon = holdPositionRepository.findByUser_UserIdAndStock_StockId(userId,stockId);
-		if(holdPositon!=null){
+		HoldPosition holdPosition = holdPositionRepository.findByUser_UserIdAndStock_StockId(userId,stockId);
+		if(holdPosition!=null){
 			//计算新的持仓信息
 			int positionNumber;
 			double costPrice;
@@ -85,44 +85,44 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			if(transactionOrder.getType()==1) {
 				//如果是卖
 				//计算新的持仓数量和可用数量
-				positionNumber = holdPositon.getPositionNumber() - transactionOrder.getExchangeAmount();
+				positionNumber = holdPosition.getPositionNumber() - transactionOrder.getExchangeAmount();
 				//int availableNumber = holdPositon.getAvailableNumber() - transactionOrder.getExchangeAmount();
 				//计算成本价
-				costPrice = (holdPositon.getCostPrice()*holdPositon.getPositionNumber()-transactionOrder.getActualAmount())/positionNumber;//positionNumber
+				costPrice = (holdPosition.getCostPrice()*holdPosition.getPositionNumber()-transactionOrder.getActualAmount())/positionNumber;//positionNumber
 				if(positionNumber<0){
 					throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"成交单出现错误！");
 				}
 				//如果剩余数量为0，则清仓
 				if(positionNumber==0){
 					HistoryHoldPosition historyHoldPosition = new HistoryHoldPosition();
-					historyHoldPosition.setStockId(holdPositon.getStock().getStockId());
+					historyHoldPosition.setStockId(holdPosition.getStock().getStockId());
 					historyHoldPosition.setClearPositionDate(transactionOrder.getDate());
-					historyHoldPosition.setBuildPositionDate(holdPositon.getOpeningTime());
+					historyHoldPosition.setBuildPositionDate(holdPosition.getOpeningTime());
 					//总盈亏=最后一次到手的钱-成本价*数量，成本价可以为负
-					historyHoldPosition.setProfitAndLossRatio(transactionOrder.getActualAmount()-holdPositon.getCostPrice()*holdPositon.getAvailableNumber());
-					historyHoldPosition.setStockHoldDay((int)(transactionOrder.getDate().getTime()-holdPositon.getOpeningTime().getTime())/(1000*60*60*24));
-					historyHoldPosition.setStockName(holdPositon.getStock().getStockName());
+					historyHoldPosition.setProfitAndLossRatio(transactionOrder.getActualAmount()-holdPosition.getCostPrice()*holdPosition.getAvailableNumber());
+					historyHoldPosition.setStockHoldDay((int)(transactionOrder.getDate().getTime()-holdPosition.getOpeningTime().getTime())/(1000*60*60*24));
+					historyHoldPosition.setStockName(holdPosition.getStock().getStockName());
 					historyHoldPosition.setTotalProfitAndLoss(transactionOrder.getTradePrice()/costPrice-1);
-					historyHoldPosition.setUserId(holdPositon.getUser().getUserId());
+					historyHoldPosition.setUserId(holdPosition.getUser().getUserId());
 					historyHoldPositionRepository.saveAndFlush(historyHoldPosition);
-					holdPositionRepository.delete(holdPositon);
+					holdPositionRepository.delete(holdPosition);
 				}
 				//holdPositon.setAvailableNumber(availableNumber);
 			}else {
 				//如果是买
 				//计算新的持仓数量和成本价
-				positionNumber = holdPositon.getPositionNumber() + transactionOrder.getExchangeAmount();
-				costPrice = (holdPositon.getCostPrice()*holdPositon.getPositionNumber()+transactionOrder.getActualAmount())/positionNumber;//positionNumber
+				positionNumber = holdPosition.getPositionNumber() + transactionOrder.getExchangeAmount();
+				costPrice = (holdPosition.getCostPrice()*holdPosition.getPositionNumber()+transactionOrder.getActualAmount())/positionNumber;//positionNumber
 			}
-			holdPositon.setPositionNumber(positionNumber);
-			holdPositon.setCostPrice(costPrice);
+			holdPosition.setPositionNumber(positionNumber);
+			holdPosition.setCostPrice(costPrice);
 			transactionOrder.setStockBalance(positionNumber);
 			//将新的数据存入数据库
-			holdPositionRepository.saveAndFlush(holdPositon);
+			holdPositionRepository.saveAndFlush(holdPosition);
 			transactionOrderRepository.saveAndFlush(transactionOrder);
 			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 持仓信息更新完毕");
 		}else{
-			holdPositon=new HoldPosition();
+			holdPosition=new HoldPosition();
 			//如果持仓信息不存在，可能是用户第一次购买该股票，是建仓。创建一条新的持仓信息插入数据库
 			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 该用户为第一次购买此股票，开始建仓");
 						
@@ -131,20 +131,20 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			if(user == null){
 				throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标用户不存在！");
 			}
-			holdPositon.setUser(user);
+			holdPosition.setUser(user);
 
 			Stock stock = stockRepository.findById(stockId).get();
 			if(stock == null){
 				throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标股票不存在！");
 			}
-			holdPositon.setStock(stock);
-			holdPositon.setCostPrice(transactionOrder.getActualAmount()/transactionOrder.getExchangeAmount());
-			holdPositon.setOpeningTime(transactionOrder.getDate());
-			holdPositon.setPositionNumber(transactionOrder.getExchangeAmount());
-			holdPositon.setAvailableNumber(0);
+			holdPosition.setStock(stock);
+			holdPosition.setCostPrice(transactionOrder.getActualAmount()/transactionOrder.getExchangeAmount());
+			holdPosition.setOpeningTime(transactionOrder.getDate());
+			holdPosition.setPositionNumber(transactionOrder.getExchangeAmount());
+			holdPosition.setAvailableNumber(0);
 
 			//存入数据库
-			holdPositionRepository.saveAndFlush(holdPositon);
+			holdPositionRepository.saveAndFlush(holdPosition);
 			LOGGER.info("用户id："+userId+"  股票id:"+stockId+" 建仓完毕");
 		}
 
@@ -200,6 +200,17 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			holdPosProAndLos = 0;
 			totalMarketValue = 0;
 			totalTodayProAndLos =0;
+			
+			for(HoldPosition h : list) {
+				int stockId = h.getStock().getStockId();
+				int positionNumber = h.getPositionNumber(); 
+				double presentPrice = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice();//现价--也就是市价
+				double marketValue = presentPrice * positionNumber;
+				totalMarketValue += marketValue;
+			}
+			
+			//计算用户总资产
+			totalFunds = amountBalance + totalMarketValue;
 			for(HoldPosition h : list) {
 				HoldPositionVO holdPositionVO = new HoldPositionVO();
 				int stockId = h.getStock().getStockId();
@@ -211,29 +222,30 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				double totalProfitAndLoss = (presentPrice - costPrice)*positionNumber;
 				//市值 = 现价*股票余额
 				double marketValue = presentPrice * positionNumber;
-				//盈亏金额=（市值-卖出费用+累计卖出清算金额+当日卖出清算金额）-（累计买入清算金额+当日买入清算金额）
-				//也就是市值 + 当日交易单的卖出发生金额 - 当日交易单的买入发生金额
+				
+				//当日盈亏 = 可用数量*(最新价格-昨日收盘价)+∑（发生金额-昨收盘*卖出数量）-∑ （发生金额-昨收盘*买入数量）
 				double totalSellActualAmount = 0;
 				double totalBuyActualAmount = 0;
 				Date date = new Date();
 				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				double yesterdayClosePrice = realTime1Redis.get(String.valueOf(stockId)).getYesterdayClosePrice();
 				for(TransactionOrder transactionOrder : transactionOrderList) {
 					
 					if(String.valueOf(transactionOrder.getDate()).equals(df.format(date))) {
 						
 						if(transactionOrder.getType()==1) {
 							//卖
-							totalSellActualAmount += transactionOrder.getActualAmount();
+							totalSellActualAmount += transactionOrder.getActualAmount()-yesterdayClosePrice*transactionOrder.getExchangeAmount();
 						}else  {
 							//买
-							totalBuyActualAmount += transactionOrder.getActualAmount();
+							totalBuyActualAmount += transactionOrder.getActualAmount()-yesterdayClosePrice*transactionOrder.getExchangeAmount();
 						}
 						
 					}
 					
 				}
+				double todayProfitAndLoss = positionNumber*(presentPrice-yesterdayClosePrice)+totalSellActualAmount-totalBuyActualAmount;
 				
-				double todayProfitAndLoss = marketValue + totalSellActualAmount - totalBuyActualAmount;
 				BeanUtils.copyProperties(h, holdPositionVO);
 				holdPositionVO.setStockId(stockId);
 				holdPositionVO.setStockName(h.getStock().getStockName());
@@ -252,15 +264,12 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				
 				
 				holdPosProAndLos += totalProfitAndLoss; //为计算用户资产信息中的持仓盈亏做服务
-				totalMarketValue += marketValue; //为计算用户资产信息中的总市值做服务
 				totalTodayProAndLos += todayProfitAndLoss;
 			}
 			
-			//计算用户总资产
-			totalFunds = amountBalance + totalMarketValue;
 			return holdPositionVOList;
 		}else {
-			totalFunds = amountBalance;
+			totalFunds = amountBalance ;
 			return null;
 		}
 		
@@ -281,6 +290,20 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		userFundVO.setAmountBalance(keepDecimal(userFund.getBalance() + userFund.getFrozenAmount()));//资金余额
 		return userFundVO;
 	}
-	
-	
+
+	@Override
+	public void updateHoldPositionByRevokeOrder(TransactionOrder revokeOrder) throws BusinessException {
+		int userId=revokeOrder.getOwnerId();
+
+		int stockId=revokeOrder.getStockId();
+
+		//从数据库读取对应数据
+		HoldPosition holdPosition = holdPositionRepository.findByUser_UserIdAndStock_StockId(userId,stockId);
+		if(holdPosition!=null){
+			holdPosition.setFrozenNumber(holdPosition.getFrozenNumber()-revokeOrder.getCancelNumber());
+			holdPosition.setAvailableNumber(holdPosition.getAvailableNumber()+revokeOrder.getCancelNumber());
+		}else {
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标持仓信息不存在");
+		}
+	}
 }

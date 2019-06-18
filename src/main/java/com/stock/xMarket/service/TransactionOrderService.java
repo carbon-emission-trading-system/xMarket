@@ -13,5 +13,4 @@ public interface TransactionOrderService {
 	void addTransactionOrder(TradeOrder tradeOrder) throws BusinessException;
 
 	List<TransactionOrder> findByOwnerIdAndDate(int userId) throws BusinessException;
-
 }

@@ -18,7 +18,7 @@ public interface TransactionOrderRepository extends JpaRepository<TransactionOrd
 			+ " from TransactionOrder t where t.ownerId=:ownerId")
 	List<TransactionOrderVO> findByOwnerIdOrderByDateDesc(Integer ownerId);
 
-	List<TransactionOrder> findByOwnerIdAndDateOrderByDateDesc(int userId,Date date);
+	List<TransactionOrder> findByOwnerIdAndDateOrderByDateDescTimeDesc(int userId,Date date);
 	
 	List<TransactionOrder> findByOwnerIdAndStockId(int ownerId,int stockId);
 
