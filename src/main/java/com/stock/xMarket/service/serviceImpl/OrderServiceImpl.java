@@ -17,11 +17,15 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.stock.xMarket.VO.OrderVO;
+import com.stock.xMarket.VO.StockTradeVO;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
+import com.stock.xMarket.model.HoldPosition;
 import com.stock.xMarket.model.Order;
+import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.TransactionOrder;
+import com.stock.xMarket.model.UserFund;
 import com.stock.xMarket.redis.CallOrderRedis;
 import com.stock.xMarket.redis.OrderRedis;
 import com.stock.xMarket.redis.TransactionRedis;
@@ -253,5 +257,24 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 	}
+	
+    //创建StockTradeVO的方法
+	@Override
+    public StockTradeVO createStockTradeVO(UserFund userFund,RealTime1 realTime1,Stock stock,HoldPosition holdPosition) {
+        StockTradeVO stockTradeVO = new StockTradeVO();
+        stockTradeVO.setBalance(userFund.getBalance());
+        stockTradeVO.setStockId(realTime1.getStockId());
+        stockTradeVO.setOrderPrice(realTime1.getLastTradePrice());
+        stockTradeVO.setTradeMarket(stock.getTradeMarket());
+        stockTradeVO.setStockName(stock.getStockName());
+        if (holdPosition == null){
+            stockTradeVO.setAvailableNumber(0);
+        }else {
+            stockTradeVO.setAvailableNumber(holdPosition.getAvailableNumber());
+        }
+        stockTradeVO.setYesterdayClosePrice(realTime1.getYesterdayClosePrice());
+        return stockTradeVO;
+    }
+	
 
 }

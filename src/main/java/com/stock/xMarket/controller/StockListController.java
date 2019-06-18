@@ -2,6 +2,8 @@ package com.stock.xMarket.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -23,6 +25,7 @@ import com.stock.xMarket.VO.StockListVO;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.RealTime2;
+import com.stock.xMarket.service.RankingListService;
 import com.stock.xMarket.service.StockListService;
 import com.stock.xMarket.util.DemicalUtil;
 
@@ -30,113 +33,90 @@ import com.stock.xMarket.util.DemicalUtil;
 public class StockListController extends BaseApiController {
 
 	@Autowired
-    private StockListService realTimeService;
+    private StockListService stockListService;
+	
+	@Autowired
+    private RankingListService rankingListService;
+	
 	final static Logger logger=LoggerFactory.getLogger(OrderController.class);
 
 	//所有个股信息，展示股票列表
     @RequestMapping(value = "/stockList", method = RequestMethod.GET)
     public CommonReturnType findAllRealTime() {
     	
-    	List<RealTime2> realTime2List = realTimeService.findRealTime2();
-    	List<RealTime1> realTime1List = realTimeService.findRealTime1();
-//    	DecimalFormat df=new DecimalFormat("0.0000");//设置保留位数
-    	List<StockListVO> StockListVOList = new ArrayList<StockListVO>();
-    	return finalResult(realTime1List,realTime2List,StockListVOList);
+    	List<RealTime2> realTime2List = stockListService.findRealTime2();
+    	List<RealTime1> realTime1List = stockListService.findRealTime1();
+    	List<StockListVO> stockListVOList = new ArrayList<StockListVO>();
     	
-//		List<StockListVO> stockListVOList = new ArrayList<>();
-//		StockListVO stockListVO = new StockListVO();
-//		stockListVO.setHighestPrice(20);
-//		stockListVO.setIncrease(1.9);
-//		stockListVO.setLastTradePrice(19.8);
-//		stockListVO.setLowestPrice(19);
-//		stockListVO.setOpenPrice(19.5);
-//		stockListVO.setPbRatio(5.5);
-//		stockListVO.setPeRatio(5.5);
-//		stockListVO.setStockId(100000);
-//		stockListVO.setStockName("张浩股份");
-//		stockListVO.setTotalMarketCapitalization(5.5);
-//		stockListVO.settradeAmount(9.9);
-//		stockListVO.setTradeMarket(1);
-//		stockListVO.setYesterdayOpenPrice(19.7);
-//		stockListVOList.add(stockListVO);
-//		stockListVO.setStockName("王hs股份");
-//		stockListVOList.add(stockListVO);
-//		return CommonReturnType.success(stockListVOList);
+    	stockListVOList=stockListService.finalList(realTime1List, realTime2List, stockListVOList);
+    	
+    	return CommonReturnType.success(stockListVOList);
+    			
+    	
+
 
     }
     
   
    
-    public CommonReturnType finalResult(List<RealTime1> realTime1List,List<RealTime2> realTime2List,List<StockListVO> stockListVOList) {
-    	Map<Integer, RealTime2> map = realTime2List.stream().collect(Collectors.toMap(RealTime2::getStockId, a -> a,(k1,k2)->k1));
 
-    	for(RealTime1 rt : realTime1List) {
-
-    		//涨跌幅= (最新价-昨日收盘价)/昨日收盘价
-    		double increase =(rt.getLastTradePrice()-rt.getYesterdayClosePrice())/rt.getYesterdayClosePrice();
-    		//总市值=股价*总股本数
-    		double totalMarketCapitalization = rt.getLastTradePrice()*map.get(rt.getStockId()).getTotalShareCapital();
-    		//市盈率=股价/每股收益
-    		double peRatio = rt.getLastTradePrice()/map.get(rt.getStockId()).getEarningsPerShare();
-    		//市净率=每股市价/每股净资产
-    		double pbRatio = rt.getLastTradePrice()/map.get(rt.getStockId()).getBookValue();
-
-    		StockListVO stockListVO=new StockListVO();
-    		BeanUtils.copyProperties(rt, stockListVO);
-
-    		stockListVO.setStockName(map.get(rt.getStockId()).getStockName());
-    		stockListVO.setIncrease(DemicalUtil.keepTwoDecimal(increase*100));
-    		stockListVO.setYesterdayOpenPrice(DemicalUtil.keepTwoDecimal(map.get(rt.getStockId()).getYesterdayOpenPrice()));
-    		stockListVO.setTotalMarketCapitalization(DemicalUtil.keepTwoDecimal(totalMarketCapitalization/100000000));//以亿为单位
-    		stockListVO.setPeRatio(DemicalUtil.keepTwoDecimal(peRatio));
-    		stockListVO.setPbRatio(DemicalUtil.keepTwoDecimal(pbRatio));
-    		stockListVO.setTradeMarket(map.get(rt.getStockId()).getTradeMarket());
-
-    		stockListVOList.add(stockListVO);
-    	}
-
-
-    	//logger.info("传进来的用户ownerId："+id);
-    	//logger.info("传出去的结果："+list);
-    	return CommonReturnType.success(stockListVOList);
-    }
 
     //根据用户id，展示用户的所有自选股信息
     @RequestMapping(value = "/selfSelectStockList", method = RequestMethod.GET)
     public CommonReturnType findAllSelfSelectStock(@RequestParam("userId") int id) throws BusinessException {
   	
-    	List<RealTime1> realTime1List = realTimeService.findSelfSelectStockRealTime1(id);
+    	List<RealTime1> realTime1List = stockListService.findSelfSelectStockRealTime1(id);
     	if(realTime1List == null){
     		throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"realTime1List为空");
 		}
-    	List<RealTime2> realTime2List = realTimeService.findSelfSelectStockRealTime2(id);
+    	List<RealTime2> realTime2List = stockListService.findSelfSelectStockRealTime2(id);
 		if(realTime2List == null){
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"realTime2List为空");
 		}
     	List<StockListVO> stockListVOList = new ArrayList<StockListVO>();
 
-    	return finalResult(realTime1List,realTime2List,stockListVOList);
-//		List<StockListVO> stockListVOList = new ArrayList<>();
-//		StockListVO stockListVO = new StockListVO();
-//		stockListVO.setHighestPrice(20);
-//		stockListVO.setIncrease(1.9);
-//		stockListVO.setLastTradePrice(19.8);
-//		stockListVO.setLowestPrice(19);
-//		stockListVO.setOpenPrice(19.5);
-//		stockListVO.setPbRatio(5.5);
-//		stockListVO.setPeRatio(5.5);
-//		stockListVO.setStockId(100000);
-//		stockListVO.setStockName("张浩股份");
-//		stockListVO.setTotalMarketCapitalization(5.5);
-//		stockListVO.settradeAmount(9.9);
-//		stockListVO.setTradeMarket(1);
-//		stockListVO.setYesterdayOpenPrice(19.7);
-//		stockListVOList.add(stockListVO);
-//		stockListVO.setStockName("王hs股份");
-//		stockListVOList.add(stockListVO);
-//		return CommonReturnType.success(stockListVOList);
+    	stockListVOList=stockListService.finalList(realTime1List, realTime2List, stockListVOList);
+    	
+    	return CommonReturnType.success(stockListVOList);
 
     }
 
 
+    
+    @RequestMapping(value = "/rankList", method = RequestMethod.GET)
+    public CommonReturnType rankList(@RequestParam("type") int type) throws BusinessException{
+    	
+   
+    	List<RealTime2> realTime2List = stockListService.findRealTime2();
+    	List<RealTime1> realTime1List = stockListService.findRealTime1();
+    	List<StockListVO> stockListVOList = new ArrayList<StockListVO>();
+    	stockListVOList=stockListService.finalList(realTime1List, realTime2List, stockListVOList);
+    	
+    	
+		
+		
+		switch(type)
+	      {
+	         case 1 :
+	        	rankingListService.rankingByIncrease(stockListVOList); 
+	            break;
+	         case 2 :
+	        	 rankingListService.rankingByDecrease(stockListVOList);
+	            break;
+	         case 3 :
+	        	 rankingListService.rankingByExchangeAmount(stockListVOList);
+	            break;
+	         case 4 :
+	        	 rankingListService.rankingByconversionHand(stockListVOList);
+	            break;
+	         default :
+	          throw new BusinessException(EmBusinessError.UNKNOWN_ERROR);
+	      }
+		
+
+    	return CommonReturnType.success(stockListVOList);
+    }
+    
+    
+    
 }

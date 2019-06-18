@@ -7,6 +7,7 @@ import com.stock.xMarket.model.*;
 import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.repository.*;
 import com.stock.xMarket.service.HoldPositionService;
+import com.stock.xMarket.util.DemicalUtil;
 import com.stock.xMarket.VO.HoldPositionVO;
 import com.stock.xMarket.VO.UserFundVO;
 
@@ -57,14 +58,6 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	private double totalTodayProAndLos = 0;
 	
 	
-	/*	 * 获得的是double类型	 * 保留两位小数        */	
-    public double keepDecimal(double num){	
-    	if(num==Double.POSITIVE_INFINITY||num==Double.NEGATIVE_INFINITY||Double.isNaN(num))
-    		return num;
-    	BigDecimal bg = new BigDecimal(num);		
-    	double num1 = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();		
-    	return num1;
-    }
 
 	//更新持仓信息
 	@Override
@@ -249,16 +242,16 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				BeanUtils.copyProperties(h, holdPositionVO);
 				holdPositionVO.setStockId(stockId);
 				holdPositionVO.setStockName(h.getStock().getStockName());
-				holdPositionVO.setPresentPrice(keepDecimal(presentPrice));
-				holdPositionVO.setTotalProfitAndLoss(keepDecimal(totalProfitAndLoss));
+				holdPositionVO.setPresentPrice(DemicalUtil.keepTwoDecimal(presentPrice));
+				holdPositionVO.setTotalProfitAndLoss(DemicalUtil.keepTwoDecimal(totalProfitAndLoss));
 				holdPositionVO.setFrozenNumber(h.getPositionNumber() - h.getAvailableNumber());
 				//盈亏比例=（ 市价 - 成本价）/成本价
-				holdPositionVO.setProfitAndLossRatio(keepDecimal( (presentPrice-costPrice)/costPrice*100 )); //单位应是%
+				holdPositionVO.setProfitAndLossRatio(DemicalUtil.keepTwoDecimal( (presentPrice-costPrice)/costPrice*100 )); //单位应是%
 			    //市值 = 市价*股票余额
-				holdPositionVO.setMarketValue(keepDecimal(marketValue));
+				holdPositionVO.setMarketValue(DemicalUtil.keepTwoDecimal(marketValue));
 				//仓位占比 = 市值/总资产
-				holdPositionVO.setPositionRatio(keepDecimal( marketValue / totalFunds * 100)); //单位应是%		
-				holdPositionVO.setTodayProfitAndLoss(keepDecimal(todayProfitAndLoss));
+				holdPositionVO.setPositionRatio(DemicalUtil.keepTwoDecimal( marketValue / totalFunds * 100)); //单位应是%		
+				holdPositionVO.setTodayProfitAndLoss(DemicalUtil.keepTwoDecimal(todayProfitAndLoss));
 				
 				holdPositionVOList.add(holdPositionVO);
 				
@@ -281,13 +274,13 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		UserFundVO userFundVO = new UserFundVO();
 		UserFund userFund = userFundRepository.findByUser_UserId(userId);
 		
-		userFundVO.setTotalFunds(keepDecimal(totalFunds));//总资产
-		userFundVO.setHoldPosProAndLos(keepDecimal(holdPosProAndLos));//持仓盈亏
-		userFundVO.setBalance(keepDecimal(userFund.getBalance()));//可用资金
-		userFundVO.setTotalMarketValue(keepDecimal(totalMarketValue));//总市值
-		userFundVO.setTodayProAndLos(keepDecimal(totalTodayProAndLos));//当日盈亏
-		userFundVO.setFrozenAmount(keepDecimal(userFund.getFrozenAmount()));//冻结资金
-		userFundVO.setAmountBalance(keepDecimal(userFund.getBalance() + userFund.getFrozenAmount()));//资金余额
+		userFundVO.setTotalFunds(DemicalUtil.keepTwoDecimal(totalFunds));//总资产
+		userFundVO.setHoldPosProAndLos(DemicalUtil.keepTwoDecimal(holdPosProAndLos));//持仓盈亏
+		userFundVO.setBalance(DemicalUtil.keepTwoDecimal(userFund.getBalance()));//可用资金
+		userFundVO.setTotalMarketValue(DemicalUtil.keepTwoDecimal(totalMarketValue));//总市值
+		userFundVO.setTodayProAndLos(DemicalUtil.keepTwoDecimal(totalTodayProAndLos));//当日盈亏
+		userFundVO.setFrozenAmount(DemicalUtil.keepTwoDecimal(userFund.getFrozenAmount()));//冻结资金
+		userFundVO.setAmountBalance(DemicalUtil.keepTwoDecimal(userFund.getBalance() + userFund.getFrozenAmount()));//资金余额
 		return userFundVO;
 	}
 
