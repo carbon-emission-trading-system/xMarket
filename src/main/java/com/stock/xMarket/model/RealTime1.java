@@ -10,7 +10,7 @@ public class RealTime1 implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private int stockId;
+	private String stockId;
 	private double lastTradePrice; //最新成交价
 	private double openPrice; //今日开盘价
 	private double closePrice;
@@ -28,7 +28,7 @@ public class RealTime1 implements Serializable {
 
 
 
-	public RealTime1(int stockId, double lastTradePrice, double openPrice, double closePrice,
+	public RealTime1(String stockId, double lastTradePrice, double openPrice, double closePrice,
 			double yesterdayClosePrice, double highestPrice, double lowestPrice, int volume, double tradeAmount,
 			List<Gear> buyOneToFive, List<Gear> sellOneToFive) {
 		super();
@@ -76,10 +76,10 @@ public class RealTime1 implements Serializable {
 
 
 
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 	public double getTradeAmount() {

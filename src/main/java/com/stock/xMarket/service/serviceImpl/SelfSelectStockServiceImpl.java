@@ -18,7 +18,7 @@ public class SelfSelectStockServiceImpl implements SelfSelectStockService {
 	SelfSelectStockRepository selfSelectStockRepository;
 	
 	@Override
-	public boolean isSelected(Integer stockId, Integer userId) {
+	public boolean isSelected(String stockId, Integer userId) {
 		// TODO Auto-generated method stub
 
 
@@ -41,7 +41,7 @@ public class SelfSelectStockServiceImpl implements SelfSelectStockService {
 	
 	//找到用户某只自选股
 	@Override
-	public SelfSelectStock findByUserIdAndStockId(int userId,int stockId) {
+	public SelfSelectStock findByUserIdAndStockId(int userId,String stockId) {
 		// TODO Auto-generated method stub
 		return selfSelectStockRepository.findByUserIdAndStockId(userId, stockId);
 	}

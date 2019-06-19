@@ -13,7 +13,7 @@ public class OrderVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private Date date;//委托日期
 	private Time time;//委托时间
-    private int stockId;//股票代码
+    private String stockId;//股票代码
     private int userId;
 	private String stockName;//股票简称
 	private int type;//操作：买入卖出
@@ -45,7 +45,7 @@ public class OrderVO implements Serializable {
 
 
 
-	public OrderVO(Date date, Time time, int stockId, int userId, String stockName, int type, int orderAmount,
+	public OrderVO(Date date, Time time, String stockId, int userId, String stockName, int type, int orderAmount,
 			int exchangeAmount, double exchangeAveragePrice, double orderPrice, int cancelNumber, int tradeStraregy,
 			int state, long orderId) {
 		super();
@@ -107,11 +107,11 @@ public class OrderVO implements Serializable {
 
 
 
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
 
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 

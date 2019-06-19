@@ -26,7 +26,7 @@ public class HistoryHoldPosition implements Serializable {
 	private int userId;
 	
 	@Column(name="stock_id")
-	private int stockId;//股票id
+	private String stockId;//股票id
 	
 	@Column(name="stock_name")
 	private String stockName;
@@ -63,10 +63,10 @@ public class HistoryHoldPosition implements Serializable {
 		this.userId = userId;
 	}
 	
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 

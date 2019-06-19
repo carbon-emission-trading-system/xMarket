@@ -56,7 +56,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		// TODO Auto-generated method stub
 		int userId = transactionOrder.getOwnerId();
 
-		int stockId = transactionOrder.getStockId();
+		String stockId = transactionOrder.getStockId();
 
 		// 从数据库读取对应数据
 		HoldPosition holdPosition = holdPositionRepository.findByUser_UserIdAndStock_StockId(userId, stockId);
@@ -128,7 +128,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			}
 			holdPosition.setUser(user);
 
-			Stock stock = stockRepository.findById(stockId).get();
+			Stock stock = stockRepository.findByStockId(stockId);
 			if (stock == null) {
 				throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标股票不存在！");
 			}
@@ -150,7 +150,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		// TODO Auto-generated method stub
 		int userId = order.getUser().getUserId();
 
-		int stockId = order.getStock().getStockId();
+		String stockId = order.getStock().getStockId();
 
 		LOGGER.info("用户id：" + userId + "  股票id:" + stockId + " 开始更新股票可用余额");
 
@@ -191,7 +191,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			//totalTodayProAndLos = 0;
 
 			for (HoldPosition h : list) {
-				int stockId = h.getStock().getStockId();
+				String stockId = h.getStock().getStockId();
 				int positionNumber = h.getPositionNumber();
 				double presentPrice = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice();// 现价--也就是市价
 				double marketValue = presentPrice * positionNumber;
@@ -202,7 +202,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			totalFunds = amountBalance + totalMarketValue;
 			for (HoldPosition h : list) {
 				HoldPositionVO holdPositionVO = new HoldPositionVO();
-				int stockId = h.getStock().getStockId();
+				String stockId = h.getStock().getStockId();
 				List<TransactionOrder> transactionOrderList = transactionOrderRepository.findByOwnerIdAndStockId(userId,
 						stockId);
 				double costPrice = h.getCostPrice();// 成本价
@@ -278,7 +278,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		double totalTodayProAndLos =0;
 		if(list!=null) {
 			for(HoldPosition h : list) {
-				int stockId = h.getStock().getStockId();
+				String stockId = h.getStock().getStockId();
 				int positionNumber = h.getPositionNumber(); 
 				double presentPrice = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice();//现价--也就是市价
 				double marketValue = presentPrice * positionNumber;
@@ -335,7 +335,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	public void updateHoldPositionByCancelOrder(TransactionOrder cancelOrder) throws BusinessException {
 		int userId = cancelOrder.getOwnerId();
 
-		int stockId = cancelOrder.getStockId();
+		String stockId = cancelOrder.getStockId();
 
 		// 从数据库读取对应数据
 		HoldPosition holdPosition = holdPositionRepository.findByUser_UserIdAndStock_StockId(userId, stockId);

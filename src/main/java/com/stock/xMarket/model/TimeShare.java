@@ -25,7 +25,7 @@ public class TimeShare {
 	
 	
 	@Column
-	private int stockId;
+	private String stockId;
 
 	@Column
 	private Date date;
@@ -59,10 +59,10 @@ public class TimeShare {
 		this.date = date;
 	}
 
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 	public Time getRealTime() {

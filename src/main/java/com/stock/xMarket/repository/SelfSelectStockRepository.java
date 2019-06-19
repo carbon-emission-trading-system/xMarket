@@ -13,5 +13,5 @@ public interface SelfSelectStockRepository extends JpaRepository<SelfSelectStock
 
 	List<SelfSelectStock> findByUserId(int userId);
 
-	SelfSelectStock findByUserIdAndStockId(int userId,int stockId);
+	SelfSelectStock findByUserIdAndStockId(int userId,String stockId);
 }

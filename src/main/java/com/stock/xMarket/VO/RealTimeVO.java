@@ -16,7 +16,7 @@ public class RealTimeVO implements Serializable{
 
 	
 	
-	private int stockId;
+	private String stockId;
 	private String stockName;
 	private double lowestPrice;//最低价
 	private double lastTradePrice; //最新成交价
@@ -87,14 +87,14 @@ public class RealTimeVO implements Serializable{
 
 
 
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
 
 
 
 
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 
@@ -402,7 +402,7 @@ public class RealTimeVO implements Serializable{
 
 
 
-	public RealTimeVO(int stockId) {
+	public RealTimeVO(String stockId) {
 		// TODO Auto-generated constructor stub
 		
 		this.stockId = stockId;

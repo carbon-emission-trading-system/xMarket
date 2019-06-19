@@ -30,7 +30,7 @@ public class TradeOrder {
 	@Column
 	private long tradeOrderId;
 	@Column
-	private int stockId;
+	private String stockId;
 	@Column
 	private long buyOrderId;
 	@Column
@@ -66,7 +66,7 @@ public class TradeOrder {
 	
 
 
-	public TradeOrder(long tradeOrderId, int stockId, long buyOrderId, long sellOrderId, boolean sellPoint,
+	public TradeOrder(long tradeOrderId, String stockId, long buyOrderId, long sellOrderId, boolean sellPoint,
 			boolean buyPoint, Time time, Date date, double tradePrice, int exchangeAmount, boolean tradeType,
 			double totalExchangeMoney, int sellerId, int buyerId, int tradeMarket) {
 		super();
@@ -95,11 +95,11 @@ public class TradeOrder {
 		this.tradeMarket = tradeMarket;
 	}
 
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
 
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 

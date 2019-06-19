@@ -28,7 +28,7 @@ public class Stock implements Serializable{
 	
 	@Id
 	@Column(name="stock_id")
-	private int stockId;
+	private String stockId;
 	
 	@Column(name="stock_name")
 	private String stockName;
@@ -55,7 +55,7 @@ public class Stock implements Serializable{
 	
 	
 	
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
 
@@ -67,7 +67,7 @@ public class Stock implements Serializable{
 		this.bookValue = bookValue;
 	}
 
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 

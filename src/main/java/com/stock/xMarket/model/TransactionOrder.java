@@ -30,7 +30,7 @@ public class TransactionOrder implements Serializable{
 	private long transactionOrderId;
 	
 	@Column(name="stock_id")
-	private int stockId;
+	private String stockId;
 	
 	@Column(name="stock_name")
 	private String stockName;
@@ -86,7 +86,7 @@ public class TransactionOrder implements Serializable{
 	
 	
 	
-	public TransactionOrder(long transactionOrderId, int stockId, String stockName, int type, long orderId, int ownerId,
+	public TransactionOrder(long transactionOrderId, String stockId, String stockName, int type, long orderId, int ownerId,
 			Time time, Date date, double tradePrice, int exchangeAmount, Boolean tradeType, double serviceTax,
 			double stampTax, double otherFee, double actualAmount, int tradeMarket, int stockBalance, int cancelNumber,
 			double totalExchangeMoney) {
@@ -153,11 +153,11 @@ public class TransactionOrder implements Serializable{
 		this.orderId = orderId;
 	}
 
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
 
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 

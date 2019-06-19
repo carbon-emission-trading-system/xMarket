@@ -104,7 +104,7 @@ public class TimeShareServiceImpl implements TimeShareService {
 		List<RealTimeVO> realTimeList = realTimeService.finalRealTime(list1, list2);
 		// TODO Auto-generated method stub
 		for(RealTimeVO realTime:realTimeList) {
-			int stockID=realTime.getStockId();
+			String stockID=realTime.getStockId();
 			TimeShareVO timeShareVO =new TimeShareVO();
 			BeanUtils.copyProperties(realTime, timeShareVO);
 			timeShareVO.setDate(new Date(System.currentTimeMillis()));

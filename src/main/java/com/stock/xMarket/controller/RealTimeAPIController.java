@@ -49,7 +49,7 @@ public class RealTimeAPIController extends BaseApiController{
 	
 	
 	@RequestMapping(value = "/firstTimeSharingDisplay")
-	public CommonReturnType firstTimeShareDisplay(@RequestParam Integer stockId) {
+	public CommonReturnType firstTimeShareDisplay(@RequestParam String stockId) {
 		
 		Date nowDate=new Date(System.currentTimeMillis());
 		
@@ -74,7 +74,7 @@ public class RealTimeAPIController extends BaseApiController{
 
 	
 	@RequestMapping(value = "/isSelfSelectStock")
-	public CommonReturnType isSelfSelectStock(@RequestParam Integer stockId,@RequestParam Integer userId) {
+	public CommonReturnType isSelfSelectStock(@RequestParam String stockId,@RequestParam Integer userId) {
 		
 		if(selfSelectStockService.isSelected(stockId,userId))
 			return success(true);
@@ -85,7 +85,7 @@ public class RealTimeAPIController extends BaseApiController{
 	
 	//界面中某只个股点进去 展示个股的实时信息
 	@RequestMapping(value = "/realTimeInfo")
-	public CommonReturnType findRealTime(@RequestParam(value = "stockId") int stockId) {
+	public CommonReturnType findRealTime(@RequestParam(value = "stockId") String stockId) {
 		
 		return success(realTimeService.findRealTime(stockId));
 	}
@@ -104,7 +104,7 @@ public class RealTimeAPIController extends BaseApiController{
 		
 	//用户删除自选股
 	@RequestMapping(value = "/deleteSelfSelectStock")
-	public CommonReturnType deleteSelfSelectStock(@RequestParam(value = "userId") int userId,@RequestParam(value = "stockId") int stockId) {
+	public CommonReturnType deleteSelfSelectStock(@RequestParam(value = "userId") int userId,@RequestParam(value = "stockId") String stockId) {
 		SelfSelectStock sss = selfSelectStockService.findByUserIdAndStockId(userId,stockId);
 		selfSelectStockService.deleteSelfSelectStockFromDb(sss);
 		return success();

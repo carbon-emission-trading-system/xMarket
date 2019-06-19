@@ -8,7 +8,7 @@ public class RealTime2 implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private int stockId;
+	private String stockId;
 	private String stockName;
 	private String stockPinyin;
 	private double earningsPerShare; //每股收益
@@ -19,7 +19,7 @@ public class RealTime2 implements Serializable {
 	
 	public RealTime2() {
 	}
-	public RealTime2(int stockId, String stockName, double earningsPerShare, double yesterdayOpenPrice,
+	public RealTime2(String stockId, String stockName, double earningsPerShare, double yesterdayOpenPrice,
 			 long totalShareCapital, double bookValue, int tradeMarket) {
 		super();
 		this.stockId = stockId;
@@ -31,7 +31,7 @@ public class RealTime2 implements Serializable {
 		this.tradeMarket = tradeMarket;
 		
 	}
-	public RealTime2(int stockId) {
+	public RealTime2(String stockId) {
 		// TODO Auto-generated constructor stub
 		this.stockId = stockId;
 	}
@@ -44,10 +44,10 @@ public class RealTime2 implements Serializable {
 		this.tradeMarket=stock.getTradeMarket();
 		this.stockPinyin=stock.getStockPinyin();
 	}
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 	public String getStockName() {

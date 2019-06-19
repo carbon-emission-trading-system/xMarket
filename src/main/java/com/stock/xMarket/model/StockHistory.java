@@ -19,7 +19,7 @@ public class StockHistory implements Serializable{
 	private int stockHistory_Id;
 	
 	@Column
-	private int stockId;
+	private String stockId;
 	
 	@Column
 	private Date date;
@@ -42,10 +42,10 @@ public class StockHistory implements Serializable{
 	public void setStockHistory_Id(int stockHistory_Id) {
 		this.stockHistory_Id = stockHistory_Id;
 	}
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 	public Date getDate() {

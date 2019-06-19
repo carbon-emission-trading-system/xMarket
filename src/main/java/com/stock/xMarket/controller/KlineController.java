@@ -42,7 +42,7 @@ public class KlineController extends BaseApiController{
     KlineService klineService;
 
     @RequestMapping(value = "/KlineDiagramDisplay", method = RequestMethod.GET)
-    public CommonReturnType KlineDiagramDisplay(@RequestParam(name = "stockId")int stockId) throws BusinessException, ParseException {
+    public CommonReturnType KlineDiagramDisplay(@RequestParam(name = "stockId")String stockId) throws BusinessException, ParseException {
         logger.info("后端接收到建立K线图请求"+" 股票："+stockId);
         return CommonReturnType.success(klineService.createDayKLineDataVOList(stockHistoryRepository.findAllByStockIdOrderByDate(stockId)));
 

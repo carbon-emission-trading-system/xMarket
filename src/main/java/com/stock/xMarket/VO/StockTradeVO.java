@@ -1,7 +1,7 @@
 package com.stock.xMarket.VO;
 
 public class StockTradeVO {
-    private int stockId;//股票代码
+    private String stockId;//股票代码
     private String stockName;//股票名称
     private double balance;//用户资金
     private int tradeMarket;//交易所市场
@@ -9,11 +9,11 @@ public class StockTradeVO {
     private double availableNumber;//可用余额
     private double yesterdayClosePrice;//昨日收盘价
 
-    public int getStockId() {
+    public String getStockId() {
         return stockId;
     }
 
-    public void setStockId(int stockId) {
+    public void setStockId(String stockId) {
         this.stockId = stockId;
     }
 
