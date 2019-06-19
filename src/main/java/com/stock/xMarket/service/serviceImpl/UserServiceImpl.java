@@ -55,6 +55,23 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+	public void changeMailAddress(String MailAddress, int userId) {
+		User user = findByUserId(userId);
+		user.setEmail(MailAddress);
+		regist(user);
+	}
+
+	@Override
+	public Boolean validateLoginPassword(int userId, String loginPassword) {
+		User user = findByUserId(userId);
+		if (user.getLoginPassword().equals(MD5Util.inputToDb(loginPassword))){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	@Override
 	public void changeUserName(String userName,int userId){
 		User user = userRepository.findByUserId(userId);
 		user.setUsername(userName);

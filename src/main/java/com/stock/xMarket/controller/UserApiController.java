@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,11 +28,8 @@ import com.stock.xMarket.VO.UserVO;
 import com.stock.xMarket.model.User;
 import com.stock.xMarket.model.UserFund;
 import com.stock.xMarket.repository.UserFundRepository;
-import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.service.UserService;
 import com.stock.xMarket.util.*;
-
-import static com.stock.xMarket.response.CommonReturnType.*;
 
 
 @RestController
@@ -201,6 +197,28 @@ public class UserApiController extends BaseApiController {
 	}
 
 
+	@RequestMapping(value = "/validateLoginPassword",method = RequestMethod.POST)
+	public CommonReturnType validateLoginPassword(@RequestParam(value = "userId") int userId,
+											  @RequestParam(value = "loginPassword")  String loginPassword) throws BusinessException {
+		if (userService.validateLoginPassword(userId,loginPassword)){
+			return CommonReturnType.success();
+		}else {
+			throw new BusinessException(EmBusinessError.VALIDATION_ERROR,"密码错误");
+		}
+	}
+
+
+	@RequestMapping(value = "/changeMailAddress",method = RequestMethod.POST)
+	public CommonReturnType changeMailAddress(@RequestParam(value = "mailAdress") String mailAdress,
+											  @RequestParam(value = "userId") int userId,
+											  @RequestParam(value = "mailCode")  String mailCode,HttpSession session) throws BusinessException {
+		String sessionCode = (String) session.getAttribute("mailcode");
+		if (!StringUtils.equalsIgnoreCase(mailCode, sessionCode)) {
+			throw new BusinessException(EmBusinessError.VALIDATION_ERROR, "验证码错误");
+		}
+		userService.changeMailAddress(mailAdress,userId);
+		return CommonReturnType.success();
+	}
 
 	@RequestMapping(value = "/changePassword",method = RequestMethod.POST)
 	public CommonReturnType changePassword(@RequestParam(value = "oldPassword") String oldPassword,

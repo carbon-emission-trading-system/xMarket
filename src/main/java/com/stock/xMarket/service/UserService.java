@@ -27,4 +27,8 @@ public interface UserService {
 	User findByUserId(int userId);
 
 	void changeUserName(String userName,int userId);
+
+	void changeMailAddress(String MailAddress,int userId);
+
+	Boolean validateLoginPassword(int userId, String loginPassword);
 }
