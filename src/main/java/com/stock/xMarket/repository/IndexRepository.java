@@ -8,7 +8,7 @@ import com.stock.xMarket.model.Index;
 
 
 @Repository
-public interface IndexRepository extends JpaRepository<Index, Integer> {
+public interface IndexRepository extends JpaRepository<Index, String> {
 
         Index findByindexName(String indexName);
 
