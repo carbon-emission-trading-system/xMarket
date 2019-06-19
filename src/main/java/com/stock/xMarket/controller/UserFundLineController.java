@@ -19,7 +19,7 @@ public class UserFundLineController extends BaseApiController {
     final static Logger logger=LoggerFactory.getLogger(KlineController.class);
 
     @Autowired
-    UserFundLineService userFundLineService;
+    private UserFundLineService userFundLineService;
 
     @RequestMapping(value = "/userFundLineDisplay", method = RequestMethod.GET)
     public CommonReturnType KlineDiagramDisplay(@RequestParam(name = "userId")int userId) throws BusinessException, ParseException {

@@ -1,16 +1,17 @@
 package com.stock.xMarket.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 
 @Entity
 @Table
 public class UserFundHistory implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private int UserFundHistory_Id;
 
@@ -21,7 +22,7 @@ public class UserFundHistory implements Serializable {
     private Date date;
 
     @Column
-    private double totalMarketValue;
+    private double totalFunds;
 
     public int getUserFundHistory_Id() {
         return UserFundHistory_Id;
@@ -47,11 +48,11 @@ public class UserFundHistory implements Serializable {
         this.date = date;
     }
 
-    public double getTotalMarketValue() {
-        return totalMarketValue;
+    public double getTotalFunds() {
+        return totalFunds;
     }
 
-    public void setTotalMarketValue(double totalMarketValue) {
-        this.totalMarketValue = totalMarketValue;
+    public void setTotalFunds(double totalFunds) {
+        this.totalFunds = totalFunds;
     }
 }

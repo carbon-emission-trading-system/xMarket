@@ -16,7 +16,7 @@ public interface SystemService {
 	
 	public void unfreeze();
 
-	
+	void addUserFundHistory();
 	
 	
 }

@@ -21,7 +21,7 @@ public class UserFundLineServiceImpl implements UserFundLineService {
     final static Logger logger=LoggerFactory.getLogger(KlineController.class);
 
     @Autowired
-    UserFundHistoryRepository userFundHistoryRepository;
+    private UserFundHistoryRepository userFundHistoryRepository;
 
     @Override
     public List<UserFundHistoryVO> createUserFundLine(int userId) throws BusinessException {

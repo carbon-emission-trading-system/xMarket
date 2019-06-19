@@ -9,16 +9,16 @@ public class UserFundHistoryVO {
 
     private Date date;
 
-    private double totalMarketValue;
+    private double totalFunds;
 
     public UserFundHistoryVO() {
     }
 
-    public UserFundHistoryVO(int userFundHistory_Id, int userId, Date date, double totalMarketValue) {
+    public UserFundHistoryVO(int userFundHistory_Id, int userId, Date date, double totalFunds) {
         UserFundHistory_Id = userFundHistory_Id;
         this.userId = userId;
         this.date = date;
-        this.totalMarketValue = totalMarketValue;
+        this.totalFunds = totalFunds;
     }
 
     public int getUserFundHistory_Id() {
@@ -45,11 +45,11 @@ public class UserFundHistoryVO {
         this.date = date;
     }
 
-    public double getTotalMarketValue() {
-        return totalMarketValue;
+    public double getTotalFunds() {
+        return totalFunds;
     }
 
-    public void setTotalMarketValue(double totalMarketValue) {
-        this.totalMarketValue = totalMarketValue;
+    public void setTotalFunds(double totalFunds) {
+        this.totalFunds = totalFunds;
     }
 }

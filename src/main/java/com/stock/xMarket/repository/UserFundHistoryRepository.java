@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserFundHistoryRepository extends JpaRepository<UserFundRepository, Integer> {
+public interface UserFundHistoryRepository extends JpaRepository<UserFundHistory, Integer> {
+
     List<UserFundHistory> findByUserIdOrderByDate(int userId);
+
 }
