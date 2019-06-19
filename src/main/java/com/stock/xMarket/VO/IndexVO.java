@@ -21,7 +21,7 @@ public class IndexVO implements Serializable {
 
 	
 
-	private int indexId;
+	private String indexId;
 	
 	
 	private String indexName;
@@ -69,11 +69,11 @@ public class IndexVO implements Serializable {
 		BeanUtils.copyProperties(index, this);
 	}
 
-	public int getIndexId() {
+	public String getIndexId() {
 		return indexId;
 	}
 
-	public void setIndexId(int indexId) {
+	public void setIndexId(String indexId) {
 		this.indexId = indexId;
 	}
 

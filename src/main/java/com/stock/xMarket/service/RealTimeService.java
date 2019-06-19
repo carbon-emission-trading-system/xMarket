@@ -14,7 +14,7 @@ public interface RealTimeService {
 	void sendRealTime();
 
 	//界面中某只个股点进去 展示个股的实时信息
-	RealTimeVO findRealTime(int stockId);
+	RealTimeVO findRealTime(String stockId);
 
 	List<RealTimeVO> finalRealTime(List<RealTime1> list1, List<RealTime2> list2);
 

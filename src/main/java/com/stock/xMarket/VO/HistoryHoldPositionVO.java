@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class HistoryHoldPositionVO {
 
-	private int stockId;
+	private String stockId;
 	private String stockName;
 	private Date buildPositionDate;
 	private Date clearPositionDate;
@@ -13,7 +13,7 @@ public class HistoryHoldPositionVO {
 	//private double totalPurchaseAmount;
 	private double profitAndLossRatio;
 	
-	public HistoryHoldPositionVO(int stockId, String stockName, Date buildPositionDate, Date clearPositionDate,
+	public HistoryHoldPositionVO(String stockId, String stockName, Date buildPositionDate, Date clearPositionDate,
 			int stockHoldDay, double totalProfitAndLoss, double profitAndLossRatio) {
 		super();
 		this.stockId = stockId;
@@ -28,10 +28,10 @@ public class HistoryHoldPositionVO {
 	public HistoryHoldPositionVO() {
 	}
 	
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 	public String getStockName() {

@@ -6,7 +6,7 @@ public class HoldPositionVO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private int stockId;
+	private String stockId;
 	private String stockName;
 	private double presentPrice; //现价 就是市价
 	private double costPrice; //成本价---- 
@@ -26,10 +26,10 @@ public class HoldPositionVO implements Serializable {
 	public void setTodayProfitAndLoss(double todayProfitAndLoss) {
 		this.todayProfitAndLoss = todayProfitAndLoss;
 	}
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 	public String getStockName() {

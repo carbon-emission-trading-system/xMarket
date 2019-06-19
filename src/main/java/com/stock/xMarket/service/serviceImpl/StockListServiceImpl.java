@@ -67,7 +67,7 @@ public class StockListServiceImpl implements StockListService {
 		List<RealTime1> realTime1List = new ArrayList<>();
 		for (SelfSelectStock s : selfSelectStockList) {
 
-			String key = String.valueOf(s.getStockId());
+			String key = s.getStockId();
 			if (realTime1Redis.hasKey(key)) {
 				RealTime1 realTime1 = realTime1Redis.get(key);
 				realTime1List.add(realTime1);
@@ -99,7 +99,7 @@ public class StockListServiceImpl implements StockListService {
 	
 	@Override
     public List<StockListVO> finalList(List<RealTime1> realTime1List,List<RealTime2> realTime2List,List<StockListVO> stockListVOList) {
-    	Map<Integer, RealTime2> map = realTime2List.stream().collect(Collectors.toMap(RealTime2::getStockId, a -> a,(k1,k2)->k1));
+    	Map<String, RealTime2> map = realTime2List.stream().collect(Collectors.toMap(RealTime2::getStockId, a -> a,(k1,k2)->k1));
 
     	for(RealTime1 rt : realTime1List) {
 

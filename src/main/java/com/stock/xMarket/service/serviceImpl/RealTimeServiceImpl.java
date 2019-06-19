@@ -68,7 +68,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 		realTimeList = finalRealTime(list1,list2);
 		// TODO Auto-generated method stub
 		for (RealTimeVO realTime : realTimeList) {
-			int stockID = realTime.getStockId();
+			String stockID = realTime.getStockId();
 			rabbitTemplate.convertAndSend("realTimeExchange", "stock.SZSE." + stockID, JSON.toJSONString(realTime));
 		}
 
@@ -76,7 +76,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 	
 	//界面中某只个股点进去 展示个股的实时信息
 	@Override
-	public RealTimeVO  findRealTime(int stockId) {
+	public RealTimeVO  findRealTime(String stockId) {
 		
 		List<RealTime1> list1 = new ArrayList<>();
 		list1.add(realTime1Redis.get(String.valueOf(stockId)) );
@@ -91,7 +91,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 	
 	@Override
     public List<RealTimeVO> finalRealTime(List<RealTime1> realTime1List,List<RealTime2> realTime2List) {
-    	Map<Integer, RealTime2> map = realTime2List.stream().collect(Collectors.toMap(RealTime2::getStockId, a -> a,(k1,k2)->k1));
+    	Map<String, RealTime2> map = realTime2List.stream().collect(Collectors.toMap(RealTime2::getStockId, a -> a,(k1,k2)->k1));
     	List<RealTimeVO> realTimeVOList=new ArrayList<>();
     	for(RealTime1 rt : realTime1List) {
     		

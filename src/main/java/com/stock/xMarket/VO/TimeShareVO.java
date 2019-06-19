@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class TimeShareVO {
-	private int stockId;
+	private String stockId;
 	private Time realTime;
 	private double lastTradePrice;
 	private double averagePrice;
@@ -28,10 +28,10 @@ public class TimeShareVO {
 		this.date = date;
 	}
 	
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 	public Time getRealTime() {

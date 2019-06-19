@@ -8,7 +8,7 @@ public class TransactionOrderVO {
 	
 	private Date date;//成交日期
 	private Date time;//成交时间
-	private int stockId;
+	private String stockId;
 	private String stockName;
 	private int type;//买入卖出  true=买入
 	private double tradePrice;//成交价
@@ -37,7 +37,7 @@ public class TransactionOrderVO {
 
 
 
-	public TransactionOrderVO(Date date, Date time, int stockId, String stockName, int type, double tradePrice,
+	public TransactionOrderVO(Date date, Date time, String stockId, String stockName, int type, double tradePrice,
 			int exchangeAmount, double totalExchangeMoney, int stockBalance, long orderId, long transactionOrderId,
 			double serviceTax, double stampTax, double otherFee, double actualAmount, int tradeMarket,
 			int cancelNumber) {
@@ -79,11 +79,11 @@ public class TransactionOrderVO {
 		this.time = time;
 	}
 	
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
 
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 

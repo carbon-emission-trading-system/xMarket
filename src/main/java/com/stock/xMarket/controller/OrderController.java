@@ -215,7 +215,7 @@ public class OrderController extends BaseApiController{
     }
 
     @RequestMapping(value = "/QueryStockInformation", method = RequestMethod.GET)
-    public CommonReturnType QueryStockInformation(@RequestParam(name = "stockId")int stockId, @RequestParam(name = "userId")int userId) throws BusinessException {
+    public CommonReturnType QueryStockInformation(@RequestParam(name = "stockId")String stockId, @RequestParam(name = "userId")int userId) throws BusinessException {
         logger.info("后端接收到查询请求"+"查询股票"+stockId+"查询用户"+userId);
         RealTime1 realTime1 = realTime1Redis.get(String.valueOf(stockId));
         if (realTime1 == null){
@@ -225,7 +225,7 @@ public class OrderController extends BaseApiController{
         if (userFund == null){
             throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"执行交易的用户不存在！");
         }
-        Stock stock = stockRepository.findById(stockId).get();
+        Stock stock = stockRepository.findByStockId(stockId);//stockRepository.findById(stockId).get()
         if (stock == null){
             throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"目标股票不存在！");
         }

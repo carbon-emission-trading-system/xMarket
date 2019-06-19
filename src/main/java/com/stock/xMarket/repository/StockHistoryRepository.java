@@ -10,5 +10,5 @@ import java.util.List;
 
 @Repository
 public interface StockHistoryRepository extends JpaRepository<StockHistory,Integer>{
-        List<StockHistory> findAllByStockIdOrderByDate(int stockId);
+        List<StockHistory> findAllByStockIdOrderByDate(String stockId);
 }

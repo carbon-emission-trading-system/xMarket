@@ -109,7 +109,7 @@ public class UserFundServiceImpl implements UserFundService {
 	
 	public double frozenAmountCaculator(Order order) {
 		double frozenAmount=0;
-		int stockId = order.getStock().getStockId();
+		String stockId = order.getStock().getStockId();
 		Time time = order.getTime();
 		if(order.getTradeStraregy()>0) {
 			if(OpeningUtil.isOpening(time)) {
