@@ -8,6 +8,6 @@ import com.stock.xMarket.model.StockHistory;
 
 public interface KlineService {
 
-	 public List<KLineDataVO> createDayKLineDataVOList(List<StockHistory> stockHistoriesList) throws BusinessException;
+	 public List<KLineDataVO> createDayKLineDataVOList(String stockId) throws BusinessException;
 	
 }
