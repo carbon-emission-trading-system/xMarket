@@ -1,5 +1,6 @@
 package com.stock.xMarket.service.serviceImpl;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +10,10 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import com.stock.xMarket.VO.UserFundVO;
+import com.stock.xMarket.model.*;
+import com.stock.xMarket.repository.*;
+import com.stock.xMarket.service.HoldPositionService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,30 +24,20 @@ import org.springframework.scheduling.annotation.Scheduled;
 import com.alibaba.fastjson.JSON;
 import com.stock.xMarket.VO.IndexVO;
 import com.stock.xMarket.VO.RealTimeVO;
-import com.stock.xMarket.model.HoldPosition;
-import com.stock.xMarket.model.Index;
-import com.stock.xMarket.model.Order;
-import com.stock.xMarket.model.RealTime1;
-import com.stock.xMarket.model.RealTime2;
-import com.stock.xMarket.model.Stock;
-import com.stock.xMarket.model.StockHistory;
 import com.stock.xMarket.redis.IndexRedis;
 import com.stock.xMarket.redis.OrderRedis;
 import com.stock.xMarket.redis.RealTime2Redis;
 import com.stock.xMarket.redis.TimeShareRedis;
 import com.stock.xMarket.redis.RealTime1Redis;
-import com.stock.xMarket.repository.HoldPositionRepository;
-import com.stock.xMarket.repository.IndexRepository;
-import com.stock.xMarket.repository.OrderRepository;
-import com.stock.xMarket.repository.StockHistoryRepository;
-import com.stock.xMarket.repository.StockRepository;
-import com.stock.xMarket.repository.UserFundRepository;
 import com.stock.xMarket.service.MarchService;
 import com.stock.xMarket.service.SystemService;
 import com.stock.xMarket.service.RealTimeService;
 
 @Service
 public class SystemServiceImpl implements SystemService {
+
+	@Autowired
+	private UserRepository userRepository;
 
 	@Autowired
 	private RealTime2Redis realTime2Redis;
@@ -71,12 +66,17 @@ public class SystemServiceImpl implements SystemService {
 	@Autowired
 	private HoldPositionRepository holdPositionRepository;
 
-	
+	@Autowired
+	private UserFundHistoryRepository userFundHistoryRepository;
+
 	@Autowired
 	private RealTimeService realTimeService;
 	
 	@Autowired
 	private IndexRepository indexRepository;
+
+	@Autowired
+	private HoldPositionService holdPositionService;
 	
 	@Autowired
 	RabbitTemplate rabbitTemplate;
@@ -182,6 +182,19 @@ public class SystemServiceImpl implements SystemService {
 		}
 	}
 
+	@Override
+	@Scheduled(cron = "0 00 00 ? * MON-FRI")
+	public void addUserFundHistory() {
+		List<User> userList = userRepository.findAll();
+		Date date = new Date(System.currentTimeMillis());
+		for (User user:userList){
+			UserFundVO userFundVO = holdPositionService.getFunds(user.getUserId());
+			UserFundHistory userFundHistory = new UserFundHistory();
+			userFundHistory.setUserId(user.getUserId());
+			userFundHistory.setDate(date);
+			userFundHistory.setTotalFunds(userFundVO.getTotalFunds());
+			userFundHistoryRepository.saveAndFlush(userFundHistory);
+		}
 
-	
+	}
 }
