@@ -111,7 +111,7 @@ public class SystemServiceImpl implements SystemService {
 			IndexVO indexVO=new IndexVO(index);
 			
 			indexRedis.put(key,indexVO, -1);
-
+			timeShareRedis.put(key, 0, -1);
 		}
 	}
 

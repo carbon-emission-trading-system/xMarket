@@ -53,6 +53,14 @@ public class IndexVO implements Serializable {
 	
 	private double yesterdayCloseIndex;
 	
+	private int increaseStocks;
+	
+	private int decreaseStocks;
+	
+	private int flatStocks;
+	
+	private double marketCapitalization;
+	
 	public IndexVO() {
 	}
 
@@ -179,6 +187,38 @@ public class IndexVO implements Serializable {
 
 	public void setYesterdayCloseIndex(double yesterdayCloseIndex) {
 		this.yesterdayCloseIndex = yesterdayCloseIndex;
+	}
+
+	public int getIncreaseStocks() {
+		return increaseStocks;
+	}
+
+	public void setIncreaseStocks(int increaseStocks) {
+		this.increaseStocks = increaseStocks;
+	}
+
+	public int getDecreaseStocks() {
+		return decreaseStocks;
+	}
+
+	public void setDecreaseStocks(int decreaseStocks) {
+		this.decreaseStocks = decreaseStocks;
+	}
+
+	public int getFlatStocks() {
+		return flatStocks;
+	}
+
+	public void setFlatStocks(int flatStocks) {
+		this.flatStocks = flatStocks;
+	}
+
+	public double getMarketCapitalization() {
+		return marketCapitalization;
+	}
+
+	public void setMarketCapitalization(double marketCapitalization) {
+		this.marketCapitalization = marketCapitalization;
 	}
 	
 	

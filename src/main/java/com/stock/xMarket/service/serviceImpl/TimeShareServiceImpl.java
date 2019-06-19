@@ -18,18 +18,21 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.stock.xMarket.VO.IndexVO;
 import com.stock.xMarket.VO.KLineDataVO;
 import com.stock.xMarket.VO.RealTimeVO;
 import com.stock.xMarket.VO.TimeShareVO;
 import com.stock.xMarket.config.RabbitMqConfig;
+import com.stock.xMarket.model.Index;
 import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.RealTime2;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.TimeShare;
-
+import com.stock.xMarket.redis.IndexRedis;
 import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.redis.TimeShareRedis;
 import com.stock.xMarket.redis.RealTime2Redis;
+import com.stock.xMarket.repository.IndexRepository;
 import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.repository.TimeShareRepository;
 import com.stock.xMarket.repository.UserRepository;
@@ -67,7 +70,11 @@ public class TimeShareServiceImpl implements TimeShareService {
 	@Autowired
 	public StockRepository stockRepository;
 	
-
+	@Autowired
+	private IndexRepository indexRepository;
+	
+	@Autowired
+	private IndexRedis indexRedis;
 	
 	  /*	 * 获得的是double类型	 * 保留两位小数        */	
     public double keepDecimal(double num){		
@@ -118,6 +125,29 @@ public class TimeShareServiceImpl implements TimeShareService {
 		
 		
 		
+		
+		List<IndexVO> indexVOList=indexRedis.getAll();
+		
+		for (IndexVO index : indexVOList) {
+			String key = String.valueOf(index.getIndexId());
+			
+			TimeShareVO timeShareVO =new TimeShareVO();
+			timeShareVO.setStockId(index.getIndexId());
+			timeShareVO.setDate(new Date(System.currentTimeMillis()));
+			timeShareVO.setRealTime(new Time(System.currentTimeMillis()));
+			
+			if(index.getVolume()!=0&&index.getTradeAmount()!=0) {
+				timeShareVO.setAveragePrice(keepDecimal(index.getTradeAmount()/index.getVolume()));
+				timeShareVO.setVolume(index.getVolume()-timeShareRedis.get(key));
+			}
+			timeShareRedis.put(key, index.getVolume(), -1);
+			
+			timeShareList.add(timeShareVO);
+			
+			 JSON.DEFFAULT_DATE_FORMAT = "HH:mm";
+			
+			rabbitTemplate.convertAndSend("timeShareExchange","index."+key,JSON.toJSONString(timeShareVO,SerializerFeature.WriteDateUseDateFormat));
+		}
 		
 		
 		
