@@ -59,10 +59,15 @@ public class IndexServiceImpl implements IndexService{
 		
 		
 		for(IndexVO indexVO:indexVOList) {
+		
+		String key=String.valueOf(indexVO.getIndexId());
 			
 		int totalVolume=0;
 		double totalTradeAmount=0;
 		double totalMarketCapitalization=0;
+		int increases=0;
+		int decrease=0;
+		int flats=0;
 		for (RealTimeVO realTime : realTimeList) {
 			if(realTime.getTradeMarket()==indexVO.getTradeMarket()) {
 
@@ -70,6 +75,15 @@ public class IndexServiceImpl implements IndexService{
 				totalMarketCapitalization+=realTime.getTotalMarketCapitalization();
 				totalVolume+=realTime.getVolume();
 				totalTradeAmount+=realTime.getTradeAmount();
+				
+				if(realTime.getIncrease()>0)
+					increases++;
+				else if(realTime.getIncrease()<0)
+					decrease++;
+				else
+					flats++;
+					
+					
 				
 			}
 		}
@@ -82,6 +96,8 @@ public class IndexServiceImpl implements IndexService{
 			
 			indexVO.setVolume(totalVolume);
 			
+			
+			
 			if(nowIndex>indexVO.getHighestIndex())
 				indexVO.setHighestIndex(nowIndex);
 			if(nowIndex<indexVO.getLowestIndex())
@@ -90,6 +106,15 @@ public class IndexServiceImpl implements IndexService{
 			indexVO.setIncrease(indexVO.getLastIndex()-indexVO.getYesterdayCloseIndex());
 			indexVO.setUpsAndDowns((indexVO.getLastIndex()-indexVO.getYesterdayCloseIndex())/indexVO.getYesterdayCloseIndex());
 			
+			indexVO.setIncreaseStocks(increases); 
+
+			indexVO.setDecreaseStocks(decrease);
+			
+			indexVO.setFlatStocks(flats);
+			
+			indexVO.setMarketCapitalization(totalMarketCapitalization);
+			
+			indexRedis.put(key, indexVO, -1);
 			
 			rabbitTemplate.convertAndSend("realTimeExchange", "index." + indexVO.getIndexId(), JSON.toJSONString(indexVO));
 			
