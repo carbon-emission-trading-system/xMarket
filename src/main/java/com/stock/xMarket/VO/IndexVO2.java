@@ -12,9 +12,13 @@ public class IndexVO2 implements Serializable{
 	
 	private int indexId;
 	
+	private String indexName;
+	
 	private double lastIndex; //最新成交价
 	
 	private double yesterdayCloseIndex;
+	
+	
 
 	public int getIndexId() {
 		return indexId;
@@ -22,6 +26,14 @@ public class IndexVO2 implements Serializable{
 
 	public void setIndexId(int indexId) {
 		this.indexId = indexId;
+	}
+
+	public String getIndexName() {
+		return indexName;
+	}
+
+	public void setIndexName(String indexName) {
+		this.indexName = indexName;
 	}
 
 	public double getLastIndex() {

@@ -44,6 +44,12 @@ public class IndexServiceImpl implements IndexService{
 	private RealTimeService realTimeService;
 	
 	
+	
+	
+	
+	
+	
+	
 	@Scheduled(fixedRate = 10000)
 	public void sendIndex() {
 		//updateRealTime();
@@ -143,6 +149,15 @@ public class IndexServiceImpl implements IndexService{
 		}
 		
 		return indexVO2List;
+	}
+
+
+	@Override
+	public IndexVO indexInfo(int indexId) {
+		// TODO Auto-generated method stub
+		
+		IndexVO indexVO=indexRedis.get(String.valueOf(indexId));
+		return indexVO;
 	}
 		
 	}
