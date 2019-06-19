@@ -6,12 +6,14 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.stock.xMarket.VO.IndexVO;
+import com.stock.xMarket.VO.IndexVO2;
 import com.stock.xMarket.VO.RealTimeVO;
 import com.stock.xMarket.model.Index;
 import com.stock.xMarket.model.RealTime1;
@@ -123,6 +125,24 @@ public class IndexServiceImpl implements IndexService{
 		
 		
 		
+	}
+
+
+	@Override
+	public ArrayList<IndexVO2> getIndex() {
+		// TODO Auto-generated method stub
+		List<IndexVO> indexVOList=indexRedis.getAll();
+		ArrayList<IndexVO2> indexVO2List=new ArrayList<>();
+		
+		
+		for(IndexVO indexVO:indexVOList) {
+			IndexVO2 indexVO2=new IndexVO2();
+			BeanUtils.copyProperties(indexVO, indexVO2);
+			indexVO2List.add(indexVO2);
+			
+		}
+		
+		return indexVO2List;
 	}
 		
 	}
