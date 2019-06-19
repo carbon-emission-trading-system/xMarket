@@ -12,10 +12,15 @@ import com.stock.xMarket.service.UserFundLineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
+@Service
+@Transactional
 public class UserFundLineServiceImpl implements UserFundLineService {
 
     final static Logger logger=LoggerFactory.getLogger(KlineController.class);
