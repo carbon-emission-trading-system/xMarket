@@ -11,7 +11,7 @@ public class Index {
 
 
 	@Id
-	private int indexId;
+	private String indexId;
 	
 	@Column
 	private String indexName;
@@ -30,11 +30,11 @@ public class Index {
 	@Column
 	private int tradeMarket;//交易市场   market
 
-	public int getIndexId() {
+	public String getIndexId() {
 		return indexId;
 	}
 
-	public void setIndexId(int indexId) {
+	public void setIndexId(String indexId) {
 		this.indexId = indexId;
 	}
 

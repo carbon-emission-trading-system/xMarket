@@ -193,7 +193,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			for (HoldPosition h : list) {
 				String stockId = h.getStock().getStockId();
 				int positionNumber = h.getPositionNumber();
-				double presentPrice = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice();// 现价--也就是市价
+				double presentPrice = realTime1Redis.get(stockId).getLastTradePrice();// 现价--也就是市价
 				double marketValue = presentPrice * positionNumber;
 				totalMarketValue += marketValue;
 			}
@@ -207,7 +207,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 						stockId);
 				double costPrice = h.getCostPrice();// 成本价
 				int positionNumber = h.getPositionNumber();
-				double presentPrice = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice();// 现价--也就是市价
+				double presentPrice = realTime1Redis.get(stockId).getLastTradePrice();// 现价--也就是市价
 				// 总盈亏 = 现价 *股票余额 - 成本价 * 股票余额 = （现价 - 成本价）* 股票余额
 				double totalProfitAndLoss = (presentPrice - costPrice) * positionNumber;
 				// 市值 = 现价*股票余额
@@ -218,7 +218,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				double totalBuyActualAmount = 0;
 				Date date = new Date();
 				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				double yesterdayClosePrice = realTime1Redis.get(String.valueOf(stockId)).getYesterdayClosePrice();
+				double yesterdayClosePrice = realTime1Redis.get(stockId).getYesterdayClosePrice();
 				for (TransactionOrder transactionOrder : transactionOrderList) {
 
 					if (String.valueOf(transactionOrder.getDate()).equals(df.format(date))) {
@@ -280,7 +280,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			for(HoldPosition h : list) {
 				String stockId = h.getStock().getStockId();
 				int positionNumber = h.getPositionNumber(); 
-				double presentPrice = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice();//现价--也就是市价
+				double presentPrice = realTime1Redis.get(stockId).getLastTradePrice();//现价--也就是市价
 				double marketValue = presentPrice * positionNumber;
 				double totalProfitAndLoss = (presentPrice -  h.getCostPrice())*positionNumber;
 				
@@ -288,7 +288,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				double totalBuyActualAmount = 0;
 				Date date = new Date();
 				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-				double yesterdayClosePrice = realTime1Redis.get(String.valueOf(stockId)).getYesterdayClosePrice();
+				double yesterdayClosePrice = realTime1Redis.get(stockId).getYesterdayClosePrice();
 				List<TransactionOrder> transactionOrderList = transactionOrderRepository.findByOwnerIdAndStockId(userId,stockId);
 				for(TransactionOrder transactionOrder : transactionOrderList) {
 					

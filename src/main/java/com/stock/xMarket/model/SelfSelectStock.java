@@ -20,7 +20,7 @@ public class SelfSelectStock {
 	private int userId; //用户id
 	
 	@Column(name="stock_id")
-	private int stockId; //股票id
+	private String stockId; //股票id
 	
 	public int getSelfSelectStockId() {
 		return selfSelectStockId;
@@ -34,10 +34,10 @@ public class SelfSelectStock {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	public int getStockId() {
+	public String getStockId() {
 		return stockId;
 	}
-	public void setStockId(int stockId) {
+	public void setStockId(String stockId) {
 		this.stockId = stockId;
 	}
 	

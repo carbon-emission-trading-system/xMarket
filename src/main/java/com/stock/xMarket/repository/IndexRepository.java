@@ -12,5 +12,5 @@ public interface IndexRepository extends JpaRepository<Index, Integer> {
 
         Index findByindexName(String indexName);
 
-		Index findByindexId(int indexId);
+		Index findByindexId(String indexId);
 }

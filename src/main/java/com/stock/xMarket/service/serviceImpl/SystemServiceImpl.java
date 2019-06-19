@@ -91,7 +91,7 @@ public class SystemServiceImpl implements SystemService {
 		stockList = stockRepository.findAll();
 
 		for (Stock stock : stockList) {
-			String key = String.valueOf(stock.getStockId());
+			String key = stock.getStockId();
 			RealTime2 realTime2 = new RealTime2(stock);
 			// double ytdClosePrice=realTimeRedis.get(key).getLatestPrice();
 			// realTimeVO.setYesterdayClosePrice(ytdClosePrice);
@@ -106,7 +106,7 @@ public class SystemServiceImpl implements SystemService {
 		indexList = indexRepository.findAll();
 		
 		for (Index index : indexList) {
-			String key = String.valueOf(index.getIndexId());
+			String key = index.getIndexId();
 		
 			IndexVO indexVO=new IndexVO(index);
 			
@@ -136,7 +136,7 @@ public class SystemServiceImpl implements SystemService {
 		// TODO Auto-generated method stub
 
 		for (RealTimeVO realTimeVO : realTimeList) {
-			String key = String.valueOf(realTimeVO.getStockId());
+			String key = realTimeVO.getStockId();
 
 			StockHistory stockHistory = new StockHistory();
 			BeanUtils.copyProperties(realTimeVO, stockHistory);

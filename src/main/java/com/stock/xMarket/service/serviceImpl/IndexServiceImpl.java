@@ -153,10 +153,10 @@ public class IndexServiceImpl implements IndexService{
 
 
 	@Override
-	public IndexVO indexInfo(int indexId) {
+	public IndexVO indexInfo(String indexId) {
 		// TODO Auto-generated method stub
 		
-		IndexVO indexVO=indexRedis.get(String.valueOf(indexId));
+		IndexVO indexVO=indexRedis.get(indexId);
 		return indexVO;
 	}
 		

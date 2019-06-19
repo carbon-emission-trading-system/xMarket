@@ -41,7 +41,7 @@ public CommonReturnType getIndex() {
 	
 
 @RequestMapping(value = "/firstIndexTimeSharingDisplay")
-public CommonReturnType firstTimeShareDisplay(@RequestParam Integer indexId) {
+public CommonReturnType firstTimeShareDisplay(@RequestParam String indexId) {
 	
 	Date nowDate=new Date(System.currentTimeMillis());
 	
@@ -67,7 +67,7 @@ public CommonReturnType firstTimeShareDisplay(@RequestParam Integer indexId) {
 
 //界面中某只个股点进去 展示个股的实时信息
 		@RequestMapping(value = "/indexInfo")
-		public CommonReturnType indexInfo(@RequestParam(value = "indexId") int indexId) {
+		public CommonReturnType indexInfo(@RequestParam(value = "indexId") String indexId) {
 			
 			return success(indexService.indexInfo(indexId));
 		}

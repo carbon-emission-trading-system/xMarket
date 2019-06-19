@@ -10,7 +10,7 @@ public class IndexVO2 implements Serializable{
 	private static final long serialVersionUID = -1597924069120242477L;
 
 	
-	private int indexId;
+	private String indexId;
 	
 	private String indexName;
 	
@@ -20,11 +20,11 @@ public class IndexVO2 implements Serializable{
 	
 	
 
-	public int getIndexId() {
+	public String getIndexId() {
 		return indexId;
 	}
 
-	public void setIndexId(int indexId) {
+	public void setIndexId(String indexId) {
 		this.indexId = indexId;
 	}
 

@@ -9,6 +9,6 @@ public interface IndexService {
 
 	ArrayList<IndexVO2> getIndex();
 
-	IndexVO indexInfo(int indexId);
+	IndexVO indexInfo(String indexId);
 
 }
