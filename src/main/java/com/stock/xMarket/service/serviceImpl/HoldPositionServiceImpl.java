@@ -16,7 +16,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,11 +49,6 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 
 	@Autowired
 	private HistoryHoldPositionRepository historyHoldPositionRepository;
-
-	private double totalFunds = 0;
-	private double holdPosProAndLos = 0;
-	private double totalMarketValue = 0;
-	private double totalTodayProAndLos = 0;
 
 	// 更新持仓信息
 	@Override
@@ -191,10 +185,10 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		if (list != null) {
 			// 当用户有持仓股时
 			List<HoldPositionVO> holdPositionVOList = new ArrayList<>();
-			totalFunds = 0;
-			holdPosProAndLos = 0;
-			totalMarketValue = 0;
-			totalTodayProAndLos = 0;
+			double totalFunds = 0;
+			////holdPosProAndLos = 0;
+			double totalMarketValue = 0;
+			//totalTodayProAndLos = 0;
 
 			for (HoldPosition h : list) {
 				int stockId = h.getStock().getStockId();
@@ -262,13 +256,13 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 
 				holdPositionVOList.add(holdPositionVO);
 
-				holdPosProAndLos += totalProfitAndLoss; // 为计算用户资产信息中的持仓盈亏做服务
-				totalTodayProAndLos += todayProfitAndLoss;
+				////holdPosProAndLos += totalProfitAndLoss; // 为计算用户资产信息中的持仓盈亏做服务
+				////totalTodayProAndLos += todayProfitAndLoss;
 			}
 
 			return holdPositionVOList;
 		} else {
-			totalFunds = amountBalance;
+			////totalFunds = amountBalance;
 			return null;
 		}
 
@@ -277,16 +271,63 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	// 根据用户id，计算用户资产信息
 	@Override
 	public UserFundVO getFunds(int userId) {
+		
+		List<HoldPosition> list = holdPositionRepository.findByUser_UserId(userId);
+		double totalMarketValue = 0;
+		double holdPosProAndLos = 0;
+		double totalTodayProAndLos =0;
+		if(list!=null) {
+			for(HoldPosition h : list) {
+				int stockId = h.getStock().getStockId();
+				int positionNumber = h.getPositionNumber(); 
+				double presentPrice = realTime1Redis.get(String.valueOf(stockId)).getLastTradePrice();//现价--也就是市价
+				double marketValue = presentPrice * positionNumber;
+				double totalProfitAndLoss = (presentPrice -  h.getCostPrice())*positionNumber;
+				
+				double totalSellActualAmount = 0;
+				double totalBuyActualAmount = 0;
+				Date date = new Date();
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				double yesterdayClosePrice = realTime1Redis.get(String.valueOf(stockId)).getYesterdayClosePrice();
+				List<TransactionOrder> transactionOrderList = transactionOrderRepository.findByOwnerIdAndStockId(userId,stockId);
+				for(TransactionOrder transactionOrder : transactionOrderList) {
+					
+					if(String.valueOf(transactionOrder.getDate()).equals(df.format(date))) {
+						
+						if(transactionOrder.getType()==1) {
+							//卖
+							totalSellActualAmount += transactionOrder.getActualAmount()-yesterdayClosePrice*transactionOrder.getExchangeAmount();
+						}else  {
+							//买
+							totalBuyActualAmount += transactionOrder.getActualAmount()-yesterdayClosePrice*transactionOrder.getExchangeAmount();
+						}
+						
+					}
+					
+				}
+				double todayProfitAndLoss = positionNumber*(presentPrice-yesterdayClosePrice)+totalSellActualAmount-totalBuyActualAmount;
+				
+				totalMarketValue += marketValue;
+				holdPosProAndLos += totalProfitAndLoss;
+				totalTodayProAndLos += todayProfitAndLoss;
+			}
+		}
+		
 		UserFundVO userFundVO = new UserFundVO();
 		UserFund userFund = userFundRepository.findByUser_UserId(userId);
-
-		userFundVO.setTotalFunds(DemicalUtil.keepTwoDecimal(totalFunds));// 总资产
-		userFundVO.setHoldPosProAndLos(DemicalUtil.keepTwoDecimal(holdPosProAndLos));// 持仓盈亏
-		userFundVO.setBalance(DemicalUtil.keepTwoDecimal(userFund.getBalance()));// 可用资金
-		userFundVO.setTotalMarketValue(DemicalUtil.keepTwoDecimal(totalMarketValue));// 总市值
-		userFundVO.setTodayProAndLos(DemicalUtil.keepTwoDecimal(totalTodayProAndLos));// 当日盈亏
-		userFundVO.setFrozenAmount(DemicalUtil.keepTwoDecimal(userFund.getFrozenAmount()));// 冻结资金
-		userFundVO.setAmountBalance(DemicalUtil.keepTwoDecimal(userFund.getBalance() + userFund.getFrozenAmount()));// 资金余额
+		
+		//用户资金余额 = 冻结资金 + 可用资金
+		double amountBalance = userFund.getFrozenAmount() + userFund.getBalance();
+		//计算用户总资产
+		double totalFunds = amountBalance + totalMarketValue;
+		
+		userFundVO.setTotalFunds(DemicalUtil.keepTwoDecimal(totalFunds));//总资产
+		userFundVO.setHoldPosProAndLos(DemicalUtil.keepTwoDecimal(holdPosProAndLos));//持仓盈亏
+		userFundVO.setBalance(DemicalUtil.keepTwoDecimal(userFund.getBalance()));//可用资金
+		userFundVO.setTotalMarketValue(DemicalUtil.keepTwoDecimal(totalMarketValue));//总市值
+		userFundVO.setTodayProAndLos(DemicalUtil.keepTwoDecimal(totalTodayProAndLos));//当日盈亏
+		userFundVO.setFrozenAmount(DemicalUtil.keepTwoDecimal(userFund.getFrozenAmount()));//冻结资金
+		userFundVO.setAmountBalance(DemicalUtil.keepTwoDecimal(userFund.getBalance() + userFund.getFrozenAmount()));//资金余额
 		return userFundVO;
 	}
 
