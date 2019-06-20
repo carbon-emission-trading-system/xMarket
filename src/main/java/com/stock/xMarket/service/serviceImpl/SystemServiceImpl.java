@@ -187,12 +187,20 @@ public class SystemServiceImpl implements SystemService {
 	public void addUserFundHistory() {
 		List<User> userList = userRepository.findAll();
 		Date date = new Date(System.currentTimeMillis());
+		double todaySZZS = indexRedis.get("100000").getLastIndex();
+		double todaySZCZ = indexRedis.get("399001").getLastIndex();
 		for (User user:userList){
 			UserFundVO userFundVO = holdPositionService.getFunds(user.getUserId());
+			double historySZZS = stockHistoryRepository.findByStockIdAndDate("100000",user.getRegisterDate()).getClosePrice();
+			double historySZCZ = stockHistoryRepository.findByStockIdAndDate("399001",user.getRegisterDate()).getClosePrice();
+			double userStartFund = 1000000;
 			UserFundHistory userFundHistory = new UserFundHistory();
 			userFundHistory.setUserId(user.getUserId());
 			userFundHistory.setDate(date);
 			userFundHistory.setTotalFunds(userFundVO.getTotalFunds());
+			userFundHistory.setFundIncrease((userFundVO.getTotalFunds()-userStartFund)/userStartFund);
+			userFundHistory.setSZZS((todaySZZS-historySZZS)/historySZZS);
+			userFundHistory.setSZCZ((todaySZCZ-historySZCZ)/historySZCZ);
 			userFundHistoryRepository.saveAndFlush(userFundHistory);
 		}
 
