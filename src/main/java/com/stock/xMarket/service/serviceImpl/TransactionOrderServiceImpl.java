@@ -28,7 +28,7 @@ import com.stock.xMarket.service.OrderService;
 import com.stock.xMarket.service.TransactionOrderService;
 import com.stock.xMarket.service.UserFundService;
 
-import static com.stock.xMarket.util.FeeUtil.otherTaxCaculator;
+import static com.stock.xMarket.util.FeeUtil.transferFeeCaculator;
 import static com.stock.xMarket.util.FeeUtil.serviceFeeCaculator;
 import static com.stock.xMarket.util.FeeUtil.stampTaxCaculator;
 
@@ -126,9 +126,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 			//放入数据库前先计算服务费、成交价和股票余额
 			sellOrder.setStampTax(stampTaxCaculator(sellOrder.getTotalExchangeMoney()));
-			sellOrder.setOtherFee(otherTaxCaculator(sellOrder.getExchangeAmount()));
+			sellOrder.setTransferFee(transferFeeCaculator(sellOrder.getExchangeAmount()));
 			sellOrder.setServiceTax(serviceFeeCaculator(sellOrder.getTotalExchangeMoney()));
-			sellOrder.setActualAmount(sellOrder.getTotalExchangeMoney()-sellOrder.getOtherFee()-sellOrder.getServiceTax()-sellOrder.getStampTax());
+			sellOrder.setActualAmount(sellOrder.getTotalExchangeMoney()-sellOrder.getTransferFee()-sellOrder.getServiceTax()-sellOrder.getStampTax());
 			sellOrder.setTradePrice(sellOrder.getTotalExchangeMoney()/sellOrder.getExchangeAmount());
 			sellOrder.setStockBalance(sellOrder.getExchangeAmount());
 
@@ -206,9 +206,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 			//计算服务费、成交价和股票余额
 			buyOrder.setStampTax(0);
-			buyOrder.setOtherFee(otherTaxCaculator(buyOrder.getExchangeAmount()));
+			buyOrder.setTransferFee(transferFeeCaculator(buyOrder.getExchangeAmount()));
 			buyOrder.setServiceTax(serviceFeeCaculator(buyOrder.getTotalExchangeMoney()));
-			buyOrder.setActualAmount(buyOrder.getTotalExchangeMoney()+buyOrder.getServiceTax()+buyOrder.getOtherFee());
+			buyOrder.setActualAmount(buyOrder.getTotalExchangeMoney()+buyOrder.getServiceTax()+buyOrder.getTransferFee());
 			buyOrder.setTradePrice(buyOrder.getTotalExchangeMoney()/buyOrder.getExchangeAmount());
 			buyOrder.setStockBalance(buyOrder.getExchangeAmount());
 
@@ -324,9 +324,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 				revokeOrder.setTotalExchangeMoney(redisOrder.getTotalExchangeMoney());
 				revokeOrder.setTradePrice(revokeOrder.getTotalExchangeMoney()/revokeOrder.getExchangeAmount());
 				revokeOrder.setStampTax(stampTaxCaculator(revokeOrder.getTotalExchangeMoney()));
-				revokeOrder.setOtherFee(otherTaxCaculator(revokeOrder.getTotalExchangeMoney()));
+				revokeOrder.setTransferFee(transferFeeCaculator(revokeOrder.getTotalExchangeMoney()));
 				revokeOrder.setServiceTax(serviceFeeCaculator(revokeOrder.getTotalExchangeMoney()));
-				revokeOrder.setActualAmount(revokeOrder.getTotalExchangeMoney()-revokeOrder.getOtherFee()-revokeOrder.getServiceTax()-revokeOrder.getStampTax());
+				revokeOrder.setActualAmount(revokeOrder.getTotalExchangeMoney()-revokeOrder.getTransferFee()-revokeOrder.getServiceTax()-revokeOrder.getStampTax());
 			}
 		}else{
 			LOGGER.info("委托单"+tradeOrder.getBuyOrderId()+"撤单");
@@ -342,9 +342,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 				revokeOrder.setTotalExchangeMoney(redisOrder.getTotalExchangeMoney());
 				revokeOrder.setTradePrice(revokeOrder.getTotalExchangeMoney()/revokeOrder.getExchangeAmount());
 				revokeOrder.setStampTax(0);
-				revokeOrder.setOtherFee(otherTaxCaculator(revokeOrder.getTotalExchangeMoney()));
+				revokeOrder.setTransferFee(transferFeeCaculator(revokeOrder.getTotalExchangeMoney()));
 				revokeOrder.setServiceTax(serviceFeeCaculator(revokeOrder.getTotalExchangeMoney()));
-				revokeOrder.setActualAmount(revokeOrder.getTotalExchangeMoney()+revokeOrder.getOtherFee()+revokeOrder.getServiceTax()+revokeOrder.getStampTax());
+				revokeOrder.setActualAmount(revokeOrder.getTotalExchangeMoney()+revokeOrder.getTransferFee()+revokeOrder.getServiceTax()+revokeOrder.getStampTax());
 			}
 		}
 

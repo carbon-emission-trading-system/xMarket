@@ -17,7 +17,7 @@ public class FeeUtil {
 			return money*0.001;
 		}
 		
-	public static double otherTaxCaculator(double money){
+	public static double transferFeeCaculator(double money){
 			
 			return money*0.00002;
 		}

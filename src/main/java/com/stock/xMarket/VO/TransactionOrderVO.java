@@ -21,7 +21,7 @@ public class TransactionOrderVO {
 	
 	private double serviceTax;//手续费
 	private double stampTax;//印花税
-	private double otherFee;//其他杂费
+	private double transferFee;//其他杂费
 	private double actualAmount;//发生金额
 	private int tradeMarket;//交易市场
 	private int cancelNumber;//撤单数量
@@ -38,9 +38,9 @@ public class TransactionOrderVO {
 
 
 	public TransactionOrderVO(Date date, Date time, String stockId, String stockName, int type, double tradePrice,
-			int exchangeAmount, double totalExchangeMoney, int stockBalance, long orderId, long transactionOrderId,
-			double serviceTax, double stampTax, double otherFee, double actualAmount, int tradeMarket,
-			int cancelNumber) {
+							  int exchangeAmount, double totalExchangeMoney, int stockBalance, long orderId, long transactionOrderId,
+							  double serviceTax, double stampTax, double transferFee, double actualAmount, int tradeMarket,
+							  int cancelNumber) {
 		super();
 		this.date = date;
 		this.time = time;
@@ -55,7 +55,7 @@ public class TransactionOrderVO {
 		this.transactionOrderId = transactionOrderId;
 		this.serviceTax = serviceTax;
 		this.stampTax = stampTax;
-		this.otherFee = otherFee;
+		this.transferFee = transferFee;
 		this.actualAmount = actualAmount;
 		this.tradeMarket = tradeMarket;
 		this.cancelNumber = cancelNumber;
@@ -191,12 +191,12 @@ public class TransactionOrderVO {
 		this.stampTax = stampTax;
 	}
 
-	public double getOtherFee() {
-		return otherFee;
+	public double getTransferFee() {
+		return transferFee;
 	}
 
-	public void setOtherFee(double otherFee) {
-		this.otherFee = otherFee;
+	public void setTransferFee(double transferFee) {
+		this.transferFee = transferFee;
 	}
 
 	public double getActualAmount() {

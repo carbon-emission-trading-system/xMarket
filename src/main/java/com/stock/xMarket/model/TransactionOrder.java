@@ -65,8 +65,8 @@ public class TransactionOrder implements Serializable{
 	@Column(name="stamp_tax")
 	private double stampTax;//印花税
 	
-	@Column(name="other_fee")
-	private double otherFee;//其他杂费   incidentalCharge
+	@Column(name="transfer_fee")
+	private double transferFee;//其他杂费   incidentalCharge
 	
 	@Column(name="actual_amount")
 	private double actualAmount;//发生金额
@@ -87,9 +87,9 @@ public class TransactionOrder implements Serializable{
 	
 	
 	public TransactionOrder(long transactionOrderId, String stockId, String stockName, int type, long orderId, int ownerId,
-			Time time, Date date, double tradePrice, int exchangeAmount, Boolean tradeType, double serviceTax,
-			double stampTax, double otherFee, double actualAmount, int tradeMarket, int stockBalance, int cancelNumber,
-			double totalExchangeMoney) {
+							Time time, Date date, double tradePrice, int exchangeAmount, Boolean tradeType, double serviceTax,
+							double stampTax, double transferFee, double actualAmount, int tradeMarket, int stockBalance, int cancelNumber,
+							double totalExchangeMoney) {
 		super();
 		this.transactionOrderId = transactionOrderId;
 		this.stockId = stockId;
@@ -104,7 +104,7 @@ public class TransactionOrder implements Serializable{
 		this.tradeType = tradeType;
 		this.serviceTax = serviceTax;
 		this.stampTax = stampTax;
-		this.otherFee = otherFee;
+		this.transferFee = transferFee;
 		this.actualAmount = actualAmount;
 		this.tradeMarket = tradeMarket;
 		this.stockBalance = stockBalance;
@@ -236,12 +236,12 @@ public class TransactionOrder implements Serializable{
 		this.stampTax = stampTax;
 	}
 
-	public double getOtherFee() {
-		return otherFee;
+	public double getTransferFee() {
+		return transferFee;
 	}
 
-	public void setOtherFee(double otherFee) {
-		this.otherFee = otherFee;
+	public void setTransferFee(double transferFee) {
+		this.transferFee = transferFee;
 	}
 
 	public double getActualAmount() {
