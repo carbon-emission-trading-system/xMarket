@@ -20,14 +20,58 @@ public class UserFundHistoryVO {
     public UserFundHistoryVO() {
     }
 
-    public UserFundHistoryVO(int userFundHistory_Id, int userId, Date date, double totalFunds) {
-        UserFundHistory_Id = userFundHistory_Id;
-        this.userId = userId;
-        this.date = date;
-        this.totalFunds = totalFunds;
-    }
+  
 
-    public int getUserFundHistory_Id() {
+    public UserFundHistoryVO(int userFundHistory_Id, int userId, Date date, double totalFunds, double fundIncrease,
+			double sZZS, double sZCZ) {
+		UserFundHistory_Id = userFundHistory_Id;
+		this.userId = userId;
+		this.date = date;
+		this.totalFunds = totalFunds;
+		this.fundIncrease = fundIncrease;
+		SZZS = sZZS;
+		SZCZ = sZCZ;
+	}
+
+
+
+	public double getFundIncrease() {
+		return fundIncrease;
+	}
+
+
+
+	public void setFundIncrease(double fundIncrease) {
+		this.fundIncrease = fundIncrease;
+	}
+
+
+
+	public double getSZZS() {
+		return SZZS;
+	}
+
+
+
+	public void setSZZS(double sZZS) {
+		SZZS = sZZS;
+	}
+
+
+
+	public double getSZCZ() {
+		return SZCZ;
+	}
+
+
+
+	public void setSZCZ(double sZCZ) {
+		SZCZ = sZCZ;
+	}
+
+
+
+	public int getUserFundHistory_Id() {
         return UserFundHistory_Id;
     }
 
