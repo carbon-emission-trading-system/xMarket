@@ -1,6 +1,5 @@
 package com.stock.xMarket.repository;
 
-import com.sun.xml.internal.xsom.impl.scd.Step;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

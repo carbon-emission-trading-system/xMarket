@@ -33,7 +33,6 @@ public class UserFundHistory implements Serializable {
     @Column
     private double SZCZ;
 
-
     public double getFundIncrease() {
         return fundIncrease;
     }
