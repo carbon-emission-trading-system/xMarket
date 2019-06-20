@@ -56,8 +56,7 @@ public class UserFund implements Serializable{
 	private double frozenAmount;
 
 	
-	@Column
-	private Date registerDate;
+
 	
 	
 	public User getUser() {
@@ -102,19 +101,6 @@ public class UserFund implements Serializable{
 
 
 
-
-
-	public Date getRegisterDate() {
-		return registerDate;
-	}
-
-
-
-
-
-	public void setRegisterDate(Date registerDate) {
-		this.registerDate = registerDate;
-	}
 
 	
 

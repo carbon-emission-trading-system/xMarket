@@ -1,6 +1,7 @@
 package com.stock.xMarket.model;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -48,6 +49,9 @@ public class User implements Serializable{
 	@Column(name="email")
 	private String email;
 	
+	@Column
+	private Date registerDate;
+	
 	/*@OneToMany(mappedBy = "user")
 	@JsonBackReference
 	private List<Order> orders;
@@ -91,6 +95,18 @@ public class User implements Serializable{
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public Date getRegisterDate() {
+		return registerDate;
+	}
+
+	public void setRegisterDate(Date registerDate) {
+		this.registerDate = registerDate;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 }
