@@ -2,6 +2,7 @@ package com.stock.xMarket.model;
 
 
 import java.io.Serializable;
+import java.sql.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -54,6 +55,11 @@ public class UserFund implements Serializable{
 	@Column
 	private double frozenAmount;
 
+	
+	@Column
+	private Date registerDate;
+	
+	
 	public User getUser() {
 		return user;
 	}
@@ -76,6 +82,38 @@ public class UserFund implements Serializable{
 
 	public void setFrozenAmount(double frozenAmount) {
 		this.frozenAmount = frozenAmount;
+	}
+
+
+
+
+
+	public int getId() {
+		return id;
+	}
+
+
+
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+
+
+
+
+	public Date getRegisterDate() {
+		return registerDate;
+	}
+
+
+
+
+
+	public void setRegisterDate(Date registerDate) {
+		this.registerDate = registerDate;
 	}
 
 	

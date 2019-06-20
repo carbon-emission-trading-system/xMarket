@@ -36,8 +36,8 @@ public class KlineServiceImpl implements KlineService{
     public List<KLineDataVO> createDayKLineDataVOList(String stockId) throws BusinessException {
         List<StockHistory> stockHistoryList = stockHistoryRepository.findAllByStockIdOrderByDate(stockId);
         if (CollectionUtils.isEmpty(stockHistoryList)) {
-            logger.error("K线图数据获取失败，没有查询到此股票的历史信息");
-            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"K线图数据获取失败，没有查询到此股票的历史信息");
+            logger.error("K线图数据获取失败，没有查询到历史信息");
+            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"K线图数据获取失败，没有查询到历史信息");
         }
         JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd";
         return JSON.parseArray(JSON.toJSONString(stockHistoryList,SerializerFeature.WriteDateUseDateFormat), KLineDataVO.class);

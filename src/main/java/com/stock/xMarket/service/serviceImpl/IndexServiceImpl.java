@@ -97,7 +97,7 @@ public class IndexServiceImpl implements IndexService{
 				
 			}
 		}
-			double nowIndex=DemicalUtil.keepTwoDecimal(totalMarketCapitalization/(indexVO.getBaseCapitalization()*indexVO.getBaseIndex()/100000000));
+			double nowIndex=DemicalUtil.keepTwoDecimal(totalMarketCapitalization/(indexVO.getBaseCapitalization()/100000000)*indexVO.getBaseIndex());
 
 			
 			indexVO.setTradeAmount(totalTradeAmount);
