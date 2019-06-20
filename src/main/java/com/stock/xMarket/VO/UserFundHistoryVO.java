@@ -11,6 +11,12 @@ public class UserFundHistoryVO {
 
     private double totalFunds;
 
+    private double fundIncrease;
+
+    private double SZZS;
+
+    private double SZCZ;
+
     public UserFundHistoryVO() {
     }
 

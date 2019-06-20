@@ -24,6 +24,40 @@ public class UserFundHistory implements Serializable {
     @Column
     private double totalFunds;
 
+    @Column
+    private double fundIncrease;
+
+    @Column
+    private double SZZS;
+
+    @Column
+    private double SZCZ;
+
+
+    public double getFundIncrease() {
+        return fundIncrease;
+    }
+
+    public void setFundIncrease(double fundIncrease) {
+        this.fundIncrease = fundIncrease;
+    }
+
+    public double getSZZS() {
+        return SZZS;
+    }
+
+    public void setSZZS(double SZZS) {
+        this.SZZS = SZZS;
+    }
+
+    public double getSZCZ() {
+        return SZCZ;
+    }
+
+    public void setSZCZ(double SZCZ) {
+        this.SZCZ = SZCZ;
+    }
+
     public int getUserFundHistory_Id() {
         return UserFundHistory_Id;
     }
