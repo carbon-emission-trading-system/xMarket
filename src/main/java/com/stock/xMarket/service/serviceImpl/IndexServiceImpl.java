@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.datatype.jsr310.DecimalUtils;
 import com.stock.xMarket.VO.IndexVO;
 import com.stock.xMarket.VO.IndexVO2;
 import com.stock.xMarket.VO.RealTimeVO;
@@ -23,6 +24,7 @@ import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.redis.RealTime2Redis;
 import com.stock.xMarket.service.IndexService;
 import com.stock.xMarket.service.RealTimeService;
+import com.stock.xMarket.util.DemicalUtil;
 
 @Service
 @Transactional
@@ -95,8 +97,8 @@ public class IndexServiceImpl implements IndexService{
 				
 			}
 		}
-			double nowIndex=totalMarketCapitalization/indexVO.getBaseCapitalization()*indexVO.getBaseIndex();
-			
+			double nowIndex=DemicalUtil.keepTwoDecimal(totalMarketCapitalization/(indexVO.getBaseCapitalization()*indexVO.getBaseIndex()/100000000));
+
 			
 			indexVO.setTradeAmount(totalTradeAmount);
 			
