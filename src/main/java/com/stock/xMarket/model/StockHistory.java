@@ -34,8 +34,7 @@ public class StockHistory implements Serializable{
 	private double lowestPrice;
 	@Column
 	private int volume;
-	@Column
-	private double increase;
+	
 	public int getStockHistory_Id() {
 		return stockHistory_Id;
 	}
@@ -83,12 +82,6 @@ public class StockHistory implements Serializable{
 	}
 	public void setVolume(int volume) {
 		this.volume = volume;
-	}
-	public double getIncrease() {
-		return increase;
-	}
-	public void setIncrease(double increase) {
-		this.increase = increase;
 	}
 
 	
