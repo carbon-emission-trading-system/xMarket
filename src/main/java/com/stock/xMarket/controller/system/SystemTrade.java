@@ -40,12 +40,15 @@ public class SystemTrade {
             orderVO.setStockId(stock.getStockId());
             orderVO.setStockName(stock.getStockName());
             double lastTradePrice = realTime1Redis.get(orderVO.getStockId().toString()).getLastTradePrice();
+            if (lastTradePrice == 0|| lastTradePrice == null){
+                continue;
+            }
             Random rand = new Random();
             lastTradePrice = rand.nextInt(4)/100+lastTradePrice-0.02;
             systemBuyOrder(orderVO,lastTradePrice);
             systemSellOrder(orderVO,lastTradePrice);
         }
-
+        return;
     }
 
     private void systemBuyOrder(OrderVO orderVO,double lastTradePrice) throws BusinessException {
