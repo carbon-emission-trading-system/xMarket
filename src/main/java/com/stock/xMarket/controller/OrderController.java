@@ -99,81 +99,8 @@ public class OrderController extends BaseApiController{
 
 		orderVO.setTime(new Time(System.currentTimeMillis()));
 		orderVO.setDate(new Date(System.currentTimeMillis()));
-		
-		Order order = new Order();
-		
-		//生成id
-		long orderId= Long.valueOf(String.valueOf(String.valueOf(orderVO.getUserId()+System.currentTimeMillis())));
-		orderVO.setOrderId(orderId);
 
-		
-		
-		BeanUtils.copyProperties(orderVO, order);
-		
-
-		try {
-			int id=orderVO.getUserId();
-			User user = userRepository.findByUserId(id);
-			order.setUser(user);
-		} catch (IllegalArgumentException e) {
-			// TODO: handle exception
-			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标用户不存在！");
-		}
-
-		try {
-			Stock stock = stockRepository.findByStockId(orderVO.getStockId());
-			order.setStock(stock);
-		} catch (IllegalArgumentException e) {
-			// TODO: handle exception
-			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标股票不存在！");
-		}
-		
-		
-	
-		
-		
-
-		if (order.getType() == 1) {
-			// 更新股票可用余额
-			holdPositionService.updateHoldPositionByOrder(order);
-		}else {
-			// 更新个人资金
-			userFundService.updateUserFundByOrder(order);
-		}
-
-
-
-		
-		// 将委托单添加至Redis
-				try {
-				orderService.addOrderToRedis(order);
-				}catch (Exception e) {
-					// TODO: handle exception
-					logger.info("将委托单加入Redis发生异常");
-					throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"将委托单加入Redis发生异常");
-				}
-
-		
-				//allMarchRoutingKey
-				//marchRoutingKey
-				if(OpeningUtil.isSet(order.getTime())) {
-					//集合竞价单，缓存到redis中
-					rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
-					
-//					String stockId = String.valueOf(order.getStock().getStockId());
-//					
-//					ArrayList<Order> orderList = new ArrayList<>();
-//					
-//						if(	callOrderRedis.get(stockId)!=null) 
-//							orderList=callOrderRedis.get(stockId);
-//						
-//						orderList.add(order);
-//						callOrderRedis.put(stockId, orderList, -1);
-					
-				}else {
-					rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
-				}
-
+		orderService.buyOrSale(orderVO);
 		
 		return success();
 

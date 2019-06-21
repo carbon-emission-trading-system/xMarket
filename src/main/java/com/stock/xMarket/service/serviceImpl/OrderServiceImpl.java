@@ -9,9 +9,17 @@ import java.util.NoSuchElementException;
 
 import javax.transaction.Transactional;
 
+import com.stock.xMarket.model.*;
+import com.stock.xMarket.repository.UserRepository;
+import com.stock.xMarket.service.HoldPositionService;
+import com.stock.xMarket.service.UserFundService;
+import com.stock.xMarket.util.OpeningUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +28,6 @@ import com.stock.xMarket.VO.OrderVO;
 import com.stock.xMarket.VO.StockTradeVO;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
-import com.stock.xMarket.model.HoldPosition;
-import com.stock.xMarket.model.Order;
-import com.stock.xMarket.model.RealTime1;
-import com.stock.xMarket.model.Stock;
-import com.stock.xMarket.model.TransactionOrder;
-import com.stock.xMarket.model.UserFund;
 import com.stock.xMarket.redis.CallOrderRedis;
 import com.stock.xMarket.redis.OrderRedis;
 import com.stock.xMarket.redis.TransactionRedis;
@@ -42,12 +44,17 @@ import com.stock.xMarket.service.OrderService;
 @Transactional
 public class OrderServiceImpl implements OrderService {
 
+	private static Logger logger= LoggerFactory.getLogger(TransactionOrderServiceImpl.class);
+
 	/** The order repository. */
 	@Autowired
 	private OrderRepository orderRepository;
 
 	@Autowired
 	private StockRepository stockRepository;
+
+	@Autowired
+	private UserRepository userRepository;
 
 	/** The order redis. */
 	@Autowired
@@ -61,6 +68,12 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	private CallOrderRedis callOrderRedis;
+
+	@Autowired
+	private HoldPositionService holdPositionService;
+
+	@Autowired
+	private UserFundService userFundService;
 
 	@Autowired
 	RabbitTemplate rabbitTemplate;
@@ -275,6 +288,80 @@ public class OrderServiceImpl implements OrderService {
         stockTradeVO.setYesterdayClosePrice(realTime1.getYesterdayClosePrice());
         return stockTradeVO;
     }
-	
 
+
+	@Override
+	public void buyOrSale(OrderVO orderVO) throws BusinessException {
+		Order order = new Order();
+
+		//生成id
+		long orderId= Long.valueOf(String.valueOf(String.valueOf(orderVO.getUserId()+System.currentTimeMillis())));
+		orderVO.setOrderId(orderId);
+
+		BeanUtils.copyProperties(orderVO, order);
+
+		try {
+			int id=orderVO.getUserId();
+			User user = userRepository.findByUserId(id);
+			order.setUser(user);
+		} catch (IllegalArgumentException e) {
+			// TODO: handle exception
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标用户不存在！");
+		}
+
+		try {
+			Stock stock = stockRepository.findByStockId(orderVO.getStockId());
+			order.setStock(stock);
+		} catch (IllegalArgumentException e) {
+			// TODO: handle exception
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标股票不存在！");
+		}
+
+
+
+
+
+
+		if (order.getType() == 1) {
+			// 更新股票可用余额
+			holdPositionService.updateHoldPositionByOrder(order);
+		}else {
+			// 更新个人资金
+			userFundService.updateUserFundByOrder(order);
+		}
+
+
+
+
+		// 将委托单添加至Redis
+		try {
+			addOrderToRedis(order);
+		}catch (Exception e) {
+			// TODO: handle exception
+			logger.info("将委托单加入Redis发生异常");
+			throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"将委托单加入Redis发生异常");
+		}
+
+
+		//allMarchRoutingKey
+		//marchRoutingKey
+		if(OpeningUtil.isSet(order.getTime())) {
+			//集合竞价单，缓存到redis中
+			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
+
+//					String stockId = String.valueOf(order.getStock().getStockId());
+//
+//					ArrayList<Order> orderList = new ArrayList<>();
+//
+//						if(	callOrderRedis.get(stockId)!=null)
+//							orderList=callOrderRedis.get(stockId);
+//
+//						orderList.add(order);
+//						callOrderRedis.put(stockId, orderList, -1);
+
+		}else {
+			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
+		}
+
+	}
 }

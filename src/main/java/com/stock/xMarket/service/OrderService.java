@@ -22,7 +22,7 @@ public interface OrderService {
 	
 	void addOrderToRedis(Order order);
 	
-
+ 	void buyOrSale(OrderVO orderVO) throws BusinessException;
 
 	void updateOrderBytransactionOrder(TransactionOrder transactionOrder);
 
