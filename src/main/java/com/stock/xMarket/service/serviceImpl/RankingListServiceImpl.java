@@ -2,6 +2,7 @@ package com.stock.xMarket.service.serviceImpl;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -20,10 +21,12 @@ public class RankingListServiceImpl implements RankingListService{
 		// TODO Auto-generated method stub
 		
 		
-		for(StockListVO stockListVO:stockListVOList) {
-			if(stockListVO.getIncrease()<0)
-				stockListVOList.remove(stockListVO);
-		}
+	    for (Iterator<StockListVO> ite = stockListVOList.iterator(); ite.hasNext();) {
+	    	   StockListVO str = ite.next();
+	            if (str.getIncrease()<0) {
+	                ite.remove();
+	            }
+	        }
 		
 		Comparator<StockListVO> comparator =new Comparator<StockListVO>() {
 
@@ -48,10 +51,18 @@ public class RankingListServiceImpl implements RankingListService{
 	public void rankingByDecrease(List<StockListVO> stockListVOList) {
 		// TODO Auto-generated method stub
 		
-		for(StockListVO stockListVO:stockListVOList) {
-			if(stockListVO.getIncrease()>0)
-				stockListVOList.remove(stockListVO);
-		}
+		
+		
+	       
+	       
+	       for (Iterator<StockListVO> ite = stockListVOList.iterator(); ite.hasNext();) {
+	    	   StockListVO str = ite.next();
+	            if (str.getIncrease()>0) {
+	                ite.remove();
+	            }
+	        }
+		
+	
 		
 		Comparator<StockListVO> comparator =new Comparator<StockListVO>() {
 

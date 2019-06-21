@@ -205,4 +205,17 @@ public class SystemServiceImpl implements SystemService {
 		}
 
 	}
+	
+	
+	
+	@Override
+	@Scheduled(cron = "0 00 00 ? * MON-FRI")
+	public void sendSystemOrder() {
+//		List<User> userList = userRepository.find();
+
+
+	}
+	
+	
+	
 }
