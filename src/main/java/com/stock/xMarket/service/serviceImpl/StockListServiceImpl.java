@@ -15,9 +15,11 @@ import com.stock.xMarket.error.EmBusinessError;
 import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.RealTime2;
 import com.stock.xMarket.model.SelfSelectStock;
+import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.redis.RealTime1Redis;
 import com.stock.xMarket.redis.RealTime2Redis;
 import com.stock.xMarket.repository.SelfSelectStockRepository;
+import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.service.StockListService;
 import com.stock.xMarket.util.DemicalUtil;
 
@@ -39,6 +41,8 @@ public class StockListServiceImpl implements StockListService {
 	@Autowired
 	private SelfSelectStockRepository selfSelectStockRepository;
 
+	@Autowired
+	private StockRepository stockRepository;
 	// 展示个股股票列表
 	@Override
 	public List<RealTime2> findRealTime2() {
@@ -132,9 +136,9 @@ public class StockListServiceImpl implements StockListService {
     	//logger.info("传出去的结果："+list);
     	return stockListVOList;
     }
-	
-	
-	
-	
 
+	@Override
+	public List<Stock> findStcokList() {
+		return stockRepository.findAll();
+	}
 }

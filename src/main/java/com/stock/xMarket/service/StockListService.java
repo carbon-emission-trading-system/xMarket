@@ -6,6 +6,7 @@ import com.stock.xMarket.VO.StockListVO;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.model.RealTime1;
 import com.stock.xMarket.model.RealTime2;
+import com.stock.xMarket.model.Stock;
 
 public interface StockListService {
 	
@@ -18,4 +19,5 @@ public interface StockListService {
 	List<RealTime2> findSelfSelectStockRealTime2(int userId) throws BusinessException;
 	List<StockListVO> finalList(List<RealTime1> realTime1List, List<RealTime2> realTime2List,
 			List<StockListVO> stockListVOList);
+	List<Stock> findStcokList();
 }
