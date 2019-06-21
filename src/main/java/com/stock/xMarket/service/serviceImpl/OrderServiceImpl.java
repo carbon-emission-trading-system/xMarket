@@ -122,7 +122,8 @@ public class OrderServiceImpl implements OrderService {
 
 		List<Order> dbOrderList = orderRepository.findByUser_UserIdAndDateOrderByTimeDesc(userId, date);
 		
-		orderList.addAll(dbOrderList);
+		if(dbOrderList!=null) 
+			orderList.addAll(dbOrderList);
 
 		return orderList;
 
