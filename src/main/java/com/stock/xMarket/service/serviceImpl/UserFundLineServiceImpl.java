@@ -33,7 +33,7 @@ public class UserFundLineServiceImpl implements UserFundLineService {
         List<UserFundHistory> userFundHistoryList= userFundHistoryRepository.findByUserIdOrderByDate(userId);
         if (CollectionUtils.isEmpty(userFundHistoryList)) {
             logger.error("用户资金曲线数据获取失败，没有查询到此用户的历史资金信息");
-            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"用户资金曲线数据获取失败，没有查询到此用户的历史资金信息");
+            throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR,"暂无资金曲线");
         }
         JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd";
         return JSON.parseArray(JSON.toJSONString(userFundHistoryList,SerializerFeature.WriteDateUseDateFormat), UserFundHistoryVO.class);
