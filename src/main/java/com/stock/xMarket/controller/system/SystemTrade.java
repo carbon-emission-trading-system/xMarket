@@ -40,7 +40,7 @@ public class SystemTrade {
             orderVO.setStockId(stock.getStockId());
             orderVO.setStockName(stock.getStockName());
             double lastTradePrice = realTime1Redis.get(orderVO.getStockId().toString()).getLastTradePrice();
-            if (lastTradePrice == 0|| lastTradePrice == null){
+            if (lastTradePrice == 0){
                 continue;
             }
             Random rand = new Random();
