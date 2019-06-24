@@ -293,6 +293,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public void buyOrSale(OrderVO orderVO) throws BusinessException {
+		orderVO.setTime(new Time(System.currentTimeMillis()));
+		orderVO.setDate(new Date(System.currentTimeMillis()));
+		
 		Order order = new Order();
 
 		//生成id
@@ -344,8 +347,8 @@ public class OrderServiceImpl implements OrderService {
 		}
 
 
-		//allMarchRoutingKey
-		//marchRoutingKey
+//		allMarchRoutingKey
+//		marchRoutingKey
 		if(OpeningUtil.isSet(order.getTime())) {
 			//集合竞价单，缓存到redis中
 			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
