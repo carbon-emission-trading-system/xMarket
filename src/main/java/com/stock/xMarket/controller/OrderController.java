@@ -95,7 +95,6 @@ public class OrderController extends BaseApiController{
 	 
 	 
 	@RequestMapping(value = "/buyOrSale")
-    @Async
 	public CommonReturnType buyOrSale(@ModelAttribute(value = "SentstockTrading")OrderVO orderVO,HttpSession session, String validateCode,HttpServletResponse response) throws BusinessException{
 		
 
