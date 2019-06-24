@@ -79,22 +79,22 @@ public class RabbitMqConfig {
 
 	    @Bean
 	    public RabbitTemplate rabbitTemplate(){
-	        connectionFactory.setPublisherConfirms(true);
-	        connectionFactory.setPublisherReturns(true);
+//	        connectionFactory.setPublisherConfirms(true);
+//	        connectionFactory.setPublisherReturns(true);
 	        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
 	        rabbitTemplate.setMandatory(true);
-	        rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
-	            @Override
-	            public void confirm(CorrelationData correlationData, boolean ack, String cause) {
-	                log.info("消息发送成功:correlationData({}),ack({}),cause({})",correlationData,ack,cause);
-	            }
-	        });
-	        rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
-	            @Override
-	            public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
-	                log.info("消息丢失:exchange({}),route({}),replyCode({}),replyText({}),message:{}",exchange,routingKey,replyCode,replyText,message);
-	            }
-	        });
+//	        rabbitTemplate.setConfirmCallback(new RabbitTemplate.ConfirmCallback() {
+//	            @Override
+//	            public void confirm(CorrelationData correlationData, boolean ack, String cause) {
+//	                log.info("消息发送成功:correlationData({}),ack({}),cause({})",correlationData,ack,cause);
+//	            }
+//	        });
+//	        rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
+//	            @Override
+//	            public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+//	                log.info("消息丢失:exchange({}),route({}),replyCode({}),replyText({}),message:{}",exchange,routingKey,replyCode,replyText,message);
+//	            }
+//	        });
 	        return rabbitTemplate;
 	    }
 	    

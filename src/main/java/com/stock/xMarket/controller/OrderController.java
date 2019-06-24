@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -92,13 +93,13 @@ public class OrderController extends BaseApiController{
 	
 	final static Logger logger=LoggerFactory.getLogger(OrderController.class);
 	 
-	
+	 
 	@RequestMapping(value = "/buyOrSale")
+    @Async
 	public CommonReturnType buyOrSale(@ModelAttribute(value = "SentstockTrading")OrderVO orderVO,HttpSession session, String validateCode,HttpServletResponse response) throws BusinessException{
 		
 
-		orderVO.setTime(new Time(System.currentTimeMillis()));
-		orderVO.setDate(new Date(System.currentTimeMillis()));
+
 
 		orderService.buyOrSale(orderVO);
 		
