@@ -44,7 +44,7 @@ public class SystemTrade {
                 continue;
             }
             Random rand = new Random();
-            lastTradePrice = rand.nextInt(4)/100+lastTradePrice-0.02;
+            lastTradePrice = (double)rand.nextInt(4)/100+lastTradePrice-0.02;
             systemBuyOrder(orderVO,lastTradePrice);
             systemSellOrder(orderVO,lastTradePrice);
         }
