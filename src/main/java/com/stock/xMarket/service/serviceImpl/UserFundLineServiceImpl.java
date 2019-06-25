@@ -38,4 +38,5 @@ public class UserFundLineServiceImpl implements UserFundLineService {
         JSON.DEFFAULT_DATE_FORMAT = "yyyy-MM-dd";
         return JSON.parseArray(JSON.toJSONString(userFundHistoryList,SerializerFeature.WriteDateUseDateFormat), UserFundHistoryVO.class);
     }
+
 }
