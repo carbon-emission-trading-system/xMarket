@@ -21,6 +21,11 @@ public class HistoryHoldPositionServiceImpl implements HistoryHoldPositionServic
 	@Override
 	//查--所有历史持仓
     public List<HistoryHoldPositionVO> findByUserId(int userId){
+		String a="h";
+		String b="c";
+		if(a==b) {
+			
+		}
         return historyHoldPositionRepository.findByUserId(userId);
     }
 

@@ -116,6 +116,8 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public List<Order> findByUserId(int userId) {
 
+		Date date = new Date(System.currentTimeMillis());
+
 		List<Order> orderList = new ArrayList<>();
 
 		ArrayList<String> orderIdList = userOrderRedis.get(String.valueOf(userId));
@@ -123,16 +125,16 @@ public class OrderServiceImpl implements OrderService {
 		if (orderIdList != null) {
 			for (String orderId : orderIdList) {
 				Order order = orderRedis.get(orderId);
-				if (order != null) {
-					TransactionOrder transactionOrder = transactionRedis.get(orderId);
-					if (transactionOrder != null)
-						BeanUtils.copyProperties(transactionOrder, order);
+				if (order.getDate().equals(date)) {
+					if (order != null) {
+						TransactionOrder transactionOrder = transactionRedis.get(orderId);
+						if (transactionOrder != null)
+							BeanUtils.copyProperties(transactionOrder, order);
+					}
+					orderList.add(order);
 				}
-				orderList.add(order);
 			}
 		}
-
-		Date date = new Date(System.currentTimeMillis());
 
 		List<Order> dbOrderList = orderRepository.findByUser_UserIdAndDateOrderByTimeDesc(userId, date);
 
