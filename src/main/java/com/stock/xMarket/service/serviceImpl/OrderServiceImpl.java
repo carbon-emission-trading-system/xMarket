@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
 import javax.transaction.Transactional;
 
 import com.stock.xMarket.model.*;
+import com.stock.xMarket.redis.*;
 import com.stock.xMarket.repository.UserRepository;
 import com.stock.xMarket.service.HoldPositionService;
 import com.stock.xMarket.service.UserFundService;
@@ -29,10 +30,6 @@ import com.stock.xMarket.VO.OrderVO;
 import com.stock.xMarket.VO.StockTradeVO;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
-import com.stock.xMarket.redis.CallOrderRedis;
-import com.stock.xMarket.redis.OrderRedis;
-import com.stock.xMarket.redis.TransactionRedis;
-import com.stock.xMarket.redis.UserOrderRedis;
 import com.stock.xMarket.repository.OrderRepository;
 import com.stock.xMarket.repository.StockRepository;
 import com.stock.xMarket.service.OrderService;
@@ -78,6 +75,9 @@ public class OrderServiceImpl implements OrderService {
 
 	@Autowired
 	RabbitTemplate rabbitTemplate;
+
+	@Autowired
+	private RealTime1Redis realTime1Redis;
 
 	/**
 	 * Adds the order to redis.
@@ -289,7 +289,6 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-
 	public void buyOrSale(OrderVO orderVO) throws BusinessException {
 
 		Order order = generateOrder(orderVO);
@@ -354,6 +353,29 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		orderVO.setTime(new Time(System.currentTimeMillis()));
 		orderVO.setDate(new Date(System.currentTimeMillis()));
+
+		double yesterdayClosePrice = realTime1Redis.get(orderVO.getStockId().toString()).getYesterdayClosePrice();
+
+		if(orderVO.getOrderPrice()>yesterdayClosePrice*1.1||orderVO.getOrderPrice()<yesterdayClosePrice*0.9){
+			throw new BusinessException(EmBusinessError.ILLEGAL_PRICE_ERROR);
+		}
+
+		Order order = new Order();
+
+		//生成id
+		long orderId= Long.valueOf(String.valueOf(String.valueOf(orderVO.getUserId()+System.currentTimeMillis())));
+		orderVO.setOrderId(orderId);
+
+		BeanUtils.copyProperties(orderVO, order);
+
+		try {
+			int id=orderVO.getUserId();
+			User user = userRepository.findByUserId(id);
+			order.setUser(user);
+		} catch (IllegalArgumentException e) {
+			// TODO: handle exception
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标用户不存在！");
+
 		Order order = new Order();
 
 		// 生成id

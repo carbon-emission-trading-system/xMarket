@@ -18,7 +18,8 @@ public enum EmBusinessError implements CommonError {
     ORDER_FINISH_ERROR(50006,"委托已完成"),
     ILLEGAL_TIME_ERROR(50007,"非法的交易时间"),
     EMAIL_EXIST_ERROR(50008,"该邮箱已被注册！"),
-    USERNAME_EXIST_ERROR(50008,"该用户名已被使用！")
+    USERNAME_EXIST_ERROR(50008,"该用户名已被使用！"),
+    ILLEGAL_PRICE_ERROR(50009,"非法的价格！")
     ;
 
     EmBusinessError(int errCode,String errMsg){

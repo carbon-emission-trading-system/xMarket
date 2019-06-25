@@ -40,11 +40,11 @@ public class SystemTrade {
             orderVO.setStockId(stock.getStockId());
             orderVO.setStockName(stock.getStockName());
             double lastTradePrice = realTime1Redis.get(orderVO.getStockId().toString()).getLastTradePrice();
-            if (lastTradePrice == 0){
+            double yesterdayClosePrice = realTime1Redis.get(orderVO.getStockId().toString()).getYesterdayClosePrice();
+            if (lastTradePrice == 0||lastTradePrice<=yesterdayClosePrice*0.9||lastTradePrice>=yesterdayClosePrice*1.1){
                 continue;
             }
             Random rand = new Random();
-            lastTradePrice = (double)rand.nextInt(4)/100+lastTradePrice-0.02;
             systemBuyOrder(orderVO,lastTradePrice);
             systemSellOrder(orderVO,lastTradePrice);
         }
