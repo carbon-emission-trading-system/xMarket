@@ -21,6 +21,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +42,7 @@ import com.stock.xMarket.service.OrderService;
 @Transactional
 public class OrderServiceImpl implements OrderService {
 
-	private static Logger logger= LoggerFactory.getLogger(TransactionOrderServiceImpl.class);
+	private static Logger logger = LoggerFactory.getLogger(TransactionOrderServiceImpl.class);
 
 	/** The order repository. */
 	@Autowired
@@ -134,8 +135,8 @@ public class OrderServiceImpl implements OrderService {
 		Date date = new Date(System.currentTimeMillis());
 
 		List<Order> dbOrderList = orderRepository.findByUser_UserIdAndDateOrderByTimeDesc(userId, date);
-		
-		if(dbOrderList!=null) 
+
+		if (dbOrderList != null)
 			orderList.addAll(dbOrderList);
 
 		return orderList;
@@ -169,17 +170,15 @@ public class OrderServiceImpl implements OrderService {
 		order.setExchangeAveragePrice(transactionOrder.getTradePrice());
 		order.setTime(time);
 
-
 		order.setCancelNumber(transactionOrder.getCancelNumber());
 
-		
-		if(transactionOrder.getCancelNumber() > 0) {
-			if( transactionOrder.getExchangeAmount() > 0) {
+		if (transactionOrder.getCancelNumber() > 0) {
+			if (transactionOrder.getExchangeAmount() > 0) {
 				order.setState(3);
-			}else {
+			} else {
 				order.setState(4);
 			}
-		}else {
+		} else {
 			order.setState(2);
 		}
 
@@ -216,9 +215,9 @@ public class OrderServiceImpl implements OrderService {
 				for (Order order : orderList) {
 					rabbitTemplate.convertAndSend("callMarchExchange", "callMarch." + stockId,
 							JSON.toJSONString(order));
-					
+
 					orderList.remove(order);
-					
+
 				}
 			} else {
 
@@ -226,73 +225,130 @@ public class OrderServiceImpl implements OrderService {
 
 		}
 	}
-	
+
 	@Override
 	public void sendCancelOrder(long orderId) throws BusinessException {
-	
-	Order order=orderRepository.findByOrderId(orderId);
-    	
-    	if(order==null) {
-    		
-    		order=orderRedis.get(String.valueOf(orderId));
-    		if(order==null) 
-    			throw new BusinessException(EmBusinessError.UNKNOWN_ERROR);
-    		
-    		
-    	}
-    	
-    	order.setState(1);
-    	
-    	String stockId = String.valueOf(order.getStock().getStockId());
-    	
-    	
-    	ArrayList<Order> orderList = callOrderRedis.get(stockId);
-    	if(orderList==null)
-    		orderList=new ArrayList<>();
+
+		Order order = orderRepository.findByOrderId(orderId);
+
+		if (order == null) {
+
+			order = orderRedis.get(String.valueOf(orderId));
+			if (order == null)
+				throw new BusinessException(EmBusinessError.UNKNOWN_ERROR);
+
+		}
+
+		order.setState(1);
+
+		String stockId = String.valueOf(order.getStock().getStockId());
+
+		ArrayList<Order> orderList = callOrderRedis.get(stockId);
+		if (orderList == null)
+			orderList = new ArrayList<>();
 		if (!orderList.isEmpty()) {
-			if(orderList.contains(order)) {
-			orderList.remove(order);
-			callOrderRedis.put(stockId, orderList, -1);
-			}else {
-			//	rabbitTemplate.convertAndSend("userOrderExchange", "cancelMarch." + stockId,
-					//	orderId);
-				rabbitTemplate.convertAndSend("userOrderExchange", "cancelOrderRoutingKey",
-						orderId);
+			if (orderList.contains(order)) {
+				orderList.remove(order);
+				callOrderRedis.put(stockId, orderList, -1);
+			} else {
+				// rabbitTemplate.convertAndSend("userOrderExchange", "cancelMarch." + stockId,
+				// orderId);
+				rabbitTemplate.convertAndSend("userOrderExchange", "cancelOrderRoutingKey", orderId);
 			}
-			
+
 		} else {
-		
+
 //			rabbitTemplate.convertAndSend("userOrderExchange", "cancelOrderRoutingKey" ,
 //					orderId);
 //			
-			rabbitTemplate.convertAndSend("userOrderExchange", "cancelOrderRoutingKey",
-					orderId);
-			
+			rabbitTemplate.convertAndSend("userOrderExchange", "cancelOrderRoutingKey", orderId);
+
 		}
 
 	}
-	
-    //创建StockTradeVO的方法
-	@Override
-    public StockTradeVO createStockTradeVO(UserFund userFund,RealTime1 realTime1,Stock stock,HoldPosition holdPosition) {
-        StockTradeVO stockTradeVO = new StockTradeVO();
-        stockTradeVO.setBalance(userFund.getBalance());
-        stockTradeVO.setStockId(realTime1.getStockId());
-        stockTradeVO.setOrderPrice(realTime1.getLastTradePrice());
-        stockTradeVO.setTradeMarket(stock.getTradeMarket());
-        stockTradeVO.setStockName(stock.getStockName());
-        if (holdPosition == null){
-            stockTradeVO.setAvailableNumber(0);
-        }else {
-            stockTradeVO.setAvailableNumber(holdPosition.getAvailableNumber());
-        }
-        stockTradeVO.setYesterdayClosePrice(realTime1.getYesterdayClosePrice());
-        return stockTradeVO;
-    }
 
+	// 创建StockTradeVO的方法
+	@Override
+	public StockTradeVO createStockTradeVO(UserFund userFund, RealTime1 realTime1, Stock stock,
+			HoldPosition holdPosition) {
+		StockTradeVO stockTradeVO = new StockTradeVO();
+		stockTradeVO.setBalance(userFund.getBalance());
+		stockTradeVO.setStockId(realTime1.getStockId());
+		stockTradeVO.setOrderPrice(realTime1.getLastTradePrice());
+		stockTradeVO.setTradeMarket(stock.getTradeMarket());
+		stockTradeVO.setStockName(stock.getStockName());
+		if (holdPosition == null) {
+			stockTradeVO.setAvailableNumber(0);
+		} else {
+			stockTradeVO.setAvailableNumber(holdPosition.getAvailableNumber());
+		}
+		stockTradeVO.setYesterdayClosePrice(realTime1.getYesterdayClosePrice());
+		return stockTradeVO;
+	}
 
 	@Override
 	public void buyOrSale(OrderVO orderVO) throws BusinessException {
+
+		Order order = generateOrder(orderVO);
+
+		execOrder(order, orderVO);
+
+	}
+
+	@Async
+	private void execOrder(Order order, OrderVO orderVO) throws BusinessException {
+		// TODO Auto-generated method stub
+
+		if (order.getType() == 1) {
+			// 更新股票可用余额
+			holdPositionService.updateHoldPositionByOrder(order);
+		} else {
+			// 更新个人资金
+			userFundService.updateUserFundByOrder(order);
+		}
+
+		// 将委托单添加至Redis
+		try {
+			addOrderToRedis(order);
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("将委托单加入Redis发生异常");
+			throw new BusinessException(EmBusinessError.UNKNOWN_ERROR, "将委托单加入Redis发生异常");
+		}
+
+		try {
+			sendOrder(orderVO);
+		} catch (Exception e) {
+			// TODO: handle exception
+			logger.info("委托單撮合发生异常");
+			throw new BusinessException(EmBusinessError.UNKNOWN_ERROR, "委托單撮合发生异常发生异常");
+		}
+
+	}
+
+	private void sendOrder(OrderVO orderVO) {
+		// TODO Auto-generated method stub
+		if (OpeningUtil.isSet(orderVO.getTime())) {
+			// 集合竞价单，缓存到redis中
+			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
+
+//					String stockId = String.valueOf(order.getStock().getStockId());
+//
+//					ArrayList<Order> orderList = new ArrayList<>();
+//
+//						if(	callOrderRedis.get(stockId)!=null)
+//							orderList=callOrderRedis.get(stockId);
+//
+//						orderList.add(order);
+//						callOrderRedis.put(stockId, orderList, -1);
+
+		} else {
+			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
+		}
+	}
+
+	private Order generateOrder(OrderVO orderVO) throws BusinessException {
+		// TODO Auto-generated method stub
 		orderVO.setTime(new Time(System.currentTimeMillis()));
 		orderVO.setDate(new Date(System.currentTimeMillis()));
 
@@ -317,6 +373,22 @@ public class OrderServiceImpl implements OrderService {
 		} catch (IllegalArgumentException e) {
 			// TODO: handle exception
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标用户不存在！");
+
+		Order order = new Order();
+
+		// 生成id
+		long orderId = Long.valueOf(String.valueOf(String.valueOf(orderVO.getUserId() + System.currentTimeMillis())));
+		orderVO.setOrderId(orderId);
+
+		BeanUtils.copyProperties(orderVO, order);
+
+		try {
+			int id = orderVO.getUserId();
+			User user = userRepository.findByUserId(id);
+			order.setUser(user);
+		} catch (IllegalArgumentException e) {
+			// TODO: handle exception
+			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标用户不存在！");
 		}
 
 		try {
@@ -327,51 +399,6 @@ public class OrderServiceImpl implements OrderService {
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标股票不存在！");
 		}
 
-
-
-
-
-
-		if (order.getType() == 1) {
-			// 更新股票可用余额
-			holdPositionService.updateHoldPositionByOrder(order);
-		}else {
-			// 更新个人资金
-			userFundService.updateUserFundByOrder(order);
-		}
-
-
-
-
-		// 将委托单添加至Redis
-		try {
-			addOrderToRedis(order);
-		}catch (Exception e) {
-			// TODO: handle exception
-			logger.info("将委托单加入Redis发生异常");
-			throw new BusinessException(EmBusinessError.UNKNOWN_ERROR,"将委托单加入Redis发生异常");
-		}
-
-
-//		allMarchRoutingKey
-//		marchRoutingKey
-		if(OpeningUtil.isSet(order.getTime())) {
-			//集合竞价单，缓存到redis中
-			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
-
-//					String stockId = String.valueOf(order.getStock().getStockId());
-//
-//					ArrayList<Order> orderList = new ArrayList<>();
-//
-//						if(	callOrderRedis.get(stockId)!=null)
-//							orderList=callOrderRedis.get(stockId);
-//
-//						orderList.add(order);
-//						callOrderRedis.put(stockId, orderList, -1);
-
-		}else {
-			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
-		}
-
+		return order;
 	}
 }

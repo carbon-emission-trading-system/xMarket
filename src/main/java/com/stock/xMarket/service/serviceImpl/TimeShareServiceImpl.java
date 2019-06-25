@@ -91,7 +91,7 @@ public class TimeShareServiceImpl implements TimeShareService {
 //	@Scheduled(cron = "0 0-30 11 ? * MON-FRI")
 //	@Scheduled(cron = "0 0-30 13 ? * MON-FRI")
 //	@Scheduled(cron = "0 0-59 14-15 ? * MON-FRI")
-	@Scheduled(fixedRate = 60000)
+	@Scheduled(fixedRate = 600000)
 	public void sendTimeShare() {
 		List<TimeShareVO> timeShareList = new ArrayList<>();
 		List<RealTime1> list1 = new ArrayList<>();

@@ -29,7 +29,7 @@ public class SystemTrade {
     private RealTime1Redis realTime1Redis;
 
     //指定时间间隔
-    @Scheduled(fixedRate=60000)
+//    @Scheduled(fixedRate=60000)
     private void tradeTasks() throws BusinessException {
         OrderVO orderVO = new OrderVO();
         orderVO.setTradeStraregy(1);
