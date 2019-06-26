@@ -75,7 +75,6 @@ public class TradeOrderListener {
 
 	}
 
-	@Async
 	private void execTradeOrder(TradeOrder tradeOrder) {
 		// TODO Auto-generated method stub
 		try {

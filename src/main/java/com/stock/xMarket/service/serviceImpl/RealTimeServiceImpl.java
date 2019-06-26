@@ -118,7 +118,7 @@ public class RealTimeServiceImpl implements RealTimeService {
     		realTimeVO.setDownLimit(DemicalUtil.keepTwoDecimal(realTimeVO.getYesterdayClosePrice()*0.9));
     		realTimeVO.setClosePrice(rt.getClosePrice());
     		realTimeVO.setUpsAndDowns(DemicalUtil.keepTwoDecimal(realTimeVO.getLastTradePrice()-realTimeVO.getYesterdayClosePrice()));
-    		
+    		realTimeVO.setConversionHand(DemicalUtil.keepTwoDecimal(realTimeVO.getTradeAmount()/map.get(rt.getStockId()).getTotalShareCapital()*100));
     		realTimeVOList.add(realTimeVO);
     	}
     	

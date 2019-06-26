@@ -33,7 +33,7 @@ public class RankingListServiceImpl implements RankingListService{
 			@Override
 			public int compare(StockListVO o1, StockListVO o2) {
 				// TODO Auto-generated method stub
-				 if(o1.getIncrease() >= o2.getIncrease()) {
+				 if(o1.getIncrease() <= o2.getIncrease()) {
 			          return 1;
 			        }
 			        else {
@@ -69,7 +69,7 @@ public class RankingListServiceImpl implements RankingListService{
 			@Override
 			public int compare(StockListVO o1, StockListVO o2) {
 				// TODO Auto-generated method stub
-				 if(o1.getIncrease() <= o2.getIncrease()) {
+				 if(o1.getIncrease() >= o2.getIncrease()) {
 			          return 1;
 			        }
 			        else {
@@ -95,7 +95,7 @@ public class RankingListServiceImpl implements RankingListService{
 			@Override
 			public int compare(StockListVO o1, StockListVO o2) {
 				// TODO Auto-generated method stub
-				 if(o1.getTradeAmount() >= o2.getTradeAmount()) {
+				 if(o1.getTradeAmount() <= o2.getTradeAmount()) {
 			          return 1;
 			        }
 			        else {
@@ -118,7 +118,7 @@ public class RankingListServiceImpl implements RankingListService{
 			@Override
 			public int compare(StockListVO o1, StockListVO o2) {
 				// TODO Auto-generated method stub
-				 if(o1.getTradeAmount() >= o2.getTradeAmount()) {
+				 if(o1.getConversionHand() <= o2.getConversionHand()) {
 			          return 1;
 			        }
 			        else {

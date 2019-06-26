@@ -24,7 +24,7 @@ public class StockListVO implements Serializable {
 	private double peRatio ; //市盈率
 	private double pbRatio; //市净率
 	private int tradeMarket; //0--深A，1--沪A
-	
+	private double conversionHand;//换手
 	
 	
 	public String getStockPinyin() {
@@ -117,11 +117,19 @@ public class StockListVO implements Serializable {
 	public void setTradeMarket(int tradeMarket) {
 		this.tradeMarket = tradeMarket;
 	}
+
+	public double getConversionHand() {
+		return conversionHand;
+	}
+	public void setConversionHand(double conversionHand) {
+		this.conversionHand = conversionHand;
+	}
 	
 	public StockListVO(String stockId, String stockName, String stockPinyin, double lastTradePrice, double increase,
 			double highestPrice, double lowestPrice, double openPrice, double yesterdayOpenPrice,
 			double yesterdayClosePrice, double tradeAmount, double totalMarketCapitalization, double peRatio,
-			double pbRatio, int tradeMarket) {
+			double pbRatio, int tradeMarket, double conversionHand) {
+		super();
 		this.stockId = stockId;
 		this.stockName = stockName;
 		this.stockPinyin = stockPinyin;
@@ -137,6 +145,7 @@ public class StockListVO implements Serializable {
 		this.peRatio = peRatio;
 		this.pbRatio = pbRatio;
 		this.tradeMarket = tradeMarket;
+		this.conversionHand = conversionHand;
 	}
 	public StockListVO() {
 	}

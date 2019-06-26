@@ -97,11 +97,8 @@ public class OrderController extends BaseApiController{
 	@RequestMapping(value = "/buyOrSale")
 	public CommonReturnType buyOrSale(@ModelAttribute(value = "SentstockTrading")OrderVO orderVO,HttpSession session, String validateCode,HttpServletResponse response) throws BusinessException{
 		
-
-
-
 		orderService.buyOrSale(orderVO);
-		
+
 		return success();
 
 	}
@@ -160,15 +157,6 @@ public class OrderController extends BaseApiController{
 
 
         return CommonReturnType.success(orderService.createStockTradeVO(userFund,realTime1,stock,holdPosition));
-//        StockTradeVO stockTradeVO = new StockTradeVO();
-//        stockTradeVO.setAvailableNumber(10000);
-//        stockTradeVO.setOpenPrice(100);
-//        stockTradeVO.setStockName("浦发银行");
-//        stockTradeVO.setTradeMarket(1);
-//        stockTradeVO.setOrderPrice(99);
-//        stockTradeVO.setStockId(600000);
-//        stockTradeVO.setBalance(100000);
-//        return CommonReturnType.success(stockTradeVO);
     }
 
 

@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -146,6 +147,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 	}
 
 	@Override
+	@Async
 	public void updateHoldPositionByOrder(Order order) throws BusinessException {
 		// TODO Auto-generated method stub
 		int userId = order.getUser().getUserId();

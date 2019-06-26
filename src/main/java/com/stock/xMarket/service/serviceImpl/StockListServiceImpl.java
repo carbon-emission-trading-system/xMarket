@@ -127,7 +127,7 @@ public class StockListServiceImpl implements StockListService {
     		stockListVO.setPeRatio(DemicalUtil.keepTwoDecimal(peRatio));
     		stockListVO.setPbRatio(DemicalUtil.keepTwoDecimal(pbRatio));
     		stockListVO.setTradeMarket(map.get(rt.getStockId()).getTradeMarket());
-
+    		stockListVO.setConversionHand(stockListVO.getTradeAmount()/map.get(rt.getStockId()).getTotalShareCapital());
     		stockListVOList.add(stockListVO);
     	}
 

@@ -132,6 +132,14 @@ public class RabbitMqConfig {
 	    }
 	    
 	    
+	    //提醒
+	    @Bean
+	    public TopicExchange notifyExchange(){
+	        return new TopicExchange("notifyExchange",true,false);
+	    }
+	    
+	    
+	    
 	    //交易单队列
 	    @Bean(name = "tradeOrderQueue")
 	    public Queue tradeOrderQueue(){

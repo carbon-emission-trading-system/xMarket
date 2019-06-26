@@ -125,7 +125,6 @@ public class OrderServiceImpl implements OrderService {
 		if (orderIdList != null) {
 			for (String orderId : orderIdList) {
 				Order order = orderRedis.get(orderId);
-				if (order.getDate().equals(date)) {
 					if (order != null) {
 						TransactionOrder transactionOrder = transactionRedis.get(orderId);
 						if (transactionOrder != null)
@@ -133,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
 					}
 					orderList.add(order);
 				}
-			}
+			
 		}
 
 		List<Order> dbOrderList = orderRepository.findByUser_UserIdAndDateOrderByTimeDesc(userId, date);
@@ -154,6 +153,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	@Async
 	public void updateOrderBytransactionOrder(TransactionOrder transactionOrder) {
 		// TODO Auto-generated method stub
 
@@ -297,7 +297,6 @@ public class OrderServiceImpl implements OrderService {
 
 	}
 
-	@Async
 	private void execOrder(Order order, OrderVO orderVO) throws BusinessException {
 		// TODO Auto-generated method stub
 
@@ -309,6 +308,7 @@ public class OrderServiceImpl implements OrderService {
 			userFundService.updateUserFundByOrder(order);
 		}
 
+	
 		// 将委托单添加至Redis
 		try {
 			addOrderToRedis(order);
@@ -357,24 +357,11 @@ public class OrderServiceImpl implements OrderService {
 		double yesterdayClosePrice = realTime1Redis.get(orderVO.getStockId().toString()).getYesterdayClosePrice();
 
 		if(orderVO.getOrderPrice()>yesterdayClosePrice*1.1||orderVO.getOrderPrice()<yesterdayClosePrice*0.9){
-			throw new BusinessException(EmBusinessError.ILLEGAL_PRICE_ERROR);
+			if(orderVO.getTradeStraregy()==0)
+				throw new BusinessException(EmBusinessError.ILLEGAL_PRICE_ERROR);
 		}
 
-		Order order = new Order();
-
-		//生成id
-		long orderId= Long.valueOf(String.valueOf(String.valueOf(orderVO.getUserId()+System.currentTimeMillis())));
-		orderVO.setOrderId(orderId);
-
-		BeanUtils.copyProperties(orderVO, order);
-
-		try {
-			int id=orderVO.getUserId();
-			User user = userRepository.findByUserId(id);
-			order.setUser(user);
-		} catch (IllegalArgumentException e) {
-			// TODO: handle exception
-			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标用户不存在！");
+	
 
 		Order order = new Order();
 
@@ -403,4 +390,7 @@ public class OrderServiceImpl implements OrderService {
 
 		return order;
 	}
+
+
+	
 }

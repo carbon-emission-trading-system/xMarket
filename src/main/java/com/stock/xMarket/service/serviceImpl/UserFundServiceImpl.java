@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.stock.xMarket.model.Order;
@@ -82,6 +83,7 @@ public class UserFundServiceImpl implements UserFundService {
 	 * @param order the order
 	 */
 	@Override
+	@Async
 	public void updateUserFundByOrder(Order order) throws BusinessException {
 		// TODO Auto-generated method stub
 		
