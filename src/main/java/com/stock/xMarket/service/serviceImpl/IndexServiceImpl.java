@@ -122,7 +122,7 @@ public class IndexServiceImpl implements IndexService{
 			
 			indexVO.setFlatStocks(flats);
 			
-			indexVO.setMarketCapitalization(totalMarketCapitalization);
+			indexVO.setMarketCapitalization(DemicalUtil.keepTwoDecimal(totalMarketCapitalization));
 			
 			indexRedis.put(key, indexVO, -1);
 			

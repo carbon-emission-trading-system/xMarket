@@ -96,6 +96,11 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			} else {
 				userFundService.updateUserFundByTransaction(cancelOrder);
 			}
+			
+			rabbitTemplate.convertAndSend("notifyExchange",String.valueOf(cancelOrder.getOwnerId()),"您的委托单已撤单！");
+			
+			
+			
 			return;
 		}
 

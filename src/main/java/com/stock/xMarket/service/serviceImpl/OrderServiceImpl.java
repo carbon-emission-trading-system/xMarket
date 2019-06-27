@@ -153,7 +153,6 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	@Async
 	public void updateOrderBytransactionOrder(TransactionOrder transactionOrder) {
 		// TODO Auto-generated method stub
 
@@ -231,15 +230,10 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public void sendCancelOrder(long orderId) throws BusinessException {
 
-		Order order = orderRepository.findByOrderId(orderId);
 
-		if (order == null) {
-
-			order = orderRedis.get(String.valueOf(orderId));
+			Order order = orderRedis.get(String.valueOf(orderId));
 			if (order == null)
 				throw new BusinessException(EmBusinessError.UNKNOWN_ERROR);
-
-		}
 
 		order.setState(1);
 
@@ -353,7 +347,6 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		orderVO.setTime(new Time(System.currentTimeMillis()));
 		orderVO.setDate(new Date(System.currentTimeMillis()));
-
 		double yesterdayClosePrice = realTime1Redis.get(orderVO.getStockId().toString()).getYesterdayClosePrice();
 
 		if(orderVO.getOrderPrice()>yesterdayClosePrice*1.1||orderVO.getOrderPrice()<yesterdayClosePrice*0.9){
@@ -388,6 +381,7 @@ public class OrderServiceImpl implements OrderService {
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标股票不存在！");
 		}
 
+		order.setFrozenAmount(userFundService.frozenAmountCaculator(order));
 		return order;
 	}
 
