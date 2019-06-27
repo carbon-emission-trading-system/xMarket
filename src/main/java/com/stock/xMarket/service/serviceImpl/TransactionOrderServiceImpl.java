@@ -8,11 +8,13 @@ import javax.transaction.Transactional;
 
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
+import com.stock.xMarket.model.HoldPosition;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.model.TradeOrder;
 import com.stock.xMarket.model.TransactionOrder;
 import com.stock.xMarket.redis.TransactionRedis;
 
+import com.stock.xMarket.repository.HoldPositionRepository;
 import com.stock.xMarket.repository.StockRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +64,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	@Autowired
 	private StockRepository stockRepository;
 
+	@Autowired
+	private HoldPositionRepository holdPositionRepository;
+
 	// 返回全部历史成交单
 	@Override
 	public List<TransactionOrderVO> findByOwnerId(int ownerId) {
@@ -81,6 +86,8 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			// 存入数据库
 			LOGGER.info("委托单号：" + cancelOrder.getOrderId() + " 的委托买单已被撤单，成交单存入数据库");
 
+			HoldPosition holdPosition = holdPositionRepository.findByUser_UserIdAndStock_StockId(cancelOrder.getOwnerId(), cancelOrder.getStockId());
+			cancelOrder.setStockBalance(holdPosition.getPositionNumber());
 			transactionOrderRepository.saveAndFlush(cancelOrder);
 
 			orderService.updateOrderBytransactionOrder(cancelOrder);
