@@ -36,8 +36,7 @@ public class UserFundServiceImpl implements UserFundService {
 
 	@Autowired
 	private RealTime1Redis realTime1Redis;
-	
-  
+
 	/**
 	 * Update user fund by transaction.
 	 *
@@ -46,35 +45,34 @@ public class UserFundServiceImpl implements UserFundService {
 	@Override
 	public void updateUserFundByTransaction(TransactionOrder transactionOrder) {
 		// TODO Auto-generated method stub
-		int userId=transactionOrder.getOwnerId();
+		int userId = transactionOrder.getOwnerId();
 
-		UserFund userFund=userFundRepository.findByUser_UserId(userId);
-		
-		Order order=orderRepository.findById(transactionOrder.getOrderId()).get();
-		
-		if(transactionOrder.getType()==0) {
-			
-			double returnAmount=order.getFrozenAmount()-transactionOrder.getActualAmount();
-			
-			double frozenAmount=userFund.getFrozenAmount()-order.getFrozenAmount();
-			
+		UserFund userFund = userFundRepository.findByUser_UserId(userId);
+
+		Order order = orderRepository.findById(transactionOrder.getOrderId()).get();
+
+		if (transactionOrder.getType() == 0) {
+
+			double returnAmount = order.getFrozenAmount() - transactionOrder.getActualAmount();
+
+			double frozenAmount = userFund.getFrozenAmount() - order.getFrozenAmount();
+
 			userFund.setFrozenAmount(frozenAmount);
-			
-			userFund.setBalance(userFund.getBalance()+returnAmount);
-			
+
+			userFund.setBalance(userFund.getBalance() + returnAmount);
+
 			userFundRepository.saveAndFlush(userFund);
-			
-		}else {
-			
-			Double balance=userFund.getBalance()+transactionOrder.getActualAmount();
-			
+
+		} else {
+
+			Double balance = userFund.getBalance() + transactionOrder.getActualAmount();
+
 			userFund.setBalance(balance);
-			
+
 			userFundRepository.saveAndFlush(userFund);
-			
+
 		}
-		
-		
+
 	}
 
 	/**
@@ -86,58 +84,46 @@ public class UserFundServiceImpl implements UserFundService {
 	@Async
 	public void updateUserFundByOrder(Order order) throws BusinessException {
 		// TODO Auto-generated method stub
-		
-		int userId = order.getUser().getUserId();
-	
-		
-		UserFund userFund=userFundRepository.findByUser_UserId(userId);
-		
-		double frozenAmount=frozenAmountCaculator(order);
-		
-		order.setFrozenAmount(frozenAmount);
-		
-		
 
-			double balance=userFund.getBalance()-frozenAmount;
-			if(balance<0){
-				throw new BusinessException(EmBusinessError.FUND_ERROR);
-			}
-			frozenAmount+=userFund.getFrozenAmount();
-			userFund.setFrozenAmount(frozenAmount);
-			userFund.setBalance(balance);
-			userFundRepository.saveAndFlush(userFund);
+		int userId = order.getUser().getUserId();
+
+		UserFund userFund = userFundRepository.findByUser_UserId(userId);
+
+		double frozenAmount = order.getFrozenAmount();
+
+		double balance = userFund.getBalance() - frozenAmount;
+		if (balance < 0) {
+			throw new BusinessException(EmBusinessError.FUND_ERROR);
+		}
+		frozenAmount += userFund.getFrozenAmount();
+		userFund.setFrozenAmount(frozenAmount);
+		userFund.setBalance(balance);
+		userFundRepository.saveAndFlush(userFund);
 	}
-	
-	
+
+	@Override
 	public double frozenAmountCaculator(Order order) {
-		double frozenAmount=0;
+		double frozenAmount = 0;
 		String stockId = order.getStock().getStockId();
 		Time time = order.getTime();
-		if(order.getTradeStraregy()>0) {
-			if(OpeningUtil.isOpening(time)) {
-				double ytdPrice=realTime1Redis.get(String.valueOf(stockId)).getYesterdayClosePrice();
-				frozenAmount=ytdPrice*1.10*order.getOrderAmount();
-			}else {
-				double ytdPrice=realTime1Redis.get(String.valueOf(stockId)).getYesterdayClosePrice();
-				frozenAmount=ytdPrice*1.10*order.getOrderAmount();
+		if (order.getTradeStraregy() > 0) {
+			if (OpeningUtil.isOpening(time)) {
+				double ytdPrice = realTime1Redis.get(String.valueOf(stockId)).getYesterdayClosePrice();
+				frozenAmount = ytdPrice * 1.10 * order.getOrderAmount();
+			} else {
+				double ytdPrice = realTime1Redis.get(String.valueOf(stockId)).getYesterdayClosePrice();
+				frozenAmount = ytdPrice * 1.10 * order.getOrderAmount();
 			}
-			
-		}else {
-			if(order.getType()==0) {
-			//计算手续费,买的时候更新
-			double orderAmount=order.getOrderPrice()*order.getOrderAmount();
-			frozenAmount=orderAmount+FeeUtil.transferFeeCaculator(orderAmount);
-			frozenAmount+=FeeUtil.serviceFeeCaculator(order.getOrderPrice()*order.getOrderAmount());
+
+		} else {
+			if (order.getType() == 0) {
+				// 计算手续费,买的时候更新
+				double orderAmount = order.getOrderPrice() * order.getOrderAmount();
+				frozenAmount = orderAmount + FeeUtil.transferFeeCaculator(orderAmount);
+				frozenAmount += FeeUtil.serviceFeeCaculator(order.getOrderPrice() * order.getOrderAmount());
 			}
 		}
 		return frozenAmount;
 	}
-	
-	
-	
-	
+
 }
-
-
-
-

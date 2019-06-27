@@ -12,4 +12,6 @@ public interface UserFundService {
 
 	void updateUserFundByTransaction(TransactionOrder transactionOrder);
 
+	double frozenAmountCaculator(Order order);
+
 }
