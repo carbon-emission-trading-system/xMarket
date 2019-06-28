@@ -4,6 +4,8 @@ package com.stock.xMarket.service.serviceImpl;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -27,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 import com.stock.xMarket.VO.OrderVO;
+import com.stock.xMarket.VO.StockListVO;
 import com.stock.xMarket.VO.StockTradeVO;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.error.EmBusinessError;
@@ -140,6 +143,31 @@ public class OrderServiceImpl implements OrderService {
 		if (dbOrderList != null)
 			orderList.addAll(dbOrderList);
 
+		
+		
+		
+		
+		Comparator<Order> comparator =new Comparator<Order>() {
+
+			@Override
+			public int compare(Order o1, Order o2) {
+				// TODO Auto-generated method stub
+				 if(o1.getDate().after(o2.getDate())) {
+			          return -1;
+			        }
+			        else {
+			          return 1;
+			        }
+			}
+	
+    	};
+    	
+		Collections.sort(orderList,comparator);
+		
+		
+		
+		
+		
 		return orderList;
 
 	}
@@ -326,7 +354,7 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		if (OpeningUtil.isSet(orderVO.getTime())) {
 			// 集合竞价单，缓存到redis中
-			rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
+			rabbitTemplate.convertAndSend("marchExchange", "allMarchRoutingKey", JSON.toJSONString(orderVO));
 
 //					String stockId = String.valueOf(order.getStock().getStockId());
 //

@@ -57,7 +57,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 	@Autowired
 	UserFundService userFundService;
-	
+
 	@Autowired
 	RabbitTemplate rabbitTemplate;
 
@@ -86,8 +86,10 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			// 存入数据库
 			LOGGER.info("委托单号：" + cancelOrder.getOrderId() + " 的委托买单已被撤单，成交单存入数据库");
 
-			HoldPosition holdPosition = holdPositionRepository.findByUser_UserIdAndStock_StockId(cancelOrder.getOwnerId(), cancelOrder.getStockId());
-			cancelOrder.setStockBalance(holdPosition.getPositionNumber());
+			HoldPosition holdPosition = holdPositionRepository
+					.findByUser_UserIdAndStock_StockId(cancelOrder.getOwnerId(), cancelOrder.getStockId());
+			if (holdPosition != null)
+				cancelOrder.setStockBalance(holdPosition.getPositionNumber());
 			transactionOrderRepository.saveAndFlush(cancelOrder);
 
 			orderService.updateOrderBytransactionOrder(cancelOrder);
@@ -96,11 +98,10 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			} else {
 				userFundService.updateUserFundByTransaction(cancelOrder);
 			}
-			
-			rabbitTemplate.convertAndSend("notifyExchange",String.valueOf(cancelOrder.getOwnerId()),"您的委托单已完成！");
-			
-			
-			
+
+			rabbitTemplate.convertAndSend("notifyExchange", String.valueOf(cancelOrder.getOwnerId()),
+					"您的委托单已完成！(" + cancelOrder.getStockName() + ")");
+
 			return;
 		}
 
@@ -189,9 +190,9 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 				throw new BusinessException(EmBusinessError.UNKNOWN_ERROR, "更新操作失败！");
 			}
 
-			
-			rabbitTemplate.convertAndSend("notifyExchange",String.valueOf(sellOrder.getOwnerId()),"您的委托单已完成！");
-			
+			rabbitTemplate.convertAndSend("notifyExchange", String.valueOf(sellOrder.getOwnerId()),
+					"您的委托单已完成！(" + sellOrder.getStockName() + ")");
+
 		}
 
 		// 如果买方标识位为false，则将买方成交单放入redis；反之则放入数据库
@@ -266,7 +267,8 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 				LOGGER.info("更新个人资金操作失败！");
 				throw new BusinessException(EmBusinessError.UNKNOWN_ERROR, "更新操作失败！");
 			}
-			rabbitTemplate.convertAndSend("notifyExchange",String.valueOf(buyOrder.getOwnerId()),"您的委托单已完成！");
+			rabbitTemplate.convertAndSend("notifyExchange", String.valueOf(buyOrder.getOwnerId()),
+					"您的委托单已完成！(" + buyOrder.getStockName() + ")");
 		}
 
 	}

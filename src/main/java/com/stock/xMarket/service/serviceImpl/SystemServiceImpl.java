@@ -114,14 +114,25 @@ public class SystemServiceImpl implements SystemService {
 			timeShareRedis.put(key, 0, -1);
 		}
 	}
+	
+	@Override
+	@Scheduled(cron = "0 00 00 * * ?")
+	public void clear() {
+		cleanOrder();
+		unfreeze();
+		addStockHistory();
+		addUserFundHistory();
+		initialRealTime();
+		
+	}
+	
+	
+	
+	
+	
 
 	@Override
-    @Scheduled(cron = "0 00 00 ? * MON-FRI")
 	public void addStockHistory() {
-
-		List<Stock> stockList = new ArrayList<>();
-
-		stockList = stockRepository.findAll();
 
 		// updateRealTime();
 		List<RealTimeVO> realTimeList = new ArrayList<RealTimeVO>();
@@ -136,15 +147,8 @@ public class SystemServiceImpl implements SystemService {
 		// TODO Auto-generated method stub
 
 		for (RealTimeVO realTimeVO : realTimeList) {
-			String key = realTimeVO.getStockId();
-
 			StockHistory stockHistory = new StockHistory();
 			BeanUtils.copyProperties(realTimeVO, stockHistory);
-
-			double closePrice = realTimeVO.getLastTradePrice();
-			// 保存其他信息
-			stockHistory.setClosePrice(closePrice);
-
 			stockHistoryRepository.saveAndFlush(stockHistory);
 		}
 		// TODO Auto-generated method stub
@@ -156,7 +160,6 @@ public class SystemServiceImpl implements SystemService {
 	
 
 	@Override
-    @Scheduled(cron = "0 00 00 ? * MON-FRI")
 	public void cleanOrder() {
 		// TODO Auto-generated method stub
 
@@ -172,7 +175,6 @@ public class SystemServiceImpl implements SystemService {
 	}
 
 	@Override
-    @Scheduled(cron = "0 00 00 ? * MON-FRI")
 	public void unfreeze() {
 		// TODO Auto-generated method stub
 		List<HoldPosition> holdPositionList = holdPositionRepository.findAll();
@@ -183,7 +185,6 @@ public class SystemServiceImpl implements SystemService {
 	}
 
 	@Override
-	@Scheduled(cron = "0 00 00 ? * MON-FRI")
 	public void addUserFundHistory() {
 		List<User> userList = userRepository.findAll();
 		Date date = new Date(System.currentTimeMillis());
@@ -205,16 +206,7 @@ public class SystemServiceImpl implements SystemService {
 		}
 
 	}
-	
-	
-	
-	@Override
-	@Scheduled(cron = "0 00 00 ? * MON-FRI")
-	public void sendSystemOrder() {
-//		List<User> userList = userRepository.find();
 
-
-	}
 	
 	
 	

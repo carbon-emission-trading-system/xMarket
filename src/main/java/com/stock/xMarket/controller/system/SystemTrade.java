@@ -1,6 +1,7 @@
 package com.stock.xMarket.controller.system;
 
 import com.stock.xMarket.VO.OrderVO;
+import com.stock.xMarket.controller.BaseApiController;
 import com.stock.xMarket.error.BusinessException;
 import com.stock.xMarket.model.Stock;
 import com.stock.xMarket.redis.RealTime1Redis;
@@ -17,7 +18,7 @@ import java.util.Random;
 
 @Component
 @EnableScheduling
-public class SystemTrade {
+public class SystemTrade extends BaseApiController {
 
     @Autowired
     private OrderService orderService;
