@@ -152,7 +152,7 @@ public class OrderServiceImpl implements OrderService {
 			@Override
 			public int compare(Order o1, Order o2) {
 				// TODO Auto-generated method stub
-				 if(o1.getDate().after(o2.getDate())) {
+				 if(o1.getTime().after(o2.getTime())) {
 			          return -1;
 			        }
 			        else {

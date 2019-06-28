@@ -127,9 +127,6 @@ public class SystemServiceImpl implements SystemService {
 	}
 	
 	
-	
-	
-	
 
 	@Override
 	public void addStockHistory() {

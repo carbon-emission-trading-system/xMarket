@@ -11,16 +11,17 @@ import com.stock.xMarket.VO.TransactionOrderVO;
 import com.stock.xMarket.model.TransactionOrder;
 
 @Repository
-public interface TransactionOrderRepository extends JpaRepository<TransactionOrder,Integer> {
+public interface TransactionOrderRepository extends JpaRepository<TransactionOrder, Integer> {
 
-	@Query(value="select new com.stock.xMarket.VO.TransactionOrderVO(t.date,t.time,t.stockId,t.stockName,t.type,t.tradePrice,t.exchangeAmount,(t.tradePrice*t.exchangeAmount) as totalExchangeMoney,"
-			+ "t.stockBalance,t.orderId,t.transactionOrderId,t.serviceTax,t.stampTax,t.transferFee,t.actualAmount,t.tradeMarket,t.cancelNumber)"
-			+ " from TransactionOrder t where t.ownerId=:ownerId")
 	List<TransactionOrderVO> findByOwnerIdOrderByDateDesc(Integer ownerId);
 
-	List<TransactionOrder> findByOwnerIdAndDateOrderByDateDescTimeDesc(int userId,Date date);
-	
-	List<TransactionOrder> findByOwnerIdAndStockId(int ownerId,String stockId);
+	List<TransactionOrder> findByOwnerIdAndDateOrderByDateDescTimeDesc(int userId, Date date);
 
-	
+	List<TransactionOrder> findByOwnerIdAndStockId(int ownerId, String stockId);
+
+	@Query(value = "select new com.stock.xMarket.VO.TransactionOrderVO(t.date,t.time,t.stockId,t.stockName,t.type,t.tradePrice,t.exchangeAmount,(t.tradePrice*t.exchangeAmount) as totalExchangeMoney,"
+			+ "t.stockBalance,t.orderId,t.transactionOrderId,t.serviceTax,t.stampTax,t.transferFee,t.actualAmount,t.tradeMarket,t.cancelNumber)"
+			+ " from TransactionOrder t where t.ownerId=:ownerId")
+	List<TransactionOrderVO> findByOwnerIdOrderByDateDescTimeDesc(int ownerId);
+
 }

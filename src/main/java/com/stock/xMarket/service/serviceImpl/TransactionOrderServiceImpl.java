@@ -71,7 +71,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	@Override
 	public List<TransactionOrderVO> findByOwnerId(int ownerId) {
 
-		return transactionOrderRepository.findByOwnerIdOrderByDateDesc(ownerId);
+		return transactionOrderRepository.findByOwnerIdOrderByDateDescTimeDesc(ownerId);
 	}
 
 	// 将交易单转化为成交单
