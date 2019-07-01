@@ -6,6 +6,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.xMarket.model.News;
@@ -18,11 +19,11 @@ public class NewsServiceImpl implements NewsService {
 
 	@Autowired
 	private NewsRepository newsRepository;
-
+	
 	@Override
-	public List<News> findAll() {
+	public List<News> findAll(Sort sort) {
 		List<News> list = new ArrayList<>();
-		list = newsRepository.findAll();
+		list = newsRepository.findAll(sort);
 		return list;
 	}
 	

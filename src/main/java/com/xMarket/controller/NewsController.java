@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,8 +29,9 @@ public class NewsController extends BaseApiController {
 	@RequestMapping(value = "/getNews", method = RequestMethod.GET)
 	public CommonReturnType getNews() {
 
+		Sort sort = new Sort(Sort.Direction.DESC, "date");
 		List<NewsVO> newsVOList = new ArrayList<NewsVO>();
-		List<News> newsList = newsService.findAll();
+		List<News> newsList = newsService.findAll(sort);
 		if (newsList != null)
 			for (News news : newsList) {
 				NewsVO newsVO = new NewsVO();
