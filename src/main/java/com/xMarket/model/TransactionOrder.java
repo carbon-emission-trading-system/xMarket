@@ -39,7 +39,7 @@ public class TransactionOrder implements Serializable{
 	private int type;//买卖标识  1是卖
 	
 	@Column(name="order_id")
-	private long orderId;//委托单id  sellOrderId
+	private String orderId;//委托单id  sellOrderId
 	
 	@Column(name="owner_id")
 	private int ownerId;//拥有者id
@@ -85,11 +85,14 @@ public class TransactionOrder implements Serializable{
 
 	
 	
+
+
 	
-	public TransactionOrder(long transactionOrderId, String stockId, String stockName, int type, long orderId, int ownerId,
-							Time time, Date date, double tradePrice, int exchangeAmount, Boolean tradeType, double serviceTax,
-							double stampTax, double transferFee, double actualAmount, int tradeMarket, int stockBalance, int cancelNumber,
-							double totalExchangeMoney) {
+	
+	public TransactionOrder(long transactionOrderId, String stockId, String stockName, int type, String orderId,
+			int ownerId, Time time, Date date, double tradePrice, int exchangeAmount, Boolean tradeType,
+			double serviceTax, double stampTax, double transferFee, double actualAmount, int tradeMarket,
+			long stockBalance, int cancelNumber, double totalExchangeMoney) {
 		super();
 		this.transactionOrderId = transactionOrderId;
 		this.stockId = stockId;
@@ -112,8 +115,14 @@ public class TransactionOrder implements Serializable{
 		this.totalExchangeMoney = totalExchangeMoney;
 	}
 
-	
-	
+
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+
+
 	public TransactionOrder() {
 	}
 
@@ -145,13 +154,12 @@ public class TransactionOrder implements Serializable{
 		this.transactionOrderId = transactionOrderId;
 	}
 
-	public long getOrderId() {
+
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(long orderId) {
-		this.orderId = orderId;
-	}
+
 
 	public String getStockId() {
 		return stockId;

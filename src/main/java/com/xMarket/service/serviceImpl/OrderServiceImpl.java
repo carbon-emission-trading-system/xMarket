@@ -92,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 
 		try {
-			String key = String.valueOf(order.getOrderId());
+			String key = order.getOrderId();
 			orderRedis.put(key, order, -1);
 
 			String userId = String.valueOf(order.getUser().getUserId());
@@ -184,7 +184,7 @@ public class OrderServiceImpl implements OrderService {
 	public void updateOrderBytransactionOrder(TransactionOrder transactionOrder) {
 		// TODO Auto-generated method stub
 
-		long OrderId = transactionOrder.getOrderId();
+		String OrderId = transactionOrder.getOrderId();
 		Order order = orderRedis.get(String.valueOf(OrderId));
 		if (order == null)
 			order = new Order();
@@ -387,9 +387,8 @@ public class OrderServiceImpl implements OrderService {
 		Order order = new Order();
 
 		// 生成id
-		long orderId = Long.valueOf(orderVO.getType()+String.valueOf(String.valueOf(orderVO.getUserId()) + System.currentTimeMillis()));
+		String orderId = String.valueOf(String.valueOf(orderVO.getUserId()) + String.valueOf(orderVO.getType())+ System.currentTimeMillis());
 		orderVO.setOrderId(orderId);
-
 		BeanUtils.copyProperties(orderVO, order);
 
 		try {
@@ -411,6 +410,14 @@ public class OrderServiceImpl implements OrderService {
 
 		order.setFrozenAmount(userFundService.frozenAmountCaculator(order));
 		return order;
+	}
+
+	@Override
+	public void setState(String orderId) {
+		// TODO Auto-generated method stub
+		Order order=orderRedis.get(orderId);
+		order.setState(5);
+		orderRedis.put(orderId, order, -1);
 	}
 
 
