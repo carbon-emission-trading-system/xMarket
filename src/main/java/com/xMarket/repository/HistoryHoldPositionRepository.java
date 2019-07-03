@@ -12,6 +12,6 @@ import com.xMarket.model.HistoryHoldPosition;
 @Repository
 public interface HistoryHoldPositionRepository extends JpaRepository<HistoryHoldPosition,Integer> {
 
-	@Query(value="select new com.xMarket.VO.HistoryHoldPositionVO(h.stockId,h.stockName,h.buildPositionDate,h.clearPositionDate,h.stockHoldDay,h.totalProfitAndLoss,h.profitAndLossRatio) from HistoryHoldPosition h where h.userId=:userId")
+	@Query(value="select new com.xMarket.VO.HistoryHoldPositionVO(h.stockId,h.stockName,h.buildPositionDate,h.clearPositionDate,h.stockHoldDay,h.totalProfitAndLoss,h.profitAndLossRatio*100) from HistoryHoldPosition h where h.userId=:userId")
 	List<HistoryHoldPositionVO> findByUserId(Integer userId);
 }
