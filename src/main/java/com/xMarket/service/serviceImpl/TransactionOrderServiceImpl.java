@@ -94,11 +94,24 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			//在redis中寻找委托单，并结算
 			TransactionOrder redisOrder = transactionRedis.get(String.valueOf(cancelOrder.getOrderId()));
 			if (redisOrder!=null){
+				//更新委托单信息
+				orderService.updateOrderBytransactionOrder(redisOrder);
+				//从redis中移除成交单
+				transactionRedis.remove(String.valueOf(redisOrder.getOrderId()));
+				// 计算服务费、成交价和股票余额
+				redisOrder.setStampTax(0);
+				redisOrder.setTransferFee(transferFeeCaculator(redisOrder.getExchangeAmount()));
+				redisOrder.setServiceTax(serviceFeeCaculator(redisOrder.getTotalExchangeMoney()));
+				redisOrder.setActualAmount(
+						redisOrder.getTotalExchangeMoney() + redisOrder.getServiceTax() + redisOrder.getTransferFee());
+				redisOrder.setTradePrice(redisOrder.getTotalExchangeMoney() / redisOrder.getExchangeAmount());
+				redisOrder.setStockBalance(redisOrder.getExchangeAmount());
 				if (redisOrder.getType() == 1){
 					userFundService.updateUserFundByTransaction(redisOrder);
 				}else {
 					holdPositionService.updateHoldPositionByTransaction(redisOrder);
 				}
+
 			}
 
 			//根据撤单内容更新持仓或资金
