@@ -91,6 +91,17 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 				cancelOrder.setStockBalance(holdPosition.getPositionNumber());
 			transactionOrderRepository.saveAndFlush(cancelOrder);
 
+			//在redis中寻找委托单，并结算
+			TransactionOrder redisOrder = transactionRedis.get(String.valueOf(cancelOrder.getOrderId()));
+			if (redisOrder!=null){
+				if (redisOrder.getType() == 1){
+					userFundService.updateUserFundByTransaction(redisOrder);
+				}else {
+					holdPositionService.updateHoldPositionByTransaction(redisOrder);
+				}
+			}
+
+			//根据撤单内容更新持仓或资金
 			orderService.updateOrderBytransactionOrder(cancelOrder);
 			if (cancelOrder.getType() == 1) {
 				holdPositionService.updateHoldPositionByCancelOrder(cancelOrder);
