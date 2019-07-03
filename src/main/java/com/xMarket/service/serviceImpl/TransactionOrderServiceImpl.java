@@ -79,7 +79,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	public void addTransactionOrder(TradeOrder tradeOrder) throws BusinessException {
 
 		// 先判断是否为撤单
-		if (tradeOrder.getBuyOrderId() == -1 || tradeOrder.getSellOrderId() == -1) {
+		if (tradeOrder.getBuyOrderId().equals("-1") || tradeOrder.getSellOrderId().equals("-1")) {
 			// 创建撤单成交单
 			TransactionOrder cancelOrder = createRevokeOrder(tradeOrder);
 			// 存入数据库
@@ -153,8 +153,10 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 
 		if (!tradeOrder.isSellPoint()) {
 			// 存入redis
+			orderService.setState(sellOrder.getOrderId());
 			LOGGER.info("委托单号：" + sellOrder.getOrderId() + " 的委托卖单未完成交易，存入redis");
 			transactionRedis.put(String.valueOf(sellOrder.getOrderId()), sellOrder, -1);
+			
 		} else {
 			// 清除redis中的数据
 			if (redisOrder != null) {
@@ -229,6 +231,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 		// 判断
 		if (!tradeOrder.isBuyPoint()) {
 			// 存入redis
+			orderService.setState(buyOrder.getOrderId());
 			LOGGER.info("委托单号：" + buyOrder.getOrderId() + " 的委托买单未完成交易，存入redis");
 			transactionRedis.put(String.valueOf(buyOrder.getOrderId()), buyOrder, -1);
 		} else {
@@ -331,7 +334,7 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 	public TransactionOrder createRevokeOrder(TradeOrder tradeOrder) {
 		TransactionOrder revokeOrder = new TransactionOrder();
 		tradeOrder.setTradePrice(0);
-		if (tradeOrder.getBuyOrderId() == -1) {
+		if (tradeOrder.getBuyOrderId().equals("-1")) {
 			LOGGER.info("委托单" + tradeOrder.getSellOrderId() + "撤单");
 			revokeOrder = createSellTransactionOrder(tradeOrder);
 

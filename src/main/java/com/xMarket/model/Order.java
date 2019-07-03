@@ -26,7 +26,7 @@ public class Order implements Serializable{
 
 	@Id
 	@Column(name="order_id")
-	private long orderId;
+	private String orderId;
 	
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name="stock_id")
@@ -71,18 +71,12 @@ public class Order implements Serializable{
 
 	public Order(){}
 
-	
 
 
-
-
-
-
-
-
-	public Order(long orderId, Stock stock, User user, Time time, int type, Date date, int tradeStraregy,
+	public Order(String orderId, Stock stock, User user, Time time, int type, Date date, int tradeStraregy,
 			int orderAmount, int exchangeAmount, double orderPrice, double exchangeAveragePrice, int cancelNumber,
 			double frozenAmount, int state) {
+		super();
 		this.orderId = orderId;
 		this.stock = stock;
 		this.user = user;
@@ -101,23 +95,9 @@ public class Order implements Serializable{
 
 
 
-
-
-
-
-
-
-
 	public int getState() {
 		return state;
 	}
-
-
-
-
-
-
-
 
 
 
@@ -146,15 +126,14 @@ public class Order implements Serializable{
 
 
 
-	public long getOrderId() {
+
+	public String getOrderId() {
 		return orderId;
 	}
 
 
 
-
-
-	public void setOrderId(long orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 

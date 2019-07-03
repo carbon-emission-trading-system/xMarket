@@ -16,7 +16,7 @@ public class TransactionOrderVO {
 	private double totalExchangeMoney;//成交金额
 	
 	private long stockBalance;//股票余额
-	private long orderId;//委托单id--合同编号
+	private String orderId;//委托单id--合同编号
 	private long transactionOrderId;//历史成交单id--成交编号
 	
 	private double serviceTax;//手续费
@@ -40,8 +40,10 @@ public class TransactionOrderVO {
 
 
 
+
+
 	public TransactionOrderVO(Date date, Date time, String stockId, String stockName, int type, double tradePrice,
-			int exchangeAmount, double totalExchangeMoney, long stockBalance, long orderId, long transactionOrderId,
+			int exchangeAmount, double totalExchangeMoney, long stockBalance, String orderId, long transactionOrderId,
 			double serviceTax, double stampTax, double transferFee, double actualAmount, int tradeMarket,
 			int cancelNumber) {
 		super();
@@ -63,6 +65,8 @@ public class TransactionOrderVO {
 		this.tradeMarket = tradeMarket;
 		this.cancelNumber = cancelNumber;
 	}
+
+
 
 
 
@@ -150,10 +154,7 @@ public class TransactionOrderVO {
 
 
 
-
-
-
-	public long getOrderId() {
+	public String getOrderId() {
 		return orderId;
 	}
 
@@ -162,9 +163,19 @@ public class TransactionOrderVO {
 
 
 
-	public void setOrderId(long orderId) {
+
+
+
+
+
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
+
+
+
+
+
 
 
 

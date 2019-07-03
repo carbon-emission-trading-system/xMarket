@@ -24,16 +24,35 @@ public class OrderVO implements Serializable {
 	private int cancelNumber;//撤单数量
 	private int tradeStraregy;//订单类型（市价委托、限价委托）
 	private int state;
-	private long orderId;//合同编号
+	private String orderId;//合同编号
 	private double frozenAmount;
 
 
 	
 	
 	
+
+
+	public OrderVO() {
+	}
+	
+	public OrderVO(String orderId) {
+		this.orderId=orderId;
+	}
+
+	
+	
+	
+	
+	
+
+
+
+
+
 	public OrderVO(Date date, Time time, String stockId, int userId, String stockName, int type, int orderAmount,
 			int exchangeAmount, double exchangeAveragePrice, double orderPrice, int cancelNumber, int tradeStraregy,
-			int state, long orderId, double frozenAmount) {
+			int state, String orderId, double frozenAmount) {
 		super();
 		this.date = date;
 		this.time = time;
@@ -51,23 +70,6 @@ public class OrderVO implements Serializable {
 		this.orderId = orderId;
 		this.frozenAmount = frozenAmount;
 	}
-
-	public OrderVO() {
-	}
-	
-	public OrderVO(long orderId) {
-		this.orderId=orderId;
-	}
-
-	
-	
-	
-	
-	
-
-
-
-
 
 	public double getFrozenAmount() {
 		return frozenAmount;
@@ -191,13 +193,14 @@ public class OrderVO implements Serializable {
 		this.tradeStraregy = tradeStraregy;
 	}
 
-	public long getOrderId() {
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(long orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
+
 
 
 

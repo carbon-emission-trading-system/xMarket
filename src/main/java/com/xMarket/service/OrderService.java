@@ -36,4 +36,7 @@ public interface OrderService {
 	StockTradeVO createStockTradeVO(UserFund userFund, RealTime1 realTime1, Stock stock, HoldPosition holdPosition);
 
 
+	void setState(String orderId);
+
+
 }
