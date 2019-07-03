@@ -91,11 +91,11 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 				cancelOrder.setStockBalance(holdPosition.getPositionNumber());
 			transactionOrderRepository.saveAndFlush(cancelOrder);
 
+			//更新委托单信息
+			orderService.updateOrderBytransactionOrder(cancelOrder);
 			//在redis中寻找委托单，并结算
 			TransactionOrder redisOrder = transactionRedis.get(String.valueOf(cancelOrder.getOrderId()));
 			if (redisOrder!=null){
-				//更新委托单信息
-				orderService.updateOrderBytransactionOrder(redisOrder);
 				//从redis中移除成交单
 				transactionRedis.remove(String.valueOf(redisOrder.getOrderId()));
 				// 计算服务费、成交价和股票余额
@@ -115,7 +115,6 @@ public class TransactionOrderServiceImpl implements TransactionOrderService {
 			}
 
 			//根据撤单内容更新持仓或资金
-			orderService.updateOrderBytransactionOrder(cancelOrder);
 			if (cancelOrder.getType() == 1) {
 				holdPositionService.updateHoldPositionByCancelOrder(cancelOrder);
 			} else {
