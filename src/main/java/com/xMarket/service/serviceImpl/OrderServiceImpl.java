@@ -416,8 +416,10 @@ public class OrderServiceImpl implements OrderService {
 	public void setState(String orderId) {
 		// TODO Auto-generated method stub
 		Order order=orderRedis.get(orderId);
+		if(order!=null) {
 		order.setState(5);
 		orderRedis.put(orderId, order, -1);
+		}
 	}
 
 

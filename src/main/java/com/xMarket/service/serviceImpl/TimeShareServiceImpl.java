@@ -84,7 +84,7 @@ public class TimeShareServiceImpl implements TimeShareService {
     }
 	
 	@Override
-	//@Scheduled(fixedRate = 600000)
+	@Scheduled(fixedRate = 8000,initialDelay = 10000)
 	public void sendTimeShare() {
 		List<TimeShareVO> timeShareList = new ArrayList<>();
 		List<RealTime1> list1 = new ArrayList<>();
