@@ -1,15 +1,5 @@
-package com.xMarket.controller.listener;
-///*
-// * <p>项目名称: xMarket </p>
-// * <p>文件名称: OrderListener.java </p>
-// * <p>描述: [类型描述] </p>
-// * <p>创建时间: 2019-5-31 </p>
-// * <p>公司信息: ************公司 *********部</p>
-// * @author <a href="mail to: *******@******.com" rel="nofollow">作者</a>
-// * @version v1.0
-// * @update [序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
-// */
-//package com.stock.xMarket.controller.listener;
+//package com.xMarket.controller.listener;
+//
 //
 //import java.sql.Time;
 //
@@ -22,19 +12,18 @@ package com.xMarket.controller.listener;
 //import org.springframework.stereotype.Controller;
 //
 //import com.alibaba.fastjson.JSON;
-//import com.stock.xMarket.VO.OrderVO;
-//import com.stock.xMarket.error.BusinessException;
-//import com.stock.xMarket.error.EmBusinessError;
-//import com.stock.xMarket.model.Order;
-//import com.stock.xMarket.model.Stock;
-//import com.stock.xMarket.model.User;
-//import com.stock.xMarket.repository.StockRepository;
-//import com.stock.xMarket.repository.UserRepository;
-//import com.stock.xMarket.service.HoldPositionService;
-//import com.stock.xMarket.service.MarchService;
-//import com.stock.xMarket.service.OrderService;
-//import com.stock.xMarket.service.UserFundService;
-//import com.stock.xMarket.util.UUIDUtil;
+//import com.xMarket.VO.OrderVO;
+//import com.xMarket.error.BusinessException;
+//import com.xMarket.error.EmBusinessError;
+//import com.xMarket.model.Order;
+//import com.xMarket.model.Stock;
+//import com.xMarket.model.User;
+//import com.xMarket.repository.StockRepository;
+//import com.xMarket.repository.UserRepository;
+//import com.xMarket.service.HoldPositionService;
+//import com.xMarket.service.OrderService;
+//import com.xMarket.service.UserFundService;
+//import com.xMarket.util.UUIDUtil;
 //
 //// TODO: Auto-generated Javadoc
 ///**
@@ -73,9 +62,6 @@ package com.xMarket.controller.listener;
 //	@Autowired
 //	private StockRepository stockRepository;
 //
-//	/** The march service. */
-//	@Autowired
-//	MarchService marchService;
 //	
 //	@Autowired
 //	RabbitTemplate rabbitTemplate;
@@ -95,72 +81,9 @@ package com.xMarket.controller.listener;
 //		}
 //
 //		OrderVO orderVO = JSON.parseObject(str, OrderVO.class);
-//		Order order = new Order();
-//
-//		try {
-//			int id=orderVO.getUserId();
-//			User user = userRepository.findByUserId(id);
-//			order.setUser(user);
-//		} catch (IllegalArgumentException e) {
-//			// TODO: handle exception
-//			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标用户不存在！");
-//		}
-//
-//		try {
-//			Stock stock = stockRepository.findByStockId(orderVO.getStockId());
-//			order.setStock(stock);
-//		} catch (IllegalArgumentException e) {
-//			// TODO: handle exception
-//			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标股票不存在！");
-//		}
-//
-//		order.setTime(new Time(System.currentTimeMillis()));
-//
-//		BeanUtils.copyProperties(orderVO, order);
-//
-//		
-//		
-//		//生成id
-//		int orderId=(int) (System.currentTimeMillis()/1000);
-//		order.setOrderId(String.valueOf(orderId));
-//		orderVO.setOrderId(String.valueOf(orderId));
-//		
-//		// 丢入撮合系统
-//		rabbitTemplate.convertAndSend("marchExchange", "marchRoutingKey", JSON.toJSONString(orderVO));
-//		
-//		// 将委托单添加至Redis
-//		try {
-//		orderService.addOrderToRedis(order);
-//		}catch (Exception e) {
-//			// TODO: handle exception
-//			logger.info("将委托单加入Redis发生异常");
-//		}
-//
-//		
-//		if (orderVO.getType() == 1) {
-//			// 更新股票可用余额
-//			holdPositionService.updateHoldPositionByOrder(order);
-//		}else {
-//			// 更新个人资金
-//			userFundService.updateUserFundByOrder(order);
-//		}
-//	
-//
-//		
+//		orderService.buyOrSale(orderVO);
 //
 //	}
 //
-//	@RabbitListener(queues = "cancelOrderQueue")
-//	public void consumeCancelOrder(int orderId) throws BusinessException {
-//		try {
-//			logger.info("委托单监听器监听到消息: {} ", orderId);
-//		} catch (Exception e) {
-//			logger.error("委托单监听器监听发生异常：{} ", orderId, e.fillInStackTrace());
-//		}
-//
-//		marchService.cancel(orderId);
-//
-//
-//	}
 //
 //}

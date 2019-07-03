@@ -38,13 +38,13 @@ public class HoldPosition implements Serializable {
 	private double costPrice;
 	
 	@Column(name="position_number")
-	private int positionNumber;
+	private long positionNumber;
 	
 	@Column(name="available_number")
-	private int availableNumber;
+	private long availableNumber;
 	
 	@Transient
-	private int frozenNumber;
+	private long frozenNumber;
 	
 	@Column(name="opening_time")
 	private Date openingTime;
@@ -75,21 +75,6 @@ public class HoldPosition implements Serializable {
 		this.costPrice = costPrice;
 	}
 
-	public int getPositionNumber() {
-		return positionNumber;
-	}
-
-	public void setPositionNumber(int positionNumber) {
-		this.positionNumber = positionNumber;
-	}
-
-	public int getAvailableNumber() {
-		return availableNumber;
-	}
-
-	public void setAvailableNumber(int availableNumber) {
-		this.availableNumber = availableNumber;
-	}
 
 	public Date getOpeningTime() {
 		return openingTime;
@@ -97,6 +82,39 @@ public class HoldPosition implements Serializable {
 
 	public void setOpeningTime(Date openingTime) {
 		this.openingTime = openingTime;
+	}
+	
+
+	public int getHoldPositionId() {
+		return holdPositionId;
+	}
+
+	public void setHoldPositionId(int holdPositionId) {
+		this.holdPositionId = holdPositionId;
+	}
+
+	public long getPositionNumber() {
+		return positionNumber;
+	}
+
+	public void setPositionNumber(long positionNumber) {
+		this.positionNumber = positionNumber;
+	}
+
+	public long getAvailableNumber() {
+		return availableNumber;
+	}
+
+	public void setAvailableNumber(long availableNumber) {
+		this.availableNumber = availableNumber;
+	}
+
+	public long getFrozenNumber() {
+		return frozenNumber;
+	}
+
+	public void setFrozenNumber(long frozenNumber) {
+		this.frozenNumber = frozenNumber;
 	}
 
 	@Override
@@ -106,17 +124,7 @@ public class HoldPosition implements Serializable {
 				+ availableNumber + ", frozenNumber=" + frozenNumber + ", openingTime=" + openingTime + "]";
 	}
 
-	public int getFrozenNumber() {
-		return frozenNumber;
-	}
 
-	public void setFrozenNumber(int frozenNumber) {
-		this.frozenNumber = frozenNumber;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 
 	
 	

@@ -63,7 +63,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		HoldPosition holdPosition = holdPositionRepository.findByUser_UserIdAndStock_StockId(userId, stockId);
 		if (holdPosition != null) {
 			// 计算新的持仓信息
-			int positionNumber;
+			long positionNumber;
 			double costPrice;
 			// 根据成交单是买还是卖，更新信息
 			LOGGER.info("用户id：" + userId + "  股票id:" + stockId + " 开始更新持仓信息");
@@ -162,7 +162,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 			throw new BusinessException(EmBusinessError.OBJECT_NOT_EXIST_ERROR, "目标持仓信息不存在！");
 		}
 
-		int availableNumber = holdPositon.getAvailableNumber() - order.getOrderAmount();
+		long availableNumber = holdPositon.getAvailableNumber() - order.getOrderAmount();
 		if (availableNumber < 0) {
 			throw new BusinessException(EmBusinessError.FUND_ERROR);
 		}
@@ -194,7 +194,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 
 			for (HoldPosition h : list) {
 				String stockId = h.getStock().getStockId();
-				int positionNumber = h.getPositionNumber();
+				long positionNumber = h.getPositionNumber();
 				double presentPrice = realTime1Redis.get(stockId).getLastTradePrice();// 现价--也就是市价
 				double marketValue = presentPrice * positionNumber;
 				totalMarketValue += marketValue;
@@ -208,7 +208,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 				List<TransactionOrder> transactionOrderList = transactionOrderRepository.findByOwnerIdAndStockId(userId,
 						stockId);
 				double costPrice = h.getCostPrice();// 成本价
-				int positionNumber = h.getPositionNumber();
+				long positionNumber = h.getPositionNumber();
 				double presentPrice = realTime1Redis.get(stockId).getLastTradePrice();// 现价--也就是市价
 				// 总盈亏 = 现价 *股票余额 - 成本价 * 股票余额 = （现价 - 成本价）* 股票余额
 				double totalProfitAndLoss = (presentPrice - costPrice) * positionNumber;
@@ -281,7 +281,7 @@ public class HoldPositionServiceImpl implements HoldPositionService {
 		if(list!=null) {
 			for(HoldPosition h : list) {
 				String stockId = h.getStock().getStockId();
-				int positionNumber = h.getPositionNumber(); 
+				long positionNumber = h.getPositionNumber(); 
 				double presentPrice = realTime1Redis.get(stockId).getLastTradePrice();//现价--也就是市价
 				double marketValue = presentPrice * positionNumber;
 				double totalProfitAndLoss = (presentPrice -  h.getCostPrice())*positionNumber;

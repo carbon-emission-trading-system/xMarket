@@ -29,7 +29,6 @@ import com.xMarket.redis.RealTime2Redis;
 import com.xMarket.redis.TimeShareRedis;
 import com.xMarket.repository.*;
 import com.xMarket.service.HoldPositionService;
-import com.xMarket.service.MarchService;
 import com.xMarket.service.RealTimeService;
 import com.xMarket.service.SystemService;
 
@@ -176,7 +175,7 @@ public class SystemServiceImpl implements SystemService {
 		// TODO Auto-generated method stub
 		List<HoldPosition> holdPositionList = holdPositionRepository.findAll();
 		for (HoldPosition holdPosition : holdPositionList) {
-			int availableNumber = holdPosition.getPositionNumber();
+			long availableNumber = holdPosition.getPositionNumber();
 			holdPosition.setAvailableNumber(availableNumber);
 		}
 	}

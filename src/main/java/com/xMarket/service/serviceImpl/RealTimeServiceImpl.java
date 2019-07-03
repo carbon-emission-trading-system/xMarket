@@ -56,7 +56,7 @@ public class RealTimeServiceImpl implements RealTimeService {
 
 	@Override
 //	 @Scheduled(cron = "0/3 * 9-15 ? * MON-FRI")
-	@Scheduled(fixedRate = 5000)
+	@Scheduled(fixedRate = 1000)
 	public void sendRealTime() {
 		//updateRealTime();
 		List<RealTimeVO> realTimeList = new ArrayList<RealTimeVO>();

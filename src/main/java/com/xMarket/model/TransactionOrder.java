@@ -75,7 +75,7 @@ public class TransactionOrder implements Serializable{
 	private int tradeMarket;//交易市场   market
 	
 	@Column(name="stock_balance")
-	private int stockBalance;//股票余额
+	private long stockBalance;//股票余额
 
 
 	private int cancelNumber;//撤单数量
@@ -252,13 +252,19 @@ public class TransactionOrder implements Serializable{
 		this.actualAmount = actualAmount;
 	}
 	
-	public int getStockBalance() {
+	
+
+	public long getStockBalance() {
 		return stockBalance;
 	}
 
-	public void setStockBalance(int stockBalance) {
+
+
+	public void setStockBalance(long stockBalance) {
 		this.stockBalance = stockBalance;
 	}
+
+
 
 	public int getCancelNumber() {
 		return cancelNumber;

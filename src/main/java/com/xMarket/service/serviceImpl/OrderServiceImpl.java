@@ -387,7 +387,7 @@ public class OrderServiceImpl implements OrderService {
 		Order order = new Order();
 
 		// 生成id
-		long orderId = Long.valueOf(String.valueOf(String.valueOf(orderVO.getUserId() + System.currentTimeMillis())));
+		long orderId = Long.valueOf(orderVO.getType()+String.valueOf(String.valueOf(orderVO.getUserId()) + System.currentTimeMillis()));
 		orderVO.setOrderId(orderId);
 
 		BeanUtils.copyProperties(orderVO, order);

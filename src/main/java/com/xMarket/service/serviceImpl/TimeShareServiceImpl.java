@@ -70,8 +70,6 @@ public class TimeShareServiceImpl implements TimeShareService {
 	@Autowired
 	public StockRepository stockRepository;
 	
-	@Autowired
-	private IndexRepository indexRepository;
 	
 	@Autowired
 	private IndexRedis indexRedis;
@@ -86,12 +84,7 @@ public class TimeShareServiceImpl implements TimeShareService {
     }
 	
 	@Override
-//    @Scheduled(cron = "0 30-59 9 ? * MON-FRI")
-//	@Scheduled(cron = "0 0-59 10 ? * MON-FRI")
-//	@Scheduled(cron = "0 0-30 11 ? * MON-FRI")
-//	@Scheduled(cron = "0 0-30 13 ? * MON-FRI")
-//	@Scheduled(cron = "0 0-59 14-15 ? * MON-FRI")
-	@Scheduled(fixedRate = 600000)
+	//@Scheduled(fixedRate = 600000)
 	public void sendTimeShare() {
 		List<TimeShareVO> timeShareList = new ArrayList<>();
 		List<RealTime1> list1 = new ArrayList<>();

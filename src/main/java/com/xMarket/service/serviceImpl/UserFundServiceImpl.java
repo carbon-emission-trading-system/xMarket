@@ -46,33 +46,19 @@ public class UserFundServiceImpl implements UserFundService {
 	public void updateUserFundByTransaction(TransactionOrder transactionOrder) {
 		// TODO Auto-generated method stub
 		int userId = transactionOrder.getOwnerId();
-
 		UserFund userFund = userFundRepository.findByUser_UserId(userId);
-
 		Order order = orderRepository.findById(transactionOrder.getOrderId()).get();
-
 		if (transactionOrder.getType() == 0) {
-
 			double returnAmount = order.getFrozenAmount() - transactionOrder.getActualAmount();
-
 			double frozenAmount = userFund.getFrozenAmount() - order.getFrozenAmount();
-
 			userFund.setFrozenAmount(frozenAmount);
-
 			userFund.setBalance(userFund.getBalance() + returnAmount);
-
 			userFundRepository.saveAndFlush(userFund);
-
 		} else {
-
 			Double balance = userFund.getBalance() + transactionOrder.getActualAmount();
-
 			userFund.setBalance(balance);
-
 			userFundRepository.saveAndFlush(userFund);
-
 		}
-
 	}
 
 	/**
@@ -84,13 +70,9 @@ public class UserFundServiceImpl implements UserFundService {
 	@Async
 	public void updateUserFundByOrder(Order order) throws BusinessException {
 		// TODO Auto-generated method stub
-
 		int userId = order.getUser().getUserId();
-
 		UserFund userFund = userFundRepository.findByUser_UserId(userId);
-
 		double frozenAmount = order.getFrozenAmount();
-
 		double balance = userFund.getBalance() - frozenAmount;
 		if (balance < 0) {
 			throw new BusinessException(EmBusinessError.FUND_ERROR);

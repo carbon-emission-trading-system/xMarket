@@ -31,10 +31,10 @@ public class SystemTrade extends BaseApiController {
     private RealTime1Redis realTime1Redis;
 
     //指定时间间隔
-//    @Scheduled(fixedRate=60000)
-    private void tradeTasks() throws BusinessException {
+    //@Scheduled(fixedRate=60000,initialDelay = 6000)
+    private void tradeTasks() throws BusinessException, InterruptedException {
         OrderVO orderVO = new OrderVO();
-        orderVO.setTradeStraregy(1);
+        orderVO.setTradeStraregy(0);
         orderVO.setUserId(1000);
         orderVO.setTime(new Time(System.currentTimeMillis()));
         orderVO.setDate(new Date(System.currentTimeMillis()));
@@ -47,55 +47,67 @@ public class SystemTrade extends BaseApiController {
                 continue;
             }
             Random rand = new Random();
+          
             systemBuyOrder(orderVO,lastTradePrice);
             systemSellOrder(orderVO,lastTradePrice);
         }
         return;
     }
 
-    private void systemBuyOrder(OrderVO orderVO,double lastTradePrice) throws BusinessException {
+    private void systemBuyOrder(OrderVO orderVO,double lastTradePrice) throws BusinessException, InterruptedException {
         orderVO.setType(0);
         //根据正态分布生成委托单
         orderVO.setOrderPrice(lastTradePrice-0.01);
         orderVO.setOrderAmount(7700);
         orderService.buyOrSale(orderVO);
+        Thread.sleep(1);
         orderVO.setOrderPrice(lastTradePrice-0.02);
         orderVO.setOrderAmount(6600);
         orderService.buyOrSale(orderVO);
+        Thread.sleep(1);
         orderVO.setOrderPrice(lastTradePrice-0.03);
         orderVO.setOrderAmount(4800);
         orderService.buyOrSale(orderVO);
+        Thread.sleep(1);
         orderVO.setOrderPrice(lastTradePrice-0.04);
         orderVO.setOrderAmount(3000);
         orderService.buyOrSale(orderVO);
+        Thread.sleep(1);
         orderVO.setOrderPrice(lastTradePrice-0.05);
         orderVO.setOrderAmount(1600);
         orderService.buyOrSale(orderVO);
+        Thread.sleep(1);
         orderVO.setOrderPrice(lastTradePrice-0.06);
         orderVO.setOrderAmount(700);
         orderService.buyOrSale(orderVO);
     }
 
-    private void systemSellOrder(OrderVO orderVO,double lastTradePrice) throws BusinessException {
+    private void systemSellOrder(OrderVO orderVO,double lastTradePrice) throws BusinessException, InterruptedException {
         orderVO.setType(1);
         //根据正态分布生成委托单
+        Thread.sleep(1);
         orderVO.setOrderPrice(lastTradePrice+0.01);
         orderVO.setOrderAmount(7700);
         orderService.buyOrSale(orderVO);
+        Thread.sleep(1);
         orderVO.setOrderPrice(lastTradePrice+0.02);
         orderVO.setOrderAmount(6600);
         orderService.buyOrSale(orderVO);
+        Thread.sleep(1);
         orderVO.setOrderPrice(lastTradePrice+0.03);
         orderVO.setOrderAmount(4800);
         orderService.buyOrSale(orderVO);
+        Thread.sleep(1);
         orderVO.setOrderPrice(lastTradePrice+0.04);
         orderVO.setOrderAmount(3000);
         orderService.buyOrSale(orderVO);
+        Thread.sleep(1);
         orderVO.setOrderPrice(lastTradePrice+0.05);
         orderVO.setOrderAmount(1600);
         orderService.buyOrSale(orderVO);
         orderVO.setOrderPrice(lastTradePrice+0.06);
         orderVO.setOrderAmount(700);
+        Thread.sleep(1);
         orderService.buyOrSale(orderVO);
     }
 }
